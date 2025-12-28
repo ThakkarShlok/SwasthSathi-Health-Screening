@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SwasthSathi - AI-powered offline health screening for diabetes and hypertension">
+    <title>SwasthSathi - Your Health Companion</title>
+    
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/swasthsathi.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <i class="bi bi-heart-pulse-fill"></i>
+                SwasthSathi
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">How It Works</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#impact">Impact</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <button class="btn btn-primary-custom" >
+                            <a href="/screening.html" target="_main">Start Screening</a>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content fade-in">
+                    <h1>Early Health Screening for Every Indian</h1>
+                    <p class="lead">AI-powered offline screening for diabetes and hypertension. Get personalized health insights in your language, completely free.</p>
+                    <div class="d-flex gap-2 mb-4 flex-wrap">
+                        <div class="feature-badge">
+                            <i class="bi bi-wifi-off"></i>
+                            <span>Works Offline</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="bi bi-translate"></i>
+                            <span>Multilingual</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="bi bi-shield-check"></i>
+                            <span>100% Free</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 mb-3 flex-wrap">
+                        <button class="btn btn-primary-custom btn-lg">
+                            <a href="/screening.html" target="_main">Start Screening</a>
+                        </button>
+                        <button class="btn btn-outline-secondary btn-lg" onclick="document.getElementById('how-it-works').scrollIntoView()">
+                            Learn More
+                        </button>
+                    </div>
+                    <small class="text-muted">
+                        <i class="bi bi-clock me-1"></i>Takes only 5 minutes • No registration needed
+                    </small>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div class="hero-illustration mx-auto">
+                        <i class="bi bi-heart-pulse" style="font-size: 120px; color: var(--primary); opacity: 0.2;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <h2>220M+</h2>
+                        <p>People with Hypertension</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <h2>77M+</h2>
+                        <p>People with Diabetes</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <h2>60.5%</h2>
+                        <p>Co-occurrence Rate</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <h2>5 min</h2>
+                        <p>Quick Screening</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose SwasthSathi?</h2>
+            <p class="section-subtitle">Comprehensive health screening designed for rural India</p>
+            
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-success-subtle">
+                            <i class="bi bi-wifi-off"></i>
+                        </div>
+                        <h4>100% Offline</h4>
+                        <p class="text-muted">Works in zero connectivity zones. All processing happens on your device using Progressive Web App technology.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-primary-subtle">
+                            <i class="bi bi-translate"></i>
+                        </div>
+                        <h4>Multilingual</h4>
+                        <p class="text-muted">Available in Hindi, English, Tamil and more regional languages with visual icons for low-literacy users.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-warning-subtle">
+                            <i class="bi bi-camera-fill"></i>
+                        </div>
+                        <h4>AI-Powered OCR</h4>
+                        <p class="text-muted">Photograph your medical reports and our AI automatically extracts key health values - no typing needed!</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-info-subtle">
+                            <i class="bi bi-activity"></i>
+                        </div>
+                        <h4>Co-Risk Screening</h4>
+                        <p class="text-muted">Unique system that screens for diabetes AND hypertension together, identifying combined health risks.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-danger-subtle">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <h4>Track Over Time</h4>
+                        <p class="text-muted">Visual trend graphs showing your risk progression. All data stored securely on your device.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-success-subtle">
+                            <i class="bi bi-clipboard-check"></i>
+                        </div>
+                        <h4>Personalized Advice</h4>
+                        <p class="text-muted">Culturally appropriate Do's & Don'ts in your language with local food examples and exercises.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works-section" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Complete health screening in just 5 minutes</p>
+            
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">
+                            <i class="bi bi-translate"></i>
+                        </div>
+                        <h5>Select Language</h5>
+                        <p class="text-muted">Choose from Hindi, English, or Tamil</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                        <h5>Basic Information</h5>
+                        <p class="text-muted">Age, gender, height, and weight</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">
+                            <i class="bi bi-clipboard2-pulse"></i>
+                        </div>
+                        <h5>Health Questions</h5>
+                        <p class="text-muted">Simple symptoms and lifestyle questions</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-icon">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <h5>Get Results</h5>
+                        <p class="text-muted">Instant risk scores and personalized advice</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <button class="btn btn-primary-custom btn-lg px-5" >
+                    <a href="/screening.html" target="_main">Start Your Screening Now</a>
+                    
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="py-5" style="background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);" id="impact">
+        <div class="container">
+            <div class="text-center text-white mb-5">
+                <h2 class="section-title text-white">Our Projected Impact</h2>
+                <p class="section-subtitle text-white" style="opacity: 0.9;">Making healthcare accessible to millions in rural India</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-3 col-6">
+                    <div class="text-center text-white">
+                        <h2 class="display-4 fw-bold mb-2">5M</h2>
+                        <p class="mb-0">Screenings in Year 1</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="text-center text-white">
+                        <h2 class="display-4 fw-bold mb-2">92%</h2>
+                        <p class="mb-0">Cost Reduction</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="text-center text-white">
+                        <h2 class="display-4 fw-bold mb-2">233%</h2>
+                        <p class="mb-0">Efficiency Improvement</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="text-center text-white">
+                        <h2 class="display-4 fw-bold mb-2">30%</h2>
+                        <p class="mb-0">Better Early Detection</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card text-center text-white">
+                <h2>Take Control of Your Health Today</h2>
+                <p class="lead mb-4">Early detection can prevent serious complications. Get your free screening in just 5 minutes.</p>
+                <button class="btn btn-light-custom btn-lg">
+                    <a href="/screening.html" target="_main">Start Free Screening</a>
+                    
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5>
+                        <i class="bi bi-heart-pulse-fill me-2"></i>SwasthSathi
+                    </h5>
+                    <p class="text-muted">Your trusted companion for early health screening. Offline-capable, multilingual, and free for everyone.</p>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <a href="#home">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#impact">Impact</a>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5>Important</h5>
+                    <p class="text-muted"><small>This is a screening tool, not a diagnostic tool. Always consult a qualified healthcare professional for diagnosis and treatment.</small></p>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="text-center text-muted">
+                <p class="mb-0">&copy; 2025 SwasthSathi. Built for ImpactThon @KSV 2025-2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="/swasthsathi.js"></script>
+</body>
+</html>
