@@ -61,3 +61,27 @@
         document.querySelectorAll('.feature-card, .step-card, .stat-card').forEach(el => {
             observer.observe(el);
         });
+
+        // Auto-highlight active nav link based on current page
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        const href = link.getAttribute('href');
+        
+        // Check if link matches current page
+        if (href === currentPage || 
+           (currentPage === '' && href === 'index.html') ||
+           (currentPage === 'index.html' && href === 'index.html') ||
+           (currentPage === 'about.html' && href === 'about.html') ||
+           (currentPage === 'screening.html' && href === 'screening.html') ||
+           (currentPage === 'doctors.html' && href === 'doctors.html') ||
+           (currentPage === 'result.html' && href === 'screening.html')) {
+            link.classList.add('active');
+        }
+    });
+});
+
+console.log('✓ Active navigation state handler loaded');

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SwasthSathi | Find a Qualified Doctor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<!-- Base Styles (LOAD FIRST) -->
+<link rel="stylesheet" href="base.css">
+<!-- Page-specific styles -->
+<link rel="stylesheet" href="screening.css">
+<link rel="stylesheet" href="doctors.css">
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <i class="bi bi-heart-pulse-fill"></i>
+            SwasthSathi
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html" data-i18n="nav_home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html" data-i18n="nav_about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="screening.html" data-i18n="nav_screening">Screening</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="doctors.html" data-i18n="nav_doctors">Find Doctors</a>
+                </li>
+                
+                <!-- Language Dropdown -->
+                <li class="nav-item dropdown ms-lg-2">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdownBtn" 
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="me-2">🇬🇧</span>
+                        <span>English</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdownBtn">
+                        <li>
+                            <a class="dropdown-item language-option active" href="#" data-lang="en" onclick="window.translator.setLanguage('en'); return false;">
+                                <span class="me-2">🇬🇧</span> English
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item language-option" href="#" data-lang="hi" onclick="window.translator.setLanguage('hi'); return false;">
+                                <span class="me-2">🇮🇳</span> हिंदी (Hindi)
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item language-option" href="#" data-lang="gu" onclick="window.translator.setLanguage('gu'); return false;">
+                                <span class="me-2">🇮🇳</span> ગુજરાતી (Gujarati)
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item language-option" href="#" data-lang="mr" onclick="window.translator.setLanguage('mr'); return false;">
+                                <span class="me-2">🇮🇳</span> मराठी (Marathi)
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item ms-lg-3">
+                    <a href="screening.html" class="btn btn-primary-custom" data-i18n="nav_start">Start Now</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="doctors-container">
+    <div class="page-header text-center mb-5">
+        <h2 class="fw-bold text-primary mb-3">
+            <i class="bi bi-hospital"></i> <span data-i18n="doctors_title">Consult a Qualified Doctor</span>
+        </h2>
+        <p class="lead text-muted mb-4" data-i18n="doctors_subtitle">
+            Based on your screening result, consulting a qualified medical specialist is advised for proper diagnosis and treatment planning.
+        </p>
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle-fill"></i>
+            <strong data-i18n="doctors_info_notice">Information Purpose Only:</strong> <span data-i18n="doctors_info_text">The doctors listed below are sourced from publicly available platforms. This platform does not recommend, rank, or endorse any doctor.</span>
+        </div>
+    </div>
+
+    <section class="specialists-section mb-5">
+        <div class="section-header mb-4">
+            <h3 class="text-success">
+                <i class="bi bi-droplet-fill"></i> <span data-i18n="doctors_diabetes_title">Diabetes Specialists</span>
+            </h3>
+            <p class="text-muted small" data-i18n="doctors_diabetes_subtitle">
+                Endocrinologists, Diabetologists, and MD Medicine doctors specializing in diabetes care
+            </p>
+        </div>
+        <div class="row g-4" id="diabetesDoctors">
+            <div class="col-12 text-center">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden" data-i18n="loading">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="my-5">
+
+    <section class="specialists-section mb-5">
+        <div class="section-header mb-4">
+            <h3 class="text-danger">
+                <i class="bi bi-heart-pulse"></i> <span data-i18n="doctors_hypertension_title">Hypertension Specialists</span>
+            </h3>
+            <p class="text-muted small" data-i18n="doctors_hypertension_subtitle">
+                Cardiologists and Internal Medicine specialists with expertise in hypertension management
+            </p>
+        </div>
+        <div class="row g-4" id="hypertensionDoctors">
+            <div class="col-12 text-center">
+                <div class="spinner-border text-danger" role="status">
+                    <span class="visually-hidden" data-i18n="loading">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="alert alert-warning disclaimer-box">
+        <h5 class="alert-heading">
+            <i class="bi bi-exclamation-triangle-fill"></i> <span data-i18n="doctors_disclaimer_title">Important Disclaimer</span>
+        </h5>
+        <hr>
+        <p class="mb-2">
+            <strong data-i18n="doctors_disclaimer_text">This platform does not recommend, rank, or endorse any doctor.</strong>
+        </p>
+        <ul class="mb-2">
+            <li data-i18n="doctors_disclaimer_1">Doctor information is provided for awareness purposes only</li>
+            <li data-i18n="doctors_disclaimer_2">Data is sourced from publicly available platforms (Google Maps, Practo, Hospital websites)</li>
+            <li data-i18n="doctors_disclaimer_3">Ratings and reviews are from third-party platforms</li>
+            <li data-i18n="doctors_disclaimer_4">Please verify credentials, availability, and fees independently before consultation</li>
+            <li data-i18n="doctors_disclaimer_5">Always consult with a qualified healthcare provider for diagnosis and treatment</li>
+        </ul>
+        <p class="mb-0 small">
+            <strong data-i18n="doctors_emergency">Emergency:</strong> <span data-i18n="doctors_emergency_text">For medical emergencies, call 108 (National Ambulance Service) or visit the nearest hospital immediately.</span>
+        </p>
+    </div>
+
+    <div class="text-center my-5">
+        <a href="result.html" class="btn btn-outline-primary btn-lg me-2">
+            <i class="bi bi-arrow-left-circle"></i> <span data-i18n="btn_back_results">Back to Results</span>
+        </a>
+        <a href="index.html" class="btn btn-outline-secondary btn-lg">
+            <i class="bi bi-house-fill"></i> <span data-i18n="btn_back_home">Back to Home</span>
+        </a>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <h5>
+                    <i class="bi bi-heart-pulse-fill me-2"></i>SwasthSathi
+                </h5>
+                <p class="text-muted" data-i18n="footer_tagline">Your trusted companion for early health screening. Evidence-based, multilingual, and free for everyone.</p>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <h5 data-i18n="footer_quick_links">Quick Links</h5>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="about.html" data-i18n="nav_about">About Us</a>
+                <a href="screening.html" data-i18n="nav_screening">Screening</a>
+                <a href="doctors.html" data-i18n="nav_doctors">Find Doctors</a>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <h5 data-i18n="footer_important">Important</h5>
+                <p class="text-muted"><small data-i18n="footer_disclaimer">This is a screening tool, not a diagnostic tool. Always consult a qualified healthcare professional for diagnosis and treatment.</small></p>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <div class="text-center text-muted">
+            <p class="mb-0" data-i18n="footer_copyright">© 2025 SwasthSathi. Built for ImpactThon @KSV 2025-2026</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Doctors Scripts -->
+<script src="doctors-data.js"></script>
+<script src="doctors.js"></script>
+<!-- Translation System -->
+<script src="language-data.js"></script>
+<script src="translations.js"></script>
+</body>
+</html>
