@@ -117,8 +117,7 @@ SwasthSathi/
 │   ├── nav-auth.js            # Auth state handler
 │   └── doctors.js             # Doctor list renderer
 │
-├── DOCUMENTATION.md           # Technical documentation
-├── DEPLOYMENT.md              # Setup & deployment guide
+|e
 └── README.md                  # This file
 
 
@@ -185,11 +184,6 @@ CREATE TABLE users_profile (
     state TEXT,
     created_at TIMESTAMP DEFAULT NOW()
 );
-```
-
-> See [DEPLOYMENT.md](DEPLOYMENT.md) for complete setup instructions.
-
----
 
 ## 🎓 **What I Learned**
 
