@@ -4,7 +4,7 @@
 
 ![SwasthSathi Logo](https://img.shields.io/badge/SwasthSathi-Healthcare-10b981?style=for-the-badge)
 [![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)](https://shlokthakkar.github.io/swasthsathi)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+
 
 **AI-Powered Early Risk Assessment for Diabetes & Hypertension**
 
