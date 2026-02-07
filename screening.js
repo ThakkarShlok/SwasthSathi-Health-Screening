@@ -2,7 +2,7 @@
  * ============================================
  * SWASTHSATHI - COMPLETE SCREENING SYSTEM
  * Medical Report OCR + Smart Suggestions + Form Validation
- * Version: 1.2 - Fixed Dynamic Button Update
+ * Version: 1.3 - Fixed Flow & Single Submission Handler
  * ============================================
  */
 
@@ -294,43 +294,16 @@ function validateFormData(data) {
     return true;
 }
 
-function savePatientData(data) {
-    try {
-        let patients = JSON.parse(localStorage.getItem("swasthsathi_patients")) || [];
-        data.id = Date.now();
-        data.timestamp = new Date().toISOString();
-        patients.push(data);
-        localStorage.setItem("swasthsathi_patients", JSON.stringify(patients));
-        console.log('Patient data saved successfully:', data.id);
-        return true;
-    } catch (error) {
-        console.error('Error saving patient data:', error);
-        showNotification('danger', 'Failed to save data. Please try again.');
-        return false;
-    }
-}
-
-function getAllPatients() {
-    try {
-        return JSON.parse(localStorage.getItem("swasthsathi_patients")) || [];
-    } catch (error) {
-        console.error('Error retrieving patient data:', error);
-        return [];
-    }
-}
-
-function getPatientById(id) {
-    const patients = getAllPatients();
-    return patients.find(p => p.id === id);
-}
-
 // ==========================================
-// FORM SUBMISSION HANDLER - FIXED
+// ⭐ SINGLE FORM SUBMISSION HANDLER - SUPABASE VERSION
 // ==========================================
 
-document.getElementById("screeningForm").addEventListener("submit", function(e) {
+document.getElementById("screeningForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
+    console.log('📋 Form submission started...');
+
+    // ===== STEP 1: Collect Form Data =====
     const patientData = {
         name: document.getElementById('name').value,
         age: parseInt(document.getElementById('age').value),
@@ -379,32 +352,61 @@ document.getElementById("screeningForm").addEventListener("submit", function(e) 
         }
     };
 
+    console.log('📊 Collected patient data:', patientData);
+
+    // ===== STEP 2: Validate Form Data =====
     if (!validateFormData(patientData)) {
+        console.error('❌ Validation failed');
         return;
     }
 
-    const saved = savePatientData(patientData);
+    console.log('✅ Validation passed');
 
-    if (saved) {
-        showNotification('success', 'Patient screening saved successfully!');
+    // ===== STEP 3: Show Saving Indicator =====
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
 
-        // ⭐ KEY FIX: Update button immediately
-        updateResultsButtonText();
+    try {
+        // ===== STEP 4: Save to Supabase =====
+        console.log('☁️ Saving to Supabase...');
+        const result = await window.supabaseClient.saveScreening(patientData);
 
-        setTimeout(() => {
-            this.reset();
-            
-            if (charCount) {
-                charCount.textContent = '0 / 500';
-                charCount.style.color = '#6c757d';
-            }
-            
-            // Scroll to results button
-            const resultsBtn = document.getElementById('viewResultsBtn');
-            if (resultsBtn) {
-                resultsBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }, 1500);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+
+        if (result.success) {
+            const source = result.source === 'supabase' ? '☁️ Cloud' : '💾 Local';
+            console.log(`✅ Data saved successfully! Source: ${result.source}`);
+            showNotification('success', `Screening saved successfully! (${source})`);
+
+            // ===== STEP 5: Update Results Button =====
+            await updateResultsButtonText();
+
+            // ===== STEP 6: Reset Form After Delay =====
+            setTimeout(() => {
+                this.reset();
+                
+                if (charCount) {
+                    charCount.textContent = '0 / 500';
+                    charCount.style.color = '#6c757d';
+                }
+                
+                // Scroll to results button
+                const resultsBtn = document.getElementById('viewResultsBtn');
+                if (resultsBtn) {
+                    resultsBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 1500);
+        } else {
+            throw new Error('Save operation returned unsuccessful result');
+        }
+    } catch (error) {
+        console.error('❌ Form submission error:', error);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+        showNotification('danger', 'An error occurred. Data saved locally as backup.');
     }
 });
 
@@ -412,29 +414,24 @@ document.getElementById("screeningForm").addEventListener("submit", function(e) 
 // VIEW RESULTS NAVIGATION
 // ==========================================
 
-function viewResults() {
+async function viewResults() {
     try {
-        const patientsData = localStorage.getItem('swasthsathi_patients');
+        console.log('🔍 Checking for screening data...');
         
-        if (!patientsData) {
+        const result = await window.supabaseClient.getLatestScreening();
+        
+        if (!result.success || !result.data) {
             showNotification('warning', 'No screening data found. Please complete the health screening first.');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
 
-        const patients = JSON.parse(patientsData);
-        
-        if (!patients || patients.length === 0) {
-            showNotification('warning', 'No screening data found. Please complete the health screening first.');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            return;
-        }
-
-        console.log(`✓ Navigating to results (${patients.length} screening(s) found)`);
+        console.log(`✅ Found screening data. Source: ${result.source}`);
+        console.log('➡️ Navigating to results page...');
         window.location.href = 'result.html';
         
     } catch (error) {
-        console.error('Error checking patient data:', error);
+        console.error('❌ Error checking patient data:', error);
         showNotification('danger', 'Error loading data. Please try again.');
     }
 }
@@ -442,13 +439,12 @@ function viewResults() {
 window.viewResults = viewResults;
 
 // ==========================================
-// DYNAMIC BUTTON TEXT
+// DYNAMIC BUTTON TEXT - SUPABASE VERSION
 // ==========================================
 
-function updateResultsButtonText() {
+async function updateResultsButtonText() {
     try {
-        const patientsData = localStorage.getItem('swasthsathi_patients');
-        const patients = patientsData ? JSON.parse(patientsData) : [];
+        const result = await window.supabaseClient.getLatestScreening();
         
         const hintText = document.getElementById('resultsHintText');
         const btnText = document.getElementById('viewResultsBtnText');
@@ -457,22 +453,25 @@ function updateResultsButtonText() {
         
         if (!hintText || !btnText || !hint || !btn) return;
         
-        if (patients.length > 0) {
-            const lastPatient = patients[patients.length - 1];
-            const date = new Date(lastPatient.timestamp).toLocaleDateString('en-IN', {
+        if (result.success && result.data) {
+            const date = new Date(result.data.timestamp).toLocaleDateString('en-IN', {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
             });
             
+            const sourceIcon = result.source === 'supabase' ? '☁️' : '💾';
+            
             hintText.textContent = 'Already screened?';
             btnText.textContent = 'View My Results';
-            hint.innerHTML = `<i class="bi bi-clock-history"></i> Last screening: ${date}`;
+            hint.innerHTML = `<i class="bi bi-clock-history"></i> Last screening: ${date} ${sourceIcon}`;
             btn.classList.remove('btn-outline-info');
             btn.classList.add('btn-info', 'text-white');
             btn.disabled = false;
             btn.style.opacity = '1';
             btn.style.cursor = 'pointer';
+            
+            console.log('✅ Results button updated - screening available');
         } else {
             hintText.textContent = 'New to SwasthSathi?';
             btnText.textContent = 'Complete Screening Above';
@@ -482,6 +481,8 @@ function updateResultsButtonText() {
             btn.disabled = true;
             btn.style.opacity = '0.6';
             btn.style.cursor = 'not-allowed';
+            
+            console.log('ℹ️ Results button updated - no screening data');
         }
         
     } catch (error) {
@@ -489,34 +490,9 @@ function updateResultsButtonText() {
     }
 }
 
-// Run on page load
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updateResultsButtonText);
-} else {
+// Call on page load
+document.addEventListener('DOMContentLoaded', () => {
     updateResultsButtonText();
-}
-
-// ==========================================
-// KEYBOARD SHORTCUTS
-// ==========================================
-
-document.addEventListener('keydown', function(e) {
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'D') {
-        e.preventDefault();
-        const patients = getAllPatients();
-        console.log('Stored Patient Data:', patients);
-        console.log(`Total patients: ${patients.length}`);
-    }
-    
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'C') {
-        e.preventDefault();
-        if (confirm('Clear all patient data? This cannot be undone.')) {
-            localStorage.removeItem('swasthsathi_patients');
-            console.log('All patient data cleared');
-            showNotification('info', 'All patient data has been cleared');
-            updateResultsButtonText();
-        }
-    }
 });
 
 // ==========================================
@@ -524,53 +500,38 @@ document.addEventListener('keydown', function(e) {
 // ==========================================
 
 function fillDemoData() {
-    // Basic Info
     document.getElementById('name').value = 'Ramesh Kumar';
     document.getElementById('age').value = '22';
     document.getElementById('gender').value = 'Male';
     document.getElementById('height').value = '170';
     document.getElementById('weight').value = '65';
-    
-    // Waist Circumference
     document.getElementById('waistCircumference').value = '55';
-    
-    // Medical History
     document.getElementById('diabetes').value = 'No';
     document.getElementById('hypertension').value = 'No';
     
-    // Diabetes Symptoms
     document.getElementById('frequentUrination').checked = true;
     document.getElementById('nocturia').checked = true;
     document.getElementById('fatigue').checked = true;
-    
-    // Hypertension Symptoms
     document.getElementById('headache').checked = true;
     document.getElementById('dizziness').checked = true;
     
-    // Lifestyle
     document.getElementById('physicalActivity').value = 'Sedentary (office work, minimal activity)';
     document.getElementById('dietPattern').value = 'High fat diet (fried foods, processed foods, sweets)';
     document.getElementById('smoking').value = 'Yes';
     document.getElementById('alcohol').value = 'Occasionally';
     document.getElementById('familyHistory').value = 'Yes';
     
-    // Readings
     document.getElementById('sugar').value = '92';
     document.getElementById('bp').value = '110/64';
     
-    // Additional Symptoms
     document.getElementById('additionalSymptoms').value = 'Experiencing occasional chest discomfort and shortness of breath during physical activity. Also noticing increased thirst and frequent urination at night.';
     
-    // Update character count
-    const charCount = document.getElementById('charCount');
     if (charCount) {
         charCount.textContent = '198 / 500';
     }
     
-    // Show success notification
-    showNotification('success', '✓ Demo data loaded! Scroll down and click "Complete Screening"');
+    showNotification('success', '✔ Demo data loaded! Scroll down and click "Complete Screening"');
     
-    // Scroll to submit button smoothly
     setTimeout(() => {
         document.querySelector('button[type="submit"]').scrollIntoView({ 
             behavior: 'smooth', 
@@ -579,25 +540,18 @@ function fillDemoData() {
     }, 500);
 }
 
-// Make function globally available
 window.fillDemoData = fillDemoData;
-
-console.log('✓ View Results function registered');
-console.log('✓ Dynamic button text function registered');
-console.log('✓ Demo data function registered'); // ADD THIS LINE
 
 // ==========================================
 // INITIALIZATION
 // ==========================================
 
 console.log('=== SwasthSathi Screening System ===');
-console.log('Version: 1.2 - Fixed Dynamic Button');
-console.log('OCR Processor:', window.OCRProcessor ? '✓ Loaded' : '✗ Not Found');
-console.log('Medical Validator:', window.MedicalValidator ? '✓ Loaded' : '✗ Not Found');
-console.log('Form Suggester:', window.FormSuggester ? '✓ Loaded' : '✗ Not Found');
+console.log('Version: 1.3 - Fixed Flow & Single Handler');
+console.log('OCR Processor:', window.OCRProcessor ? '✅ Loaded' : '❌ Not Found');
+console.log('Medical Validator:', window.MedicalValidator ? '✅ Loaded' : '❌ Not Found');
+console.log('Form Suggester:', window.FormSuggester ? '✅ Loaded' : '❌ Not Found');
+console.log('Supabase Client:', window.supabaseClient ? '✅ Loaded' : '❌ Not Found');
 console.log('=====================================');
 
-console.log('%c🩺 Welcome to SwasthSathi!', 'color: #10b981; font-size: 16px; font-weight: bold;');
-console.log('%cHealthcare screening made accessible for rural India', 'color: #6b7280; font-size: 12px;');
-console.log('✓ View Results function registered');
-console.log('✓ Dynamic button text function registered');
+console.log('%c🩺 SwasthSathi Screening Ready!', 'color: #10b981; font-size: 16px; font-weight: bold;');

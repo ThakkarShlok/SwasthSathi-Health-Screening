@@ -51,38 +51,91 @@ function initializeResultsPage() {
 }
 
 // ==========================================
-// DATA RETRIEVAL
+// DATA RETRIEVAL - SUPABASE VERSION
 // ==========================================
 
 /**
- * Fetch user data from localStorage
- * Returns the most recent screening data
+ * ============================================
+ * MODIFIED FETCH USER DATA FUNCTION
+ * Supports viewing from dashboard history
+ * ============================================
  */
-function fetchUserData() {
+
+async function fetchUserData() {
     try {
-        const patientsData = localStorage.getItem('swasthsathi_patients');
+        console.log('📄 Fetching screening data...');
+
+        // Check if viewing from dashboard (specific screening)
+        const selectedIndex = sessionStorage.getItem('selectedScreeningIndex');
         
-        if (!patientsData) {
-            console.warn('No patient data found in localStorage');
+        if (selectedIndex !== null) {
+            // Fetch all user screenings
+            const result = await window.supabaseClient.getUserScreenings();
+            
+            if (result.success && result.screenings.length > selectedIndex) {
+                const screening = result.screenings[parseInt(selectedIndex)];
+                console.log('✅ Loaded screening from history');
+                sessionStorage.removeItem('selectedScreeningIndex'); // Clear after use
+                return screening;
+            }
+        }
+
+        // Otherwise, get latest screening (existing behavior)
+        const result = await window.supabaseClient.getLatestScreening();
+        
+        if (!result.success || !result.data) {
+            console.warn('❌ No screening data found');
             return null;
         }
 
-        const patients = JSON.parse(patientsData);
-        
-        if (!patients || patients.length === 0) {
-            console.warn('Patient data array is empty');
-            return null;
-        }
-
-        // Return the most recent patient (last in array)
-        const latestPatient = patients[patients.length - 1];
-        
-        console.log('✓ Patient data retrieved:', latestPatient.name);
-        return latestPatient;
+        console.log(`✅ Latest screening loaded`);
+        return result.data;
         
     } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error('❌ Error fetching data:', error);
         return null;
+    }
+}
+
+// Update initialization to be async
+async function initializeResultsPage() {
+    try {
+        console.log('🔧 Initializing results page...');
+        
+        // Fetch patient data from Supabase (with localStorage fallback)
+        const patientData = await fetchUserData();
+        
+        if (!patientData) {
+            console.error('❌ No patient data available');
+            showErrorState();
+            return;
+        }
+
+        console.log('✅ Patient data loaded successfully');
+        console.log('📋 Data being sent to risk calculator:', patientData);
+
+        // Calculate risk assessment
+        console.log('🧮 Calculating risk assessment...');
+        const assessment = window.RiskCalculator.assessHealthRisk(patientData);
+        
+        console.log('✅ Risk assessment calculated:', assessment);
+        console.log('🎯 Diabetes score:', assessment.diabetes.score);
+        console.log('🎯 Hypertension score:', assessment.hypertension.score);
+        console.log('🎯 Combined score:', assessment.combined.score);
+        
+        // Render UI
+        renderResultsUI(assessment);
+        
+        // Hide loading, show results
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('resultsContainer').style.display = 'block';
+        
+        console.log('✅ Results page rendered successfully');
+        
+    } catch (error) {
+        console.error('❌ Error initializing results:', error);
+        console.error('Error stack:', error.stack);
+        showErrorState();
     }
 }
 

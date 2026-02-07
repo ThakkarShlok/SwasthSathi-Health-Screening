@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - SwasthSathi</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+<!-- Navigation (Same as other pages) -->
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <i class="bi bi-heart-pulse-fill"></i>
+            SwasthSathi
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                <li class="nav-item ms-lg-3" id="navAuthSection"></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Signup Form -->
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header text-center mb-4">
+            <i class="bi bi-person-plus-fill auth-icon"></i>
+            <h2 class="fw-bold">Create Account</h2>
+            <p class="text-muted">Join SwasthSathi to track your health screenings</p>
+        </div>
+
+        <form id="signupForm">
+            <!-- Full Name -->
+            <div class="mb-3">
+                <label for="fullName" class="form-label">Full Name *</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <input type="text" class="form-control" id="fullName" required 
+                           placeholder="Enter your full name">
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address *</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                    <input type="email" class="form-control" id="email" required 
+                           placeholder="your.email@example.com">
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Password *</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                    <input type="password" class="form-control" id="password" required 
+                           minlength="8" placeholder="At least 8 characters">
+                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
+                        <i class="bi bi-eye" id="toggleIcon"></i>
+                    </button>
+                </div>
+                <small class="text-muted">Minimum 8 characters</small>
+            </div>
+
+            <!-- City -->
+            <div class="mb-3">
+                <label for="city" class="form-label">City</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                    <input type="text" class="form-control" id="city" 
+                           placeholder="e.g., Ahmedabad">
+                </div>
+            </div>
+
+            <!-- State -->
+            <div class="mb-3">
+                <label for="state" class="form-label">State</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-map"></i></span>
+                    <input type="text" class="form-control" id="state" 
+                           placeholder="e.g., Gujarat">
+                </div>
+            </div>
+
+            <!-- Privacy Notice -->
+            <div class="alert alert-info small mb-3">
+                <i class="bi bi-shield-check"></i>
+                <strong>Privacy:</strong> We only collect basic information. 
+                No sensitive medical data is stored without your consent.
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary-custom w-100 mb-3" id="submitBtn">
+                <i class="bi bi-person-check"></i> Create Account
+            </button>
+
+            <!-- Login Link -->
+            <div class="text-center">
+                <small class="text-muted">
+                    Already have an account? 
+                    <a href="login.html" class="fw-bold">Login here</a>
+                </small>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Footer (Same as other pages) -->
+<footer class="footer">
+    <div class="container">
+        <div class="text-center text-muted">
+            <p class="mb-0">© 2025 SwasthSathi. Built for ImpactThon @KSV 2025-2026</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="supabase-client.js"></script>
+<script src="nav-auth.js"></script>
+<script src="signup.js"></script>
+</body>
+</html>
