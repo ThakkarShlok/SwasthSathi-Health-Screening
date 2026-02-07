@@ -117,7 +117,7 @@ SwasthSathi/
 │   ├── nav-auth.js            # Auth state handler
 │   └── doctors.js             # Doctor list renderer
 │
-|e
+|
 └── README.md                  # This file
 
 
