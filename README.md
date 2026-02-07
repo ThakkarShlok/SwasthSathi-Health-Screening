@@ -10,7 +10,6 @@
 
 *Built for ImpactThon @KSV 2025-2026*
 
-[🚀 Live Demo](#) | [📖 Documentation](DOCUMENTATION.md) | [🛠️ Setup Guide](DEPLOYMENT.md)
 
 </div>
 
