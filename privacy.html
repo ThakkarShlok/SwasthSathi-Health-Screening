@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SwasthSathi Privacy Policy - How we collect, use, and protect your health data under DPDP Act 2023">
+    <title>Privacy Policy - SwasthSathi</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/styles/base.css">
+    <link rel="stylesheet" href="assets/styles/about.css">
+</head>
+<body>
+
+<div id="navbar-mount"></div>
+
+<!-- Page Header -->
+<section class="about-hero">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html" data-i18n="nav_home">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Privacy Policy</li>
+            </ol>
+        </nav>
+        <h1 class="display-4 fw-bold mb-3">Privacy Policy</h1>
+        <p class="lead text-muted">Last updated: June 2026 &nbsp;|&nbsp; Effective date: June 2026</p>
+    </div>
+</section>
+
+<!-- Privacy Policy Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+
+                <!-- Intro -->
+                <div class="alert alert-info mb-5">
+                    <i class="bi bi-shield-check-fill me-2"></i>
+                    <strong>Summary:</strong> SwasthSathi collects only what is necessary to provide health risk screening. Your health screening data is stored in a secured database accessible only to you. We do not sell, share, or monetise your personal data.
+                </div>
+
+                <!-- 1. Who We Are -->
+                <div class="mb-5">
+                    <h2 class="h4 fw-bold mb-3"><span class="text-primary me-2">1.</span>Who We Are</h2>
+                    <p>SwasthSathi is an open health screening initiative developed by Team COGNITEX, KSV University, Gandhinagar, Gujarat, India. The platform was created for ImpactThon 2025-26 and is operated as a non-commercial public health tool.</p>
+                    <p class="mb-0"><strong>Contact:</strong> For privacy inquiries, reach us at <a href="mailto:thakkarshlok2007@gmail.com">thakkarshlok2007@gmail.com</a>.</p>
+                </div>
+
+                <!-- 2. Legal Basis -->
+                <div class="mb-5">
+                    <h2 class="h4 fw-bold mb-3"><span class="text-primary me-2">2.</span>Legal Basis (DPDP Act 2023)</h2>
+                    <p>This policy is framed in accordance with India's <strong>Digital Personal Data Protection Act, 2023</strong> (DPDP Act). We process your personal data on the following bases:</p>
+                    <ul>
+                        <li><strong>Consent:</strong> You explicitly create an account and submit a health screening form. Submission constitutes consent to process the data entered.</li>
+                        <li><strong>Legitimate Use:</strong> Account registration and authentication data are processed to deliver the service you request.</li>
+                    </ul>
+                    <p class="mb-0">You may withdraw consent at any time by requesting deletion of your account and data (see Section 7).</p>
+                </div>
+
+                <!-- 3. Data We Collect -->
+                <div class="mb-5">
+                    <h2 class="h4 fw-bold mb-3"><span class="text-primary me-2">3.</span>Data We Collect</h2>
+                    <p>We collect the minimum data required to operate the screening service:</p>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Specific Data</th>
+                                    <th>Purpose</th>
+                                    <th>Stored?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Account</strong></td>
+                                    <td>Email address, full name, city, state</td>
+                                    <td>Authentication &amp; personalisation</td>
+                                    <td>Yes — Supabase Auth</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Health Screening</strong></td>
+                                    <td>Age, gender, height, weight, waist circumference, symptoms, lifestyle factors, blood sugar, blood pressure, family history</td>
+                                    <td>Risk assessment algorithm input</td>
+                                    <td>Yes — linked to your account</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Risk Snapshot</strong></td>
+                                    <td>Computed risk scores (diabetes, hypertension, combined), risk category, algorithm version</td>
+                                    <td>Dashboard history &amp; trend tracking</td>
+                                    <td>Yes — computed at submission time</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Language Preference</strong></td>
+                                    <td>Chosen interface language (en / hi / gu / mr)</td>
+                                    <td>Multilingual UI</td>
+                                    <td>Yes — stored with screening record</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Uploaded Images</strong></td>
+                                    <td>Medical report photos (if OCR is used)</td>
+                                    <td>Local OCR processing only</td>
+                                    <td><strong>No</strong> — processed in-browser, never uploaded</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Technical</strong></td>
+                                    <td>Browser session token (Supabase Auth JWT)</td>
+                                    <td>Session management</td>
+                                    <td>Browser only (localStorage)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="text-muted small mt-2"><i class="bi bi-info-circle me-1"></i>We do not collect cookies for analytics or advertising. We do not use third-party tracking scripts.</p>
+                </div>
+
+                <!-- 4. How We Use Your Data -->
+                <div class="mb-5">
+                    <h2 class="h4 fw-bold mb-3"><span class="text-primary me-2">4.</span>How We Use Your Data</h2>
+                    <ul>
+                        <li>To compute and display your diabetes and hypertension risk assessment.</li>
+                        <li>To store your screening history so you can track risk changes over time.</li>
+                        <li>To authenticate your account and secure your records from other users.</li>
+                        <li>To display your name and location on the dashboard.</li>
+                    </ul>
+                    <p class="mb-0">We do not use your data for marketing, profiling, advertising, or any commercial purpose.</p>
+                </div>
+
+                <!-- 5. Data Storage & Security -->
+                <div class="mb-5">
+                    <h2 class="h4 fw-bold mb-3"><span class="text-primary me-2">5.</span>Data Storage &amp; Security</h2>
+                    <p>Your data is stored in <strong>Supabase</strong> (PostgreSQL), a managed cloud database with the following protections:</p>
+                    <ul>
+                        <li><strong>Row-Level Security (RLS):</strong> Every database query is restricted by <code>auth.uid() = user_id</code>. No user can read, modify, or delete another user's records — this is enforced at the database level, not just the application layer.</li>
+                        <li><strong>Encryption in transit:</strong> All communication between your browser and the database uses HTTPS/TLS.</li>
+                        <li><strong>Encryption at rest:</strong> Supabase encrypts stored data at rest using AES-256.</li>
+                        <li><strong>Access control:</strong> Direct database access requires authenticated credentials that are not exposed in the client-side application.</li>
+                    </ul>
+                    <p class="mb-0">Supabase infrastructure is hosted on AWS. For Supabase's own data processing and security policies, see <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">supabase.com/privacy</a>.</p>
+                </div>
+
+                <!-- 6. Data Sharing -->
+                <div class="mb-5">
+                    <h2 class="h4 fw-bold mb-3"><span class="text-primary me-2">6.</span>Data Sharing</h2>
+                    <p>We do <strong>not</strong> sell, rent, or share your personal data with any third party, with the following limited exceptions:</p>
+                    <ul>
+                        <li><strong>Supabase (infrastructure provider):</strong> Your data is stored on their servers as described above. They act as a data processor on our behalf.</li>
+                        <li><strong>Legal obligation:</strong> If required by Indian law or a lawful court order, we may disclose data to competent authorities.</li>
+                    </ul>
+                    <p class="mb-0">The OCR feature (Tesseract.js) runs entirely in your browser. Report images are never transmitted to any server.</p>
+                </div>
+
+                <!-- 7. Your Rights -->
+                <div class="mb-5">
+                    <h2 class="h4 fw-bold mb-3"><span class="text-primary me-2">7.</span>Your Rights under DPDP Act 2023</h2>
+                    <p>As a Data Principal under the DPDP Act, you have the following rights:</p>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 bg-light">
+                                <div class="card-body">
+                                    <h6 class="fw-bold"><i class="bi bi-eye me-2 text-primary"></i>Right to Access</h6>
+                                    <p class="small mb-0">View all your screening records in the Dashboard at any time.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 bg-light">
+                                <div class="card-body">
+                                    <h6 class="fw-bold"><i class="bi bi-pencil me-2 text-primary"></i>Right to Correction</h6>
+                                    <p class="small mb-0">Contact us to correct inaccurate account information.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 bg-light">
+                                <div class="card-body">
+                                    <h6 class="fw-bold"><i class="bi bi-trash me-2 text-primary"></i>Right to Erasure</h6>
+                                    <p class="small mb-0">Request complete deletion of your account and all associated health screening records by emailing us.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 bg-light">
+                                <div class="card-body">
+                                    <h6 class="fw-bold"><i class="bi bi-hand-index me-2 text-primary"></i>Right to Withdraw Consent</h6>
+                                    <p class="small mb-0">You may withdraw consent at any time by requesting account deletion. Withdrawal does not affect lawfulness of prior processing.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-3 mb-0">To exercise any right, email <a href="mailto:thakkarshlok2007@gmail.com">thakkarshlok2007@gmail.com</a> with the subject line <em>"DPDP Data Request"</em>. We will respond within 30 days.</p>
+                </div>
+
+                <!-- 8. Data Retention -->
+                <div class="mb-5">
+                    <h2 class="h4 fw-bold mb-3"><span class="text-primary me-2">8.</span>Data Retention</h2>
+                    <p>We retain your data for as long as your account is active. If you request account deletion, all personal data and health screening records will be permanently deleted within 30 days of the verified request.</p>
+                    <p class="mb-0">Aggregate, de-identified statistical data (e.g., number of screenings performed) may be retained indefinitely as it cannot identify any individual.</p>
+                </div>
+
+                <!-- 9. Children -->
+                <div class="mb-5">
+                    <h2 class="h4 fw-bold mb-3"><span class="text-primary me-2">9.</span>Children's Privacy</h2>
+                    <p class="mb-0">SwasthSathi is not directed at children under 18. We do not knowingly collect personal data from minors. If you believe a child has submitted data, please contact us for immediate deletion.</p>
+                </div>
+
+                <!-- 10. Health Data Notice -->
+                <div class="mb-5">
+                    <h2 class="h4 fw-bold mb-3"><span class="text-primary me-2">10.</span>Special Category Data (Health Information)</h2>
+                    <p>Health and medical data is a special category of sensitive personal data under the DPDP Act. By submitting a health screening form, you explicitly consent to the collection and processing of this data solely for the purpose of generating your personal risk assessment.</p>
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <strong>Important:</strong> SwasthSathi is a <em>screening awareness tool</em>, not a diagnostic or medical record system. Do not treat your screening results as a medical record. Always consult a qualified healthcare professional for diagnosis and treatment.
+                    </div>
+                </div>
+
+                <!-- 11. Changes -->
+                <div class="mb-5">
+                    <h2 class="h4 fw-bold mb-3"><span class="text-primary me-2">11.</span>Changes to This Policy</h2>
+                    <p class="mb-0">We may update this policy as the platform evolves. Material changes will be announced on the homepage. Continued use after the effective date of any revision constitutes acceptance of the updated policy.</p>
+                </div>
+
+                <!-- Contact -->
+                <div class="card border-primary">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold"><i class="bi bi-envelope-fill me-2 text-primary"></i>Contact Us</h5>
+                        <p class="card-text mb-1">For privacy requests, data deletion, or questions about this policy:</p>
+                        <p class="card-text mb-1"><strong>Email:</strong> <a href="mailto:thakkarshlok2007@gmail.com">thakkarshlok2007@gmail.com</a></p>
+                        <p class="card-text mb-0"><strong>Team:</strong> Team COGNITEX, KSV University, Gandhinagar, Gujarat, India</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="footer-mount"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/scripts/data/language-data.js"></script>
+<script src="assets/scripts/shared/i18n.js"></script>
+<script src="assets/scripts/shared/supabase-client.js"></script>
+<script src="assets/scripts/shared/navbar.js"></script>
+<script src="assets/scripts/shared/footer.js"></script>
+<script src="assets/scripts/shared/nav-auth.js"></script>
+</body>
+</html>
