@@ -1,0 +1,80 @@
+/**
+ * ============================================
+ * DASHBOARD PAGE STYLING
+ * ============================================
+ */
+
+.dashboard-container {
+    padding: 120px 20px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    border-left: 5px solid var(--primary);
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+.stat-content h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #1f2937;
+}
+
+.stat-content p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.table th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.badge {
+    padding: 0.5rem 0.75rem;
+    font-weight: 600;
+}
+
+.bg-success-custom {
+    background: #d1fae5;
+    color: #10b981;
+}
+
+.bg-warning-custom {
+    background: #fef3c7;
+    color: #f59e0b;
+}
+
+.bg-danger-custom {
+    background: #fee2e2;
+    color: #ef4444;
+}

@@ -1,0 +1,363 @@
+/**
+ * ============================================
+ * ABOUT US PAGE STYLES
+ * ============================================
+ */
+
+/* About Hero Section */
+.about-hero {
+    padding: 140px 0 80px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%);
+}
+
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    color: var(--gray);
+}
+
+.breadcrumb-item a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.breadcrumb-item.active {
+    color: var(--gray);
+}
+
+/* Mission Section */
+.mission-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.mission-icon-wrapper {
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, var(--primary-light) 0%, #dbeafe 100%);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.mission-icon-wrapper i {
+    font-size: 120px;
+    color: var(--primary);
+    opacity: 0.8;
+}
+
+.mission-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+}
+
+.mission-highlight {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.mission-highlight i {
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.mission-highlight span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+/* Problem Section */
+.problem-section {
+    padding: 80px 0;
+    background: var(--light-bg);
+}
+
+.problem-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    height: 100%;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.problem-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.problem-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.problem-card h5 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+/* Team Section */
+.team-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.team-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    border-color: var(--primary);
+}
+
+.team-card-header {
+    background: linear-gradient(135deg, var(--primary-light) 0%, #dbeafe 100%);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* ===== SHARP PHOTO STYLING - NO BLUR ===== */
+.team-member-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    overflow: hidden;
+    position: relative;
+    border: 4px solid white;
+}
+
+/* HIGH-QUALITY IMAGE RENDERING - CRITICAL FIX */
+/* HIGH-QUALITY IMAGE RENDERING - EMERGENCY FIX */
+.member-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;  /* CHANGED from center 30% */
+    display: block;
+    border-radius: 50%;
+    
+    /* Remove problematic rendering properties */
+    image-rendering: auto;  /* CHANGED from crisp-edges */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Icon fallback (when no image or image fails) */
+.team-member-photo i {
+    font-size: 4.5rem;
+    color: var(--primary);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+}
+
+/* Hide icon when image exists */
+.team-member-photo img {
+    position: relative;
+    z-index: 1;
+}
+
+/* Smooth hover WITHOUT blur */
+.team-card:hover .team-member-photo {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Removed scale on hover to prevent blur */
+.team-card:hover .member-img {
+    transition: all 0.3s ease;
+}
+
+.team-member-info {
+    flex: 1;
+}
+
+.member-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 0.25rem;
+}
+
+.member-role {
+    font-size: 1rem;
+    color: var(--primary-dark);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.linkedin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #0077b5;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.linkedin-btn:hover {
+    background: #005885;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.team-card-body {
+    padding: 2rem;
+}
+
+.responsibility-title {
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.responsibility-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.responsibility-list li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--gray);
+    line-height: 1.6;
+}
+
+.responsibility-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Ethics Section */
+.ethics-section {
+    padding: 80px 0;
+    background: var(--light-bg);
+}
+
+.ethics-card {
+    background: white;
+    padding: 3rem;
+    border-radius: 16px;
+    border: 2px solid var(--primary);
+    text-align: center;
+}
+
+.ethics-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+}
+
+.ethics-icon i {
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+.ethics-card h3 {
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.ethics-point {
+    text-align: left;
+}
+
+.ethics-point i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.ethics-point p {
+    margin: 0;
+    color: var(--dark);
+}
+
+.ethics-point strong {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+/* CTA Section */
+.cta-section-about {
+    padding: 80px 0;
+    background: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-hero {
+        padding: 120px 0 60px;
+    }
+
+    .mission-icon-wrapper {
+        height: 300px;
+        margin-bottom: 2rem;
+    }
+
+    .team-card-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .team-member-info {
+        text-align: center;
+    }
+
+    .ethics-card {
+        padding: 2rem 1rem;
+    }
+}
