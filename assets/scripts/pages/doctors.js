@@ -50,31 +50,31 @@ function createDoctorCard(doctor, theme) {
             <div class="doctor-card-body">
                 <div class="source-badge">
                     <i class="bi bi-info-circle-fill"></i>
-                    Source: ${doctor.source}
+                    ${window.translator.t('label_source', 'Source:')} ${doctor.source}
                 </div>
                 <div class="rating-display">
                     <span class="rating-stars">${stars}</span>
                     <span class="rating-value">${doctor.rating}</span>
-                    <span class="rating-source">${doctor.reviewCount}+ reviews</span>
+                    <span class="rating-source">${doctor.reviewCount}+ ${window.translator.t('label_reviews', 'reviews')}</span>
                 </div>
                 <div class="doctor-info-item">
                     <i class="bi bi-hospital"></i>
                     <div>
-                        <div class="info-label">Hospital:</div>
+                        <div class="info-label">${window.translator.t('label_hospital', 'Hospital:')}</div>
                         <div class="info-value">${doctor.hospital}</div>
                     </div>
                 </div>
                 <div class="doctor-info-item">
                     <i class="bi bi-geo-alt-fill"></i>
                     <div>
-                        <div class="info-label">Location:</div>
+                        <div class="info-label">${window.translator.t('label_location', 'Location:')}</div>
                         <div class="info-value">${doctor.city}, ${doctor.state}</div>
                     </div>
                 </div>
                 <div class="doctor-info-item">
                     <i class="bi bi-award-fill"></i>
                     <div>
-                        <div class="info-label">Experience:</div>
+                        <div class="info-label">${window.translator.t('label_experience', 'Experience:')}</div>
                         <div class="info-value">${doctor.experience}</div>
                     </div>
                 </div>
@@ -86,7 +86,7 @@ function createDoctorCard(doctor, theme) {
                 </div>
                 <a href="${doctor.sourceUrl}" target="_blank" rel="noopener noreferrer" class="btn-external-link">
                     <i class="bi bi-box-arrow-up-right"></i>
-                    View on ${doctor.source}
+                    ${window.translator.t('btn_view_on_source', 'View on {source}', { source: doctor.source })}
                 </a>
             </div>
         </div>

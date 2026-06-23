@@ -44,7 +44,7 @@ const FormSuggester = {
                         ${icon}
                     </div>
                     <div class="suggestion-content">
-                        <div class="suggestion-label">Detected from report:</div>
+                        <div class="suggestion-label">${window.translator.t('suggestion_detected_label', 'Detected from report:')}</div>
                         <div class="suggestion-value">${value}</div>
                         <div class="suggestion-message">
                             <i class="bi bi-info-circle"></i> ${validation.message}
@@ -53,10 +53,10 @@ const FormSuggester = {
                 </div>
                 <div class="suggestion-actions">
                     <button type="button" class="btn btn-sm btn-success" onclick="FormSuggester.acceptSuggestion('${fieldId}', '${value}', '${suggestionId}')">
-                        <i class="bi bi-check-circle"></i> Accept
+                        <i class="bi bi-check-circle"></i> ${window.translator.t('btn_accept', 'Accept')}
                     </button>
                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="FormSuggester.rejectSuggestion('${suggestionId}')">
-                        <i class="bi bi-x-circle"></i> Reject
+                        <i class="bi bi-x-circle"></i> ${window.translator.t('btn_reject', 'Reject')}
                     </button>
                 </div>
             </div>
@@ -98,7 +98,7 @@ const FormSuggester = {
             }
 
             // Show brief success feedback
-            this.showFieldFeedback(field, 'Value accepted', 'success');
+            this.showFieldFeedback(field, window.translator.t('notification_value_accepted', 'Value accepted'), 'success');
         }
     },
 

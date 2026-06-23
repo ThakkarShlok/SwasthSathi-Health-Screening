@@ -11,46 +11,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function initializeDashboard() {
     try {
-        // Check if user is logged in
         const user = await window.supabaseClient.checkAuthState();
-        
+
         if (!user) {
-            // Redirect to login if not authenticated
             window.location.href = 'login.html';
             return;
         }
 
-        // Fetch user profile
         const profile = await window.supabaseClient.getUserProfile();
-        
+
         if (!profile) {
             console.error('Profile not found');
-            showError('Profile not found. Please try logging in again.');
+            showError(window.translator.t('error_profile_not_found', 'Profile not found. Please try logging in again.'));
             return;
         }
 
-        // Fetch screening history
         const historyResult = await window.supabaseClient.getUserScreenings();
-        
-        // Render dashboard
+
         renderUserInfo(profile);
         renderStats(historyResult.screenings);
         renderScreeningHistory(historyResult.screenings);
 
-        // Show content
         document.getElementById('loadingState').style.display = 'none';
         document.getElementById('dashboardContent').style.display = 'block';
 
     } catch (error) {
         console.error('Dashboard initialization error:', error);
-        showError('Failed to load dashboard. Please try again.');
+        showError(window.translator.t('error_dashboard_load_failed', 'Failed to load dashboard. Please try again.'));
     }
 }
 
 function renderUserInfo(profile) {
     const firstName = profile.full_name.split(' ')[0];
     document.getElementById('userName').textContent = firstName;
-    
+
     const location = [profile.city, profile.state].filter(Boolean).join(', ') || 'India';
     document.getElementById('userLocation').textContent = location;
 }
@@ -105,11 +99,9 @@ function getRiskValuesForScreening(screening) {
 }
 
 function renderStats(screenings) {
-    // Total screenings
     document.getElementById('totalScreenings').textContent = screenings.length;
 
     if (screenings.length > 0) {
-        // Last screening date
         const lastDate = new Date(screenings[0].timestamp);
         const formattedDate = lastDate.toLocaleDateString('en-IN', {
             day: 'numeric',
@@ -137,10 +129,10 @@ function renderScreeningHistory(screenings) {
         container.innerHTML = `
             <div class="text-center py-5">
                 <i class="bi bi-clipboard2-x" style="font-size: 4rem; color: #6b7280;"></i>
-                <h5 class="mt-3">No Screenings Yet</h5>
-                <p class="text-muted">Take your first health screening to see your results here.</p>
+                <h5 class="mt-3">${window.translator.t('dashboard_no_screenings_title', 'No Screenings Yet')}</h5>
+                <p class="text-muted">${window.translator.t('dashboard_no_screenings_desc', 'Take your first health screening to see your results here.')}</p>
                 <a href="screening.html" class="btn btn-success mt-2">
-                    <i class="bi bi-plus-circle"></i> Start First Screening
+                    <i class="bi bi-plus-circle"></i> ${window.translator.t('dashboard_start_first_screening', 'Start First Screening')}
                 </a>
             </div>
         `;
@@ -151,11 +143,11 @@ function renderScreeningHistory(screenings) {
     html += `
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Diabetes Risk</th>
-                <th>Hypertension Risk</th>
-                <th>Combined Risk</th>
-                <th>Action</th>
+                <th>${window.translator.t('dashboard_col_date', 'Date')}</th>
+                <th>${window.translator.t('dashboard_col_diabetes_risk', 'Diabetes Risk')}</th>
+                <th>${window.translator.t('dashboard_col_hypertension_risk', 'Hypertension Risk')}</th>
+                <th>${window.translator.t('dashboard_col_combined_risk', 'Combined Risk')}</th>
+                <th>${window.translator.t('dashboard_col_action', 'Action')}</th>
             </tr>
         </thead>
         <tbody>
@@ -176,7 +168,7 @@ function renderScreeningHistory(screenings) {
                 <tr>
                     <td>
                         <i class="bi bi-calendar3"></i> ${formattedDate}
-                        ${index === 0 ? '<span class="badge bg-success ms-2">Latest</span>' : ''}
+                        ${index === 0 ? `<span class="badge bg-success ms-2">${window.translator.t('dashboard_badge_latest', 'Latest')}</span>` : ''}
                     </td>
                     <td>
                         <span class="badge bg-${assessment.diabetes.color}-custom">
@@ -195,7 +187,7 @@ function renderScreeningHistory(screenings) {
                     </td>
                     <td>
                         <button class="btn btn-sm btn-outline-primary" onclick="viewScreeningDetails(${index})">
-                            <i class="bi bi-eye"></i> View
+                            <i class="bi bi-eye"></i> ${window.translator.t('dashboard_btn_view', 'View')}
                         </button>
                     </td>
                 </tr>
@@ -205,14 +197,14 @@ function renderScreeningHistory(screenings) {
                 <tr>
                     <td>
                         <i class="bi bi-calendar3"></i> ${formattedDate}
-                        ${index === 0 ? '<span class="badge bg-success ms-2">Latest</span>' : ''}
+                        ${index === 0 ? `<span class="badge bg-success ms-2">${window.translator.t('dashboard_badge_latest', 'Latest')}</span>` : ''}
                     </td>
                     <td colspan="3">
-                        <span class="text-muted">Risk data unavailable</span>
+                        <span class="text-muted">${window.translator.t('dashboard_risk_unavailable', 'Risk data unavailable')}</span>
                     </td>
                     <td>
                         <button class="btn btn-sm btn-outline-primary" onclick="viewScreeningDetails(${index})">
-                            <i class="bi bi-eye"></i> View
+                            <i class="bi bi-eye"></i> ${window.translator.t('dashboard_btn_view', 'View')}
                         </button>
                     </td>
                 </tr>
@@ -225,7 +217,6 @@ function renderScreeningHistory(screenings) {
 }
 
 async function viewScreeningDetails(index) {
-    // Store the selected screening index
     sessionStorage.setItem('selectedScreeningIndex', index);
     window.location.href = 'result.html';
 }
@@ -237,12 +228,11 @@ function showError(message) {
             <h5 class="mt-3">${message}</h5>
         </div>
         <div class="text-center mt-3">
-            <a href="login.html" class="btn btn-primary">Back to Login</a>
+            <a href="login.html" class="btn btn-primary">${window.translator.t('btn_back_login', 'Back to Login')}</a>
         </div>
     `;
 }
 
-// Make function available globally
 window.viewScreeningDetails = viewScreeningDetails;
 
 console.log('✅ Dashboard page ready');
