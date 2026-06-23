@@ -10,13 +10,29 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <!-- Base Styles (LOAD FIRST) -->
 <link rel="stylesheet" href="assets/styles/base.css">
+<link rel="stylesheet" href="assets/styles/language-modal.css">
 <!-- Page-specific styles -->
 <link rel="stylesheet" href="assets/styles/screening.css">
 <link rel="stylesheet" href="assets/styles/result.css">
+<link rel="stylesheet" href="assets/styles/print.css" media="print">
 </head>
 <body>
 
 <div id="navbar-mount"></div>
+
+<!-- Print-only header (hidden on screen, shown when printing) -->
+<div class="print-only-header" style="display:none">
+    <div class="d-flex justify-content-between align-items-start">
+        <div>
+            <div class="print-brand">🩺 SwasthSathi</div>
+            <div class="print-report-title" data-i18n="print_header_title">Health Risk Assessment Report</div>
+        </div>
+        <div class="text-end">
+            <small class="text-muted" data-i18n="print_generated">Generated on</small><br>
+            <strong id="printDate"></strong>
+        </div>
+    </div>
+</div>
 
 <!-- Loading State -->
 <div id="loadingState" class="result-container text-center" style="display: block;">
@@ -72,6 +88,27 @@
             </div>
             <h3 class="risk-category mt-3 mb-2" id="combinedCategory">Calculating...</h3>
             <p class="text-muted" id="combinedMessage"></p>
+        </div>
+    </div>
+
+    <!-- Risk Level Gauge -->
+    <div class="card mb-4" id="riskGaugeCard">
+        <div class="card-body px-4 py-3">
+            <h6 class="fw-bold mb-3 text-center" data-i18n="result_risk_gauge">Risk Level</h6>
+            <div class="risk-gauge-wrapper">
+                <div class="risk-gauge-track">
+                    <div class="gauge-segment gauge-low" id="gaugeLowLabel" data-i18n="gauge_low">Low</div>
+                    <div class="gauge-segment gauge-moderate" id="gaugeModLabel" data-i18n="gauge_moderate">Moderate</div>
+                    <div class="gauge-segment gauge-high" id="gaugeHighLabel" data-i18n="gauge_high">High</div>
+                    <div class="gauge-segment gauge-critical" id="gaugeCritLabel" data-i18n="gauge_critical">Critical</div>
+                </div>
+                <div class="gauge-pointer-row">
+                    <div class="gauge-pointer" id="gaugePointer" style="left: 0%;">▼</div>
+                </div>
+                <div class="gauge-scale-labels">
+                    <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -137,6 +174,35 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Top Contributing Factors with Clinical Context -->
+    <div class="card mb-4" id="factorCardsSection">
+        <div class="card-header bg-secondary-subtle">
+            <h5 class="mb-0">
+                <i class="bi bi-list-check"></i>
+                <span data-i18n="result_contributing_factors">Top Contributing Factors</span>
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3" id="factorCardsContainer">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Completeness Panel -->
+    <div class="card mb-4" id="completenessCard">
+        <div class="card-header">
+            <h6 class="mb-0">
+                <i class="bi bi-bar-chart-fill text-primary"></i>
+                <span data-i18n="result_data_completeness">Data Completeness</span>
+                <small class="text-muted ms-2 fw-normal" data-i18n="result_completeness_tip">More data = higher accuracy</small>
+            </h6>
+        </div>
+        <div class="card-body" id="completenessContainer">
+            <!-- Populated by JS -->
         </div>
     </div>
 
@@ -233,16 +299,26 @@
     </div>
 </div>  <!-- Closes resultsContainer -->
 
+<!-- Print-only footer (hidden on screen, shown when printing) -->
+<div class="print-only-footer" style="display:none">
+    <div class="d-flex justify-content-between">
+        <small data-i18n="print_printed_by">Printed by SwasthSathi</small>
+        <small data-i18n="print_disclaimer">Screening tool only — not a medical diagnosis. Consult a healthcare provider.</small>
+    </div>
+</div>
+
 <div id="footer-mount"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/scripts/data/language-data.js"></script>
 <script src="assets/scripts/shared/i18n.js"></script>
+<script src="assets/scripts/shared/language-modal.js"></script>
 <script src="assets/scripts/shared/supabase-client.js"></script>
 <script src="assets/scripts/shared/navbar.js"></script>
 <script src="assets/scripts/shared/footer.js"></script>
 <script src="assets/scripts/shared/nav-auth.js"></script>
 <script src="assets/scripts/modules/risk-calculator.js"></script>
+<script src="assets/scripts/modules/factor-explanations.js"></script>
 <script src="assets/scripts/pages/result.js"></script>
 </body>
 </html>

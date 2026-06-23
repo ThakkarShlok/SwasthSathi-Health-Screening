@@ -128,13 +128,13 @@ async function initializeResultsPage() {
             }
         }
         
-        // Render UI
-        renderResultsUI(assessment);
-        
+        // Render UI (pass patientData for completeness panel)
+        renderResultsUI(assessment, patientData);
+
         // Hide loading, show results
         document.getElementById('loadingState').style.display = 'none';
         document.getElementById('resultsContainer').style.display = 'block';
-        
+
         console.log('✅ Results page rendered successfully');
         
     } catch (error) {
@@ -151,21 +151,15 @@ async function initializeResultsPage() {
 /**
  * Render the complete results UI
  */
-function renderResultsUI(assessment) {
-    // Render patient info
+function renderResultsUI(assessment, patientData) {
     renderPatientInfo(assessment.patientInfo, assessment.timestamp);
-    
-    // Render combined risk
     renderCombinedRisk(assessment.combined);
-    
-    // Render individual risks
+    renderRiskGauge(assessment.combined.score, assessment.combined.color);
     renderDiabetesRisk(assessment.diabetes);
     renderHypertensionRisk(assessment.hypertension);
-    
-    // Render recommendations
+    renderFactorCards(assessment.diabetes, assessment.hypertension);
+    if (patientData) renderCompletenessPanel(patientData);
     renderRecommendations(assessment.recommendations, assessment.combined.urgency);
-    
-    // ⭐ NEW: Render guidelines
     renderGuidelines(assessment.guidelines);
 }
 
@@ -207,10 +201,10 @@ function renderCombinedRisk(combinedRisk) {
     
     // Set message based on urgency
     const messages = {
-        urgent: 'Immediate medical attention recommended. Please consult a doctor as soon as possible.',
-        high: 'High risk detected. Schedule a doctor appointment within 1-2 weeks.',
-        medium: 'Moderate risk. Lifestyle changes and regular monitoring recommended.',
-        low: 'Low risk. Maintain healthy lifestyle and annual checkups.'
+        urgent: window.translator.t('risk_message_urgent', 'Immediate medical attention recommended. Please consult a doctor as soon as possible.'),
+        high: window.translator.t('risk_message_high', 'High risk detected. Schedule a doctor appointment within 1-2 weeks.'),
+        medium: window.translator.t('risk_message_medium', 'Moderate risk. Lifestyle changes and regular monitoring recommended.'),
+        low: window.translator.t('risk_message_low', 'Low risk. Maintain healthy lifestyle and annual checkups.')
     };
     message.textContent = messages[combinedRisk.urgency];
     
@@ -295,19 +289,19 @@ function renderRecommendations(recommendations, urgency) {
 
     // Immediate actions
     if (recommendations.immediate.length > 0) {
-        const section = createRecommendationSection('Immediate Actions', recommendations.immediate, 'urgent');
+        const section = createRecommendationSection(window.translator.t('result_immediate', 'Immediate Actions'), recommendations.immediate, 'urgent');
         container.appendChild(section);
     }
 
     // Lifestyle changes
     if (recommendations.lifestyle.length > 0) {
-        const section = createRecommendationSection('Lifestyle Changes', recommendations.lifestyle, 'lifestyle');
+        const section = createRecommendationSection(window.translator.t('result_lifestyle', 'Lifestyle Changes'), recommendations.lifestyle, 'lifestyle');
         container.appendChild(section);
     }
 
     // Follow-up
     if (recommendations.followUp.length > 0) {
-        const section = createRecommendationSection('Follow-Up', recommendations.followUp, 'followup');
+        const section = createRecommendationSection(window.translator.t('result_followup', 'Follow-Up'), recommendations.followUp, 'followup');
         container.appendChild(section);
     }
 }
@@ -407,6 +401,169 @@ function renderGuidelines(guidelines) {
         });
     }
 }
+
+// ==========================================
+// RISK GAUGE
+// ==========================================
+
+function renderRiskGauge(score, color) {
+    const pointer = document.getElementById('gaugePointer');
+    if (!pointer) return;
+
+    // Position: score 0-100 maps to 0%-100% of the track width
+    // Clamp slightly from edges so pointer stays visible
+    const pct = Math.min(Math.max(score, 1), 99);
+    setTimeout(() => { pointer.style.left = pct + '%'; }, 100);
+
+    // Color the pointer to match risk level
+    const colorMap = { success: '#10b981', warning: '#f59e0b', danger: '#ef4444' };
+    pointer.style.color = colorMap[color] || '#111827';
+}
+
+// ==========================================
+// CONTRIBUTING FACTOR CARDS
+// ==========================================
+
+function renderFactorCards(diabetesRisk, hypertensionRisk) {
+    const container = document.getElementById('factorCardsContainer');
+    if (!container) return;
+
+    // Collect unique top factors across both conditions (max 6 cards)
+    const seen = new Set();
+    const allFactors = [
+        ...diabetesRisk.topFactors.map(f => ({ factor: f, source: 'diabetes' })),
+        ...hypertensionRisk.topFactors.map(f => ({ factor: f, source: 'hypertension' }))
+    ].filter(item => {
+        if (seen.has(item.factor)) return false;
+        seen.add(item.factor);
+        return true;
+    }).slice(0, 6);
+
+    const iconMap = {
+        factor_age_title:                     'bi-calendar-heart',
+        factor_obesity_title:                 'bi-person-fill',
+        factor_overweight_title:              'bi-arrow-up-circle-fill',
+        factor_abdominal_obesity_title:       'bi-rulers',
+        factor_blood_sugar_high_title:        'bi-droplet-fill',
+        factor_blood_sugar_prediabetes_title: 'bi-droplet-half',
+        factor_blood_pressure_title:          'bi-heart-pulse-fill',
+        factor_diagnosed_diabetes_title:      'bi-clipboard2-pulse-fill',
+        factor_diagnosed_hypertension_title:  'bi-clipboard2-heart-fill',
+        factor_diabetes_symptoms_title:       'bi-activity',
+        factor_htn_symptoms_title:            'bi-broadcast',
+        factor_family_history_title:          'bi-people-fill',
+        factor_sedentary_title:               'bi-tv-fill',
+        factor_diet_title:                    'bi-egg-fried',
+        factor_smoking_title:                 'bi-wind',
+        factor_alcohol_title:                 'bi-cup-fill',
+    };
+
+    container.innerHTML = allFactors.map(({ factor, source }) => {
+        const expl = window.FactorExplanations
+            ? window.FactorExplanations.getFactorExplanation(factor)
+            : null;
+
+        const title = expl
+            ? window.translator.t(expl.title_key, factor)
+            : factor;
+        const context = expl
+            ? window.translator.t(expl.context_key, '')
+            : '';
+        const icon = expl ? (iconMap[expl.title_key] || 'bi-exclamation-circle') : 'bi-exclamation-circle';
+        const sourceColor = source === 'diabetes' ? 'text-success' : 'text-danger';
+        const sourceBadge = source === 'diabetes' ? '🩸' : '❤️';
+
+        return `
+            <div class="col-md-6 col-lg-4">
+                <div class="factor-context-card">
+                    <div class="factor-context-icon ${sourceColor}">
+                        <i class="bi ${icon}"></i> ${sourceBadge}
+                    </div>
+                    <div class="factor-context-title">${title}</div>
+                    <div class="factor-context-raw">${factor}</div>
+                    ${context ? `<div class="factor-context-body">${context}</div>` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    if (allFactors.length === 0) {
+        container.innerHTML = '<p class="text-muted small">No significant factors detected.</p>';
+    }
+}
+
+// ==========================================
+// DATA COMPLETENESS PANEL
+// ==========================================
+
+function renderCompletenessPanel(patientData) {
+    const container = document.getElementById('completenessContainer');
+    if (!container) return;
+
+    const t = (key, fb) => window.translator.t(key, fb);
+
+    const fields = [
+        {
+            key: 'blood_sugar',
+            label: t('completeness_blood_sugar', 'Blood Sugar'),
+            present: !!(patientData.readings && patientData.readings.bloodSugar)
+        },
+        {
+            key: 'blood_pressure',
+            label: t('completeness_blood_pressure', 'Blood Pressure'),
+            present: !!(patientData.readings && patientData.readings.bloodPressure)
+        },
+        {
+            key: 'waist',
+            label: t('completeness_waist', 'Waist Measurement'),
+            present: !!(patientData.waistCircumference)
+        },
+        {
+            key: 'symptoms',
+            label: t('completeness_symptoms', 'Symptoms'),
+            present: !!(patientData.symptoms && (
+                Object.values(patientData.symptoms.diabetes || {}).some(Boolean) ||
+                Object.values(patientData.symptoms.hypertension || {}).some(Boolean)
+            ))
+        },
+        {
+            key: 'lifestyle',
+            label: t('completeness_lifestyle', 'Lifestyle Data'),
+            present: !!(patientData.lifestyle && patientData.lifestyle.physicalActivity)
+        }
+    ];
+
+    const presentCount = fields.filter(f => f.present).length;
+    const pct = Math.round((presentCount / fields.length) * 100);
+
+    container.innerHTML = `
+        <div class="completeness-grid">
+            ${fields.map(f => `
+                <div class="completeness-item ${f.present ? 'present' : 'missing'}">
+                    <i class="bi ${f.present ? 'bi-check-circle-fill' : 'bi-dash-circle'} completeness-icon"></i>
+                    <span>${f.label}</span>
+                </div>
+            `).join('')}
+        </div>
+        <div class="completeness-bar-track">
+            <div class="completeness-bar-fill" style="width: ${pct}%"></div>
+        </div>
+        <div class="completeness-pct">${presentCount}/${fields.length} fields — ${pct}% complete</div>
+    `;
+}
+
+// ==========================================
+// PRINT SUPPORT
+// ==========================================
+
+window.addEventListener('beforeprint', () => {
+    const el = document.getElementById('printDate');
+    if (el) {
+        el.textContent = new Date().toLocaleDateString('en-IN', {
+            day: 'numeric', month: 'long', year: 'numeric'
+        });
+    }
+});
 
 console.log('%c🩺 SwasthSathi Results', 'color: #10b981; font-size: 16px; font-weight: bold;');
 console.log('%cEvidence-based health risk assessment', 'color: #6b7280; font-size: 12px;');
