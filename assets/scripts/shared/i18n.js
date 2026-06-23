@@ -1,286 +1,165 @@
 /**
  * ============================================
- * TRANSLATION ENGINE
- * MyMemory API integration + caching
+ * TRANSLATION ENGINE v2 — Static JSON Mode
+ * Replaces MyMemory API with local JSON files.
+ * Public API:
+ *   t(key, fallback?, subs?)  → translated string
+ *   setLanguage(lang)         → async, loads dict + re-renders page
+ *   translatePage()           → sync render from loaded dict
+ *   applyTranslations()       → alias for translatePage() (compat)
+ *   updateLanguageDropdown()  → sync, refreshes navbar UI
  * ============================================
  */
 
 class TranslationEngine {
     constructor() {
-        this.apiUrl = 'https://api.mymemory.translated.net/get';
-        this.currentLang = this.getStoredLanguage();
-        this.cache = this.loadCache();
-        this.translating = false;
+        this.currentLang = localStorage.getItem('selectedLanguage') || 'en';
+        this._dicts = {};        // { lang: { key: value } }
+        this._pending = {};      // { lang: Promise }
+
+        // Begin loading the current language dict immediately so it is
+        // ready (or nearly so) by the time DOMContentLoaded handlers run.
+        if (this.currentLang !== 'en') {
+            this.loadDictionary(this.currentLang);
+        }
     }
 
-    /**
-     * Get stored language preference
-     */
-    getStoredLanguage() {
-        return localStorage.getItem('selectedLanguage') || 'en';
+    // ------------------------------------------------------------------
+    // t(key, fallback?, substitutions?)
+    //   Returns the translated value for key, with optional {name} subs.
+    //   Resolution order:
+    //     1. loaded dictionary for currentLang
+    //     2. window.TRANSLATION_KEYS (sync English fallback, Option B)
+    //     3. explicit fallback argument
+    //     4. key itself
+    // ------------------------------------------------------------------
+    t(key, fallback, substitutions) {
+        const dict = this._dicts[this.currentLang];
+        let value = (dict && dict[key])
+            || (window.TRANSLATION_KEYS && window.TRANSLATION_KEYS[key])
+            || fallback
+            || key;
+
+        if (substitutions && typeof value === 'string') {
+            Object.entries(substitutions).forEach(([k, v]) => {
+                value = value.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v));
+            });
+        }
+        return value;
     }
 
-    /**
-     * Set language preference
-     */
-    setLanguage(langCode) {
-        if (!window.LANGUAGES[langCode]) {
-            console.error(`Language ${langCode} not supported`);
+    // ------------------------------------------------------------------
+    // setLanguage(langCode) — async
+    // ------------------------------------------------------------------
+    async setLanguage(langCode) {
+        if (!window.LANGUAGES || !window.LANGUAGES[langCode]) {
+            console.error(`i18n: language "${langCode}" not in LANGUAGES registry`);
             return;
         }
 
         localStorage.setItem('selectedLanguage', langCode);
         this.currentLang = langCode;
-        
-        // Update dropdown UI
+
+        if (langCode !== 'en') {
+            await this.loadDictionary(langCode);
+        }
+
+        this.translatePage();
         this.updateLanguageDropdown();
-        
-        // Translate page
+    }
+
+    // ------------------------------------------------------------------
+    // translatePage() — synchronous render from the loaded dictionary.
+    // Falls back to TRANSLATION_KEYS so English always works immediately
+    // even before any JSON file has been fetched.
+    // ------------------------------------------------------------------
+    translatePage() {
+        const dict = this._dicts[this.currentLang] || {};
+        const fallbackDict = window.TRANSLATION_KEYS || {};
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            const value = dict[key] || fallbackDict[key];
+            if (!value) return;
+
+            if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && el.hasAttribute('placeholder')) {
+                el.placeholder = value;
+            } else {
+                el.textContent = value;
+            }
+        });
+    }
+
+    // Alias — footer.js calls applyTranslations() after injecting HTML.
+    applyTranslations() {
         this.translatePage();
     }
 
-    /**
-     * Load translation cache from localStorage
-     */
-    loadCache() {
-        try {
-            const cached = localStorage.getItem('translationCache');
-            return cached ? JSON.parse(cached) : {};
-        } catch (e) {
-            return {};
-        }
-    }
-
-    /**
-     * Save cache to localStorage
-     */
-    saveCache() {
-        try {
-            localStorage.setItem('translationCache', JSON.stringify(this.cache));
-        } catch (e) {
-            console.warn('Cache save failed:', e);
-        }
-    }
-
-    /**
-     * Get cached translation
-     */
-    getCached(text, targetLang) {
-        if (!this.cache[targetLang]) return null;
-        return this.cache[targetLang][text] || null;
-    }
-
-    /**
-     * Set cached translation
-     */
-    setCached(text, targetLang, translation) {
-        if (!this.cache[targetLang]) {
-            this.cache[targetLang] = {};
-        }
-        this.cache[targetLang][text] = translation;
-        this.saveCache();
-    }
-
-    /**
-     * Translate single text using MyMemory API
-     */
-    async translateText(text, targetLang) {
-        // Return original if English
-        if (targetLang === 'en') return text;
-
-        // Check cache first
-        const cached = this.getCached(text, targetLang);
-        if (cached) return cached;
-
-        // Clean text
-        const cleanText = text.trim();
-        if (!cleanText) return text;
-
-        try {
-            const url = `${this.apiUrl}?q=${encodeURIComponent(cleanText)}&langpair=en|${targetLang}`;
-            
-            const response = await fetch(url);
-            const data = await response.json();
-
-            if (data.responseStatus === 200 && data.responseData?.translatedText) {
-                const translation = data.responseData.translatedText;
-                
-                // Cache it
-                this.setCached(cleanText, targetLang, translation);
-                
-                return translation;
-            } else {
-                console.warn('Translation failed:', data);
-                return text; // Fallback to original
-            }
-        } catch (error) {
-            console.error('Translation API error:', error);
-            return text; // Fallback to original
-        }
-    }
-
-    /**
-     * Translate entire page
-     */
-    async translatePage() {
-        if (this.currentLang === 'en') {
-            // Reset to original English
-            this.resetToEnglish();
-            return;
-        }
-
-        if (this.translating) {
-            console.log('Translation already in progress...');
-            return;
-        }
-
-        this.translating = true;
-        this.showTranslationProgress();
-
-        // Find all elements with data-i18n attribute
-        const elements = document.querySelectorAll('[data-i18n]');
-        const total = elements.length;
-        let completed = 0;
-
-        // Batch translate (5 at a time to avoid rate limits)
-        const batchSize = 5;
-        for (let i = 0; i < elements.length; i += batchSize) {
-            const batch = Array.from(elements).slice(i, i + batchSize);
-            
-            await Promise.all(batch.map(async (element) => {
-                const key = element.getAttribute('data-i18n');
-                const originalText = window.TRANSLATION_KEYS[key] || element.textContent;
-                
-                // Translate
-                const translated = await this.translateText(originalText, this.currentLang);
-                
-                // Update element
-                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                    if (element.placeholder) {
-                        element.placeholder = translated;
-                    }
-                } else {
-                    element.textContent = translated;
-                }
-
-                completed++;
-                this.updateTranslationProgress(completed, total);
-            }));
-
-            // Small delay between batches
-            await new Promise(resolve => setTimeout(resolve, 200));
-        }
-
-        this.hideTranslationProgress();
-        this.translating = false;
-    }
-
-    /**
-     * Reset to English (original text)
-     */
-    resetToEnglish() {
-        const elements = document.querySelectorAll('[data-i18n]');
-        
-        elements.forEach(element => {
-            const key = element.getAttribute('data-i18n');
-            const originalText = window.TRANSLATION_KEYS[key];
-            
-            if (originalText) {
-                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                    if (element.placeholder) {
-                        element.placeholder = originalText;
-                    }
-                } else {
-                    element.textContent = originalText;
-                }
-            }
-        });
-    }
-
-    /**
-     * Update language dropdown to show current selection
-     */
+    // ------------------------------------------------------------------
+    // updateLanguageDropdown() — updates navbar button + active state
+    // ------------------------------------------------------------------
     updateLanguageDropdown() {
-        const dropdownBtn = document.getElementById('languageDropdownBtn');
-        if (dropdownBtn) {
+        const btn = document.getElementById('languageDropdownBtn');
+        if (btn && window.LANGUAGES) {
             const lang = window.LANGUAGES[this.currentLang];
-            dropdownBtn.innerHTML = `
-                <span class="me-2">${lang.flag}</span>
-                <span>${lang.nativeName}</span>
-            `;
+            if (lang) {
+                btn.innerHTML = `<span class="me-2">${lang.flag}</span><span>${lang.nativeName}</span>`;
+            }
         }
 
-        // Update active state
-        document.querySelectorAll('.language-option').forEach(option => {
-            option.classList.remove('active');
-            if (option.dataset.lang === this.currentLang) {
-                option.classList.add('active');
-            }
+        document.querySelectorAll('.language-option').forEach(opt => {
+            opt.classList.toggle('active', opt.dataset.lang === this.currentLang);
         });
     }
 
-    /**
-     * Show translation progress indicator
-     */
-    showTranslationProgress() {
-        let indicator = document.getElementById('translationProgress');
-        if (!indicator) {
-            indicator = document.createElement('div');
-            indicator.id = 'translationProgress';
-            indicator.innerHTML = `
-                <div style="position: fixed; top: 70px; right: 20px; background: white; 
-                            padding: 15px 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                            z-index: 9999; display: flex; align-items: center; gap: 10px;">
-                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                    <span style="font-size: 14px; color: #1f2937;">Translating page...</span>
-                    <span id="progressText" style="font-size: 12px; color: #6b7280;"></span>
-                </div>
-            `;
-            document.body.appendChild(indicator);
-        }
-        indicator.style.display = 'block';
-    }
+    // ------------------------------------------------------------------
+    // loadDictionary(lang) — fetch + memory-cache a JSON file.
+    // Returns the dict object (or {} on failure).
+    // Multiple callers for the same lang share the same Promise.
+    // ------------------------------------------------------------------
+    loadDictionary(lang) {
+        if (this._dicts[lang]) return Promise.resolve(this._dicts[lang]);
+        if (this._pending[lang]) return this._pending[lang];
 
-    /**
-     * Update translation progress
-     */
-    updateTranslationProgress(completed, total) {
-        const progressText = document.getElementById('progressText');
-        if (progressText) {
-            progressText.textContent = `${completed}/${total}`;
-        }
-    }
+        const promise = fetch(`assets/i18n/${lang}.json`)
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res.json();
+            })
+            .then(dict => {
+                this._dicts[lang] = dict;
+                delete this._pending[lang];
+                console.log(`✅ i18n: ${lang}.json loaded (${Object.keys(dict).length} keys)`);
+                return dict;
+            })
+            .catch(err => {
+                console.warn(`⚠️ i18n: could not load ${lang}.json — using TRANSLATION_KEYS fallback`, err.message);
+                this._dicts[lang] = {};
+                delete this._pending[lang];
+                return {};
+            });
 
-    /**
-     * Hide translation progress indicator
-     */
-    hideTranslationProgress() {
-        const indicator = document.getElementById('translationProgress');
-        if (indicator) {
-            indicator.style.display = 'none';
-        }
-    }
-
-    /**
-     * Clear all cached translations
-     */
-    clearCache() {
-        this.cache = {};
-        localStorage.removeItem('translationCache');
-        console.log('Translation cache cleared');
+        this._pending[lang] = promise;
+        return promise;
     }
 }
 
-// Initialize global translation engine
+// ---------------------------------------------------------------------------
+// Initialise global instance
+// ---------------------------------------------------------------------------
 window.translator = new TranslationEngine();
 
-// Auto-translate on page load
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // If a non-English language is active, ensure its dictionary is loaded
+    // (the constructor kicked off the fetch; this await just waits for it).
     if (window.translator.currentLang !== 'en') {
-        window.translator.translatePage();
+        await window.translator.loadDictionary(window.translator.currentLang);
     }
+
+    // Render all [data-i18n] elements with the active language.
+    // English pages resolve instantly from TRANSLATION_KEYS (no fetch needed).
+    window.translator.translatePage();
     window.translator.updateLanguageDropdown();
 });
 
-console.log('✓ Translation engine initialized');
-console.log('Current language:', window.translator.currentLang);
+console.log('✅ i18n engine v2 ready (static JSON mode)');
