@@ -10,6 +10,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <!-- Base Styles (LOAD FIRST) -->
 <link rel="stylesheet" href="assets/styles/base.css">
+<link rel="stylesheet" href="assets/styles/language-modal.css">
 <!-- Page-specific styles -->
 <link rel="stylesheet" href="assets/styles/screening.css">
 </head>
@@ -24,8 +25,40 @@
     <i class="bi bi-clipboard2-pulse"></i> <span data-i18n="screening_title">Patient Health Screening</span>
 </h2>
 
-
 <form id="screeningForm">
+
+<!-- Multi-step Progress Bar -->
+<div class="form-steps-header mb-4" id="stepsHeader">
+    <div class="steps-progress">
+        <div class="step-indicator">
+            <div class="step-bubble active" id="bubble-1">1</div>
+            <div class="step-label" data-i18n="form_step1_title">Basic Info</div>
+        </div>
+        <div class="step-line" id="line-1-2"></div>
+        <div class="step-indicator">
+            <div class="step-bubble" id="bubble-2">2</div>
+            <div class="step-label" data-i18n="form_step2_title">Health</div>
+        </div>
+        <div class="step-line" id="line-2-3"></div>
+        <div class="step-indicator">
+            <div class="step-bubble" id="bubble-3">3</div>
+            <div class="step-label" data-i18n="form_step3_title">Lifestyle</div>
+        </div>
+        <div class="step-line" id="line-3-4"></div>
+        <div class="step-indicator">
+            <div class="step-bubble" id="bubble-4">4</div>
+            <div class="step-label" data-i18n="form_step4_title">Submit</div>
+        </div>
+    </div>
+    <div class="text-center mt-2">
+        <small class="text-muted" id="stepProgressText">Step 1 of 4</small>
+    </div>
+</div>
+
+<!-- ======================================== -->
+<!-- STEP 1: Basic Info & Body Measurements   -->
+<!-- ======================================== -->
+<div class="form-step active" id="formStep1">
 
     <!-- Basic Info -->
     <h5 data-i18n="basic_info">Basic Information</h5>
@@ -49,23 +82,23 @@
         </div>
     </div>
 
-    <!-- OCR MEDICAL REPORT SCANNER - COMPLETE SECTION -->
+    <!-- OCR MEDICAL REPORT SCANNER -->
     <div class="ocr-section mt-5 mb-4">
         <h5 class="d-flex align-items-center gap-2">
             <i class="bi bi-camera-fill text-primary"></i>
             <span data-i18n="ocr_title">Upload Medical Report (Optional)</span>
         </h5>
         <p class="text-muted small mb-3">
-            <i class="bi bi-info-circle"></i> 
+            <i class="bi bi-info-circle"></i>
             <span data-i18n="ocr_subtitle">Upload a photo of your medical report. Our system will automatically extract blood sugar and blood pressure values.</span>
         </p>
 
         <!-- Upload Area -->
         <div class="upload-zone" id="uploadZone">
-            <input 
-                type="file" 
-                id="reportImage" 
-                accept="image/*" 
+            <input
+                type="file"
+                id="reportImage"
+                accept="image/*"
                 class="d-none"
                 aria-label="Upload medical report image"
             >
@@ -106,13 +139,13 @@
                     <div class="flex-grow-1">
                         <div class="alert-title" data-i18n="ocr_processing">Processing Medical Report...</div>
                         <div class="progress mt-2">
-                            <div 
-                                class="progress-bar progress-bar-animated" 
-                                id="ocrProgressBar" 
-                                role="progressbar" 
+                            <div
+                                class="progress-bar progress-bar-animated"
+                                id="ocrProgressBar"
+                                role="progressbar"
                                 style="width: 0%"
-                                aria-valuenow="0" 
-                                aria-valuemin="0" 
+                                aria-valuenow="0"
+                                aria-valuemin="0"
                                 aria-valuemax="100"
                             ></div>
                         </div>
@@ -166,6 +199,20 @@
             </small>
         </div>
     </div>
+
+    <!-- Step 1 Navigation -->
+    <div class="step-nav-row step-first mt-4">
+        <button type="button" class="btn btn-success btn-lg" onclick="nextStep()">
+            <span data-i18n="btn_next">Next</span> <i class="bi bi-arrow-right"></i>
+        </button>
+    </div>
+
+</div><!-- /formStep1 -->
+
+<!-- ======================================== -->
+<!-- STEP 2: Health Conditions & Symptoms     -->
+<!-- ======================================== -->
+<div class="form-step" id="formStep2">
 
     <!-- Medical History -->
     <h5 data-i18n="medical_conditions">Known Medical Conditions</h5>
@@ -242,15 +289,15 @@
         </div>
     </div>
 
-    <!-- Additional Symptoms Textarea -->
+    <!-- Additional Symptoms -->
     <div class="mt-4">
         <label class="form-label" for="additionalSymptoms" data-i18n="additional_symptoms_title">
             <i class="bi bi-plus-circle"></i> Additional Symptoms or Notes
         </label>
-        <textarea 
-            class="form-control" 
-            id="additionalSymptoms" 
-            rows="4" 
+        <textarea
+            class="form-control"
+            id="additionalSymptoms"
+            rows="4"
             placeholder="Please describe any other symptoms, concerns, or relevant health information not covered above..."
             maxlength="500"
         ></textarea>
@@ -261,6 +308,23 @@
             </small>
         </div>
     </div>
+
+    <!-- Step 2 Navigation -->
+    <div class="step-nav-row mt-4">
+        <button type="button" class="btn btn-outline-secondary btn-lg" onclick="prevStep()">
+            <i class="bi bi-arrow-left"></i> <span data-i18n="btn_previous">Back</span>
+        </button>
+        <button type="button" class="btn btn-success btn-lg" onclick="nextStep()">
+            <span data-i18n="btn_next">Next</span> <i class="bi bi-arrow-right"></i>
+        </button>
+    </div>
+
+</div><!-- /formStep2 -->
+
+<!-- ======================================== -->
+<!-- STEP 3: Lifestyle & Family History       -->
+<!-- ======================================== -->
+<div class="form-step" id="formStep3">
 
     <!-- Lifestyle -->
     <h5 data-i18n="lifestyle_title">Lifestyle & Family History</h5>
@@ -312,6 +376,23 @@
         </div>
     </div>
 
+    <!-- Step 3 Navigation -->
+    <div class="step-nav-row mt-4">
+        <button type="button" class="btn btn-outline-secondary btn-lg" onclick="prevStep()">
+            <i class="bi bi-arrow-left"></i> <span data-i18n="btn_previous">Back</span>
+        </button>
+        <button type="button" class="btn btn-success btn-lg" onclick="nextStep()">
+            <span data-i18n="btn_next">Next</span> <i class="bi bi-arrow-right"></i>
+        </button>
+    </div>
+
+</div><!-- /formStep3 -->
+
+<!-- ======================================== -->
+<!-- STEP 4: Readings & Submit                -->
+<!-- ======================================== -->
+<div class="form-step" id="formStep4">
+
     <!-- Readings -->
     <h5 data-i18n="readings_title">Recent Readings (Optional)</h5>
     <div class="row g-3">
@@ -353,6 +434,16 @@
         </p>
     </div>
 
+    <!-- Step 4 Navigation (Back only) -->
+    <div class="step-nav-row mt-4">
+        <button type="button" class="btn btn-outline-secondary btn-lg" onclick="prevStep()">
+            <i class="bi bi-arrow-left"></i> <span data-i18n="btn_previous">Back</span>
+        </button>
+        <span></span>
+    </div>
+
+</div><!-- /formStep4 -->
+
 </form>
 </div>
 
@@ -361,6 +452,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/scripts/data/language-data.js"></script>
 <script src="assets/scripts/shared/i18n.js"></script>
+<script src="assets/scripts/shared/language-modal.js"></script>
 <script src="assets/scripts/shared/supabase-client.js"></script>
 <script src="assets/scripts/shared/navbar.js"></script>
 <script src="assets/scripts/shared/footer.js"></script>

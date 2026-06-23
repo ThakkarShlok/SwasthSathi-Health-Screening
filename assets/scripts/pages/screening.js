@@ -56,7 +56,7 @@ if (uploadZone) {
     uploadZone.addEventListener('drop', (e) => {
         e.preventDefault();
         uploadZone.classList.remove('drag-over');
-        
+
         const files = e.dataTransfer.files;
         if (files.length > 0) {
             handleFileSelect({ target: { files: [files[0]] } });
@@ -80,7 +80,7 @@ if (additionalSymptoms && charCount) {
     additionalSymptoms.addEventListener('input', function() {
         const currentLength = this.value.length;
         charCount.textContent = currentLength + ' / 500';
-        
+
         if (currentLength > 450) {
             charCount.style.color = '#dc3545';
         } else if (currentLength > 400) {
@@ -125,7 +125,7 @@ function resetOCR() {
 
 async function handleOCRProcessing() {
     if (!uploadedImage) {
-        alert('Please upload an image first');
+        alert(window.translator.t('error_ocr_no_image', 'Please upload an image first'));
         return;
     }
 
@@ -161,7 +161,7 @@ async function handleOCRProcessing() {
 
     } catch (error) {
         console.error('OCR processing failed:', error);
-        alert('OCR processing failed: ' + error.message);
+        alert(window.translator.t('error_ocr_processing_failed', 'OCR processing failed: {message}', { message: error.message }));
         ocrProgress.style.display = 'none';
         processOCRBtn.style.display = 'block';
     }
@@ -198,16 +198,20 @@ function autoFillFormFieldsWithSuggestions(values) {
 
     if (suggestions.length > 0 && window.FormSuggester) {
         window.FormSuggester.suggestMultipleValues(suggestions);
-        showNotification('info', `Found ${suggestions.length} value(s) in your report. Review and accept/reject each suggestion below.`);
+        showNotification('info', window.translator.t('notification_ocr_values_found', 'Found {count} value(s) in your report. Review and accept/reject each suggestion below.', { count: suggestions.length }));
     } else if (suggestions.length > 0) {
-        showNotification('success', 'Values extracted from report and auto-filled.');
+        showNotification('success', window.translator.t('notification_ocr_values_autofilled', 'Values extracted from report and auto-filled.'));
     } else {
-        showNotification('warning', 'Could not detect blood sugar or blood pressure values. Please enter manually.');
+        showNotification('warning', window.translator.t('notification_ocr_no_values', 'Could not detect blood sugar or blood pressure values. Please enter manually.'));
     }
 
     if (values.hba1c && window.MedicalValidator) {
         const validation = window.MedicalValidator.validateHbA1c(values.hba1c);
-        showContextAlert('HbA1c detected', `Your HbA1c is ${values.hba1c}% - ${validation.message}`, validation.severity);
+        showContextAlert(
+            window.translator.t('notification_hba1c_title', 'HbA1c detected'),
+            window.translator.t('notification_hba1c_context', 'Your HbA1c is {value}% - {message}', { value: values.hba1c, message: validation.message }),
+            validation.severity
+        );
     }
 }
 
@@ -220,9 +224,9 @@ function showNotification(type, message) {
     alert.className = `alert alert-${type} alert-dismissible fade show mt-3`;
     alert.style.animation = 'slideIn 0.3s ease-out';
     alert.innerHTML = `
-        <i class="bi bi-${type === 'success' ? 'check-circle-fill' : 
-                          type === 'warning' ? 'exclamation-triangle' : 
-                          type === 'danger' ? 'x-circle-fill' : 
+        <i class="bi bi-${type === 'success' ? 'check-circle-fill' :
+                          type === 'warning' ? 'exclamation-triangle' :
+                          type === 'danger' ? 'x-circle-fill' :
                           'info-circle-fill'}"></i>
         ${message}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -241,7 +245,7 @@ function showContextAlert(title, message, type) {
     alert.innerHTML = `
         <strong><i class="bi bi-lightbulb-fill"></i> ${title}:</strong> ${message}
     `;
-    
+
     const resultsDiv = document.getElementById('ocrResults');
     if (resultsDiv) {
         resultsDiv.appendChild(alert);
@@ -260,25 +264,25 @@ function calculateBMI(weight, height) {
 
 function validateFormData(data) {
     if (data.age < 15 || data.age > 120) {
-        showNotification('danger', 'Please enter a valid age (15-120 years)');
+        showNotification('danger', window.translator.t('error_invalid_age', 'Please enter a valid age (15-120 years)'));
         return false;
     }
 
     if (data.bmi && (data.bmi < 10 || data.bmi > 60)) {
-        showNotification('danger', 'Please check height and weight values. BMI seems incorrect.');
+        showNotification('danger', window.translator.t('error_invalid_bmi', 'Please check height and weight values. BMI seems incorrect.'));
         return false;
     }
 
     if (data.readings.bloodPressure) {
         const bpPattern = /^\d{2,3}\/\d{2,3}$/;
         if (!bpPattern.test(data.readings.bloodPressure)) {
-            showNotification('danger', 'Blood pressure format should be like 120/80');
+            showNotification('danger', window.translator.t('error_invalid_bp_format', 'Blood pressure format should be like 120/80'));
             return false;
         }
 
         const [systolic, diastolic] = data.readings.bloodPressure.split('/').map(Number);
         if (systolic <= diastolic) {
-            showNotification('danger', 'Systolic pressure (first number) must be higher than diastolic (second number)');
+            showNotification('danger', window.translator.t('error_invalid_bp_systolic', 'Systolic pressure (first number) must be higher than diastolic (second number)'));
             return false;
         }
     }
@@ -286,13 +290,89 @@ function validateFormData(data) {
     if (data.readings.bloodSugar) {
         const sugar = parseFloat(data.readings.bloodSugar);
         if (sugar < 30 || sugar > 600) {
-            showNotification('danger', 'Blood sugar value seems incorrect. Please verify.');
+            showNotification('danger', window.translator.t('error_invalid_blood_sugar', 'Blood sugar value seems incorrect. Please verify.'));
             return false;
         }
     }
 
     return true;
 }
+
+// ==========================================
+// MULTI-STEP FORM NAVIGATION
+// ==========================================
+
+let currentStep = 1;
+const TOTAL_STEPS = 4;
+
+function goToStep(step) {
+    const oldEl = document.getElementById('formStep' + currentStep);
+    const newEl = document.getElementById('formStep' + step);
+    if (!oldEl || !newEl) return;
+
+    oldEl.classList.remove('active');
+    newEl.classList.add('active');
+
+    for (let i = 1; i <= TOTAL_STEPS; i++) {
+        const bubble = document.getElementById('bubble-' + i);
+        const line   = document.getElementById('line-' + i + '-' + (i + 1));
+        if (bubble) {
+            bubble.classList.toggle('active', i === step);
+            bubble.classList.toggle('completed', i < step);
+        }
+        if (line) line.classList.toggle('completed', i < step);
+    }
+
+    const progressEl = document.getElementById('stepProgressText');
+    if (progressEl) {
+        progressEl.textContent = window.translator
+            ? window.translator.t('step_progress', 'Step {step} of {total}', { step, total: TOTAL_STEPS })
+            : 'Step ' + step + ' of ' + TOTAL_STEPS;
+    }
+
+    currentStep = step;
+    const card = document.querySelector('.screening-card');
+    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function nextStep() {
+    if (!validateStep(currentStep)) return;
+    if (currentStep < TOTAL_STEPS) goToStep(currentStep + 1);
+}
+
+function prevStep() {
+    if (currentStep > 1) goToStep(currentStep - 1);
+}
+
+function validateStep(step) {
+    if (step !== 1) return true;
+
+    const name   = document.getElementById('name').value.trim();
+    const age    = document.getElementById('age').value;
+    const gender = document.getElementById('gender').value;
+    const height = document.getElementById('height').value;
+    const weight = document.getElementById('weight').value;
+
+    if (!name || !age || !gender || !height || !weight) {
+        showNotification('danger', window.translator
+            ? window.translator.t('error_required_fields', 'Please fill all required fields')
+            : 'Please fill all required fields');
+        return false;
+    }
+
+    const ageNum = parseInt(age);
+    if (ageNum < 15 || ageNum > 120) {
+        showNotification('danger', window.translator
+            ? window.translator.t('error_invalid_age', 'Please enter a valid age (15-120 years)')
+            : 'Please enter a valid age (15-120 years)');
+        return false;
+    }
+
+    return true;
+}
+
+window.nextStep = nextStep;
+window.prevStep = prevStep;
 
 // ==========================================
 // ⭐ SINGLE FORM SUBMISSION HANDLER - SUPABASE VERSION
@@ -314,7 +394,7 @@ document.getElementById("screeningForm").addEventListener("submit", async functi
             parseFloat(document.getElementById('weight').value),
             parseFloat(document.getElementById('height').value)
         ),
-        waistCircumference: document.getElementById('waistCircumference').value ? 
+        waistCircumference: document.getElementById('waistCircumference').value ?
                            parseFloat(document.getElementById('waistCircumference').value) : null,
         diagnosed: {
             diabetes: document.getElementById('diabetes').value,
@@ -346,7 +426,7 @@ document.getElementById("screeningForm").addEventListener("submit", async functi
             familyHistory: document.getElementById('familyHistory').value
         },
         readings: {
-            bloodSugar: document.getElementById('sugar').value ? 
+            bloodSugar: document.getElementById('sugar').value ?
                         parseFloat(document.getElementById('sugar').value) : null,
             bloodPressure: document.getElementById('bp').value || null
         }
@@ -366,7 +446,7 @@ document.getElementById("screeningForm").addEventListener("submit", async functi
     const submitBtn = this.querySelector('button[type="submit"]');
     const originalBtnText = submitBtn.innerHTML;
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + window.translator.t('btn_saving', 'Saving...');
 
     try {
         // ===== STEP 4: Compute risk snapshot before saving =====
@@ -390,7 +470,7 @@ document.getElementById("screeningForm").addEventListener("submit", async functi
         if (result.success) {
             const source = result.source === 'supabase' ? '☁️ Cloud' : '💾 Local';
             console.log(`✅ Data saved successfully! Source: ${result.source}`);
-            showNotification('success', `Screening saved successfully! (${source})`);
+            showNotification('success', window.translator.t('notification_screening_saved', 'Screening saved successfully! ({source})', { source }));
 
             // ===== STEP 5: Update Results Button =====
             await updateResultsButtonText();
@@ -398,13 +478,12 @@ document.getElementById("screeningForm").addEventListener("submit", async functi
             // ===== STEP 6: Reset Form After Delay =====
             setTimeout(() => {
                 this.reset();
-                
+
                 if (charCount) {
                     charCount.textContent = '0 / 500';
                     charCount.style.color = '#6c757d';
                 }
-                
-                // Scroll to results button
+
                 const resultsBtn = document.getElementById('viewResultsBtn');
                 if (resultsBtn) {
                     resultsBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -417,7 +496,7 @@ document.getElementById("screeningForm").addEventListener("submit", async functi
         console.error('❌ Form submission error:', error);
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnText;
-        showNotification('danger', 'Could not save screening. Please check your connection and try again.');
+        showNotification('danger', window.translator.t('error_save_failed', 'Could not save screening. Please check your connection and try again.'));
     }
 });
 
@@ -428,11 +507,11 @@ document.getElementById("screeningForm").addEventListener("submit", async functi
 async function viewResults() {
     try {
         console.log('🔍 Checking for screening data...');
-        
+
         const result = await window.supabaseClient.getLatestScreening();
-        
+
         if (!result.success || !result.data) {
-            showNotification('warning', 'No screening data found. Please complete the health screening first.');
+            showNotification('warning', window.translator.t('notification_no_screening_data', 'No screening data found. Please complete the health screening first.'));
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
@@ -440,10 +519,10 @@ async function viewResults() {
         console.log(`✅ Found screening data. Source: ${result.source}`);
         console.log('➡️ Navigating to results page...');
         window.location.href = 'result.html';
-        
+
     } catch (error) {
         console.error('❌ Error checking patient data:', error);
-        showNotification('danger', 'Error loading data. Please try again.');
+        showNotification('danger', window.translator.t('error_loading_data', 'Error loading data. Please try again.'));
     }
 }
 
@@ -456,46 +535,46 @@ window.viewResults = viewResults;
 async function updateResultsButtonText() {
     try {
         const result = await window.supabaseClient.getLatestScreening();
-        
+
         const hintText = document.getElementById('resultsHintText');
         const btnText = document.getElementById('viewResultsBtnText');
         const hint = document.getElementById('viewResultsHint');
         const btn = document.getElementById('viewResultsBtn');
-        
+
         if (!hintText || !btnText || !hint || !btn) return;
-        
+
         if (result.success && result.data) {
             const date = new Date(result.data.timestamp).toLocaleDateString('en-IN', {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
             });
-            
+
             const sourceIcon = result.source === 'supabase' ? '☁️' : '💾';
-            
-            hintText.textContent = 'Already screened?';
-            btnText.textContent = 'View My Results';
-            hint.innerHTML = `<i class="bi bi-clock-history"></i> Last screening: ${date} ${sourceIcon}`;
+
+            hintText.textContent = window.translator.t('hint_already_screened', 'Already screened?');
+            btnText.textContent = window.translator.t('btn_view_results', 'View My Results');
+            hint.innerHTML = `<i class="bi bi-clock-history"></i> ${window.translator.t('hint_last_screening', 'Last screening:')} ${date} ${sourceIcon}`;
             btn.classList.remove('btn-outline-info');
             btn.classList.add('btn-info', 'text-white');
             btn.disabled = false;
             btn.style.opacity = '1';
             btn.style.cursor = 'pointer';
-            
+
             console.log('✅ Results button updated - screening available');
         } else {
-            hintText.textContent = 'New to SwasthSathi?';
-            btnText.textContent = 'Complete Screening Above';
-            hint.innerHTML = `<i class="bi bi-arrow-up-circle"></i> Fill the form above to get your health risk assessment`;
+            hintText.textContent = window.translator.t('hint_new_user', 'New to SwasthSathi?');
+            btnText.textContent = window.translator.t('btn_complete_above', 'Complete Screening Above');
+            hint.innerHTML = `<i class="bi bi-arrow-up-circle"></i> ${window.translator.t('hint_fill_form', 'Fill the form above to get your health risk assessment')}`;
             btn.classList.add('btn-outline-info');
             btn.classList.remove('btn-info', 'text-white');
             btn.disabled = true;
             btn.style.opacity = '0.6';
             btn.style.cursor = 'not-allowed';
-            
+
             console.log('ℹ️ Results button updated - no screening data');
         }
-        
+
     } catch (error) {
         console.error('Error updating button text:', error);
     }
