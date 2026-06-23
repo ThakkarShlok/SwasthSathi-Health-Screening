@@ -1,0 +1,113 @@
+/* ============================================
+   FIRST-VISIT LANGUAGE SELECTION MODAL
+   Gated by localStorage.selectedLanguage
+   ============================================ */
+
+#langSelectModal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: langModalFadeIn 0.25s ease-out;
+}
+
+#langSelectModal.hidden {
+    display: none;
+}
+
+@keyframes langModalFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.lang-modal-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    max-width: 460px;
+    width: 92%;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    animation: langModalSlideUp 0.3s ease-out;
+    text-align: center;
+}
+
+@keyframes langModalSlideUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.lang-modal-logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #10b981;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.5px;
+}
+
+.lang-modal-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.35rem;
+}
+
+.lang-modal-subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 1.75rem;
+}
+
+.lang-btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.9rem;
+}
+
+.lang-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.1rem 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f9fafb;
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s, box-shadow 0.18s, transform 0.18s;
+    font-family: inherit;
+    gap: 0.25rem;
+}
+
+.lang-btn:hover,
+.lang-btn:focus {
+    border-color: #10b981;
+    background: #ecfdf5;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.22);
+    transform: translateY(-2px);
+    outline: none;
+}
+
+.lang-btn:active {
+    transform: translateY(0);
+}
+
+.lang-btn-flag {
+    font-size: 2rem;
+    line-height: 1.1;
+}
+
+.lang-btn-native {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.lang-btn-english {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    font-weight: 400;
+}
