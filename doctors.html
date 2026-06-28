@@ -10,14 +10,13 @@
 <link rel="stylesheet" href="assets/styles/base.css">
 <link rel="stylesheet" href="assets/styles/language-modal.css">
 <!-- Page-specific styles -->
-<link rel="stylesheet" href="assets/styles/screening.css">
 <link rel="stylesheet" href="assets/styles/doctors.css">
 </head>
 <body>
 <div id="navbar-mount"></div>
 
 <div class="doctors-container">
-    <div class="page-header text-center mb-5">
+    <div class="page-header text-center mb-4">
         <h2 class="fw-bold text-primary mb-3">
             <i class="bi bi-hospital"></i> <span data-i18n="doctors_title">Consult a Qualified Doctor</span>
         </h2>
@@ -26,10 +25,38 @@
         </p>
         <div class="alert alert-info">
             <i class="bi bi-info-circle-fill"></i>
-            <strong data-i18n="doctors_info_notice">Information Purpose Only:</strong> <span data-i18n="doctors_info_text">The doctors listed below are sourced from publicly available platforms. This platform does not recommend, rank, or endorse any doctor.</span>
+            <strong data-i18n="doctors_info_notice">Information Purpose Only:</strong>
+            <span data-i18n="doctors_info_text">The doctors listed are sourced from publicly available platforms. This platform does not recommend, rank, or endorse any doctor.</span>
         </div>
     </div>
 
+    <!-- Location search card (shown when logged in) -->
+    <div id="locationSearchCard" class="card mb-4 border-primary-subtle" style="display:none">
+        <div class="card-body text-center py-4">
+            <i class="bi bi-geo-alt-fill text-primary fs-2 mb-2 d-block"></i>
+            <h5 class="mb-1" data-i18n="doctors_location_heading">Find Doctors Near You</h5>
+            <p class="text-muted small mb-3" data-i18n="doctors_location_sub">Search for specialists within 5 km of your location</p>
+            <button id="findNearbyBtn" class="btn btn-primary">
+                <i class="bi bi-geo-alt"></i> <span data-i18n="btn_use_my_location">Use My Location</span>
+            </button>
+            <div id="locationSearching" class="mt-3" style="display:none">
+                <div class="spinner-border spinner-border-sm text-primary me-2" role="status" aria-hidden="true"></div>
+                <span data-i18n="doctors_searching">Searching for nearby doctors...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login prompt (shown when not logged in) -->
+    <div id="loginPromptCard" class="alert alert-secondary mb-4" style="display:none">
+        <i class="bi bi-person-circle"></i>
+        <span data-i18n="doctors_login_for_live">Sign in to search for doctors near your location.</span>
+        <a href="auth.html" class="alert-link ms-1" data-i18n="btn_sign_in">Sign In</a>
+    </div>
+
+    <!-- Notice bar (shown after a search or fallback) -->
+    <div id="searchNotice" class="alert mb-3" style="display:none" role="alert"></div>
+
+    <!-- Diabetes specialists section -->
     <section class="specialists-section mb-5">
         <div class="section-header mb-4">
             <h3 class="text-success">
@@ -50,6 +77,7 @@
 
     <hr class="my-5">
 
+    <!-- Hypertension specialists section -->
     <section class="specialists-section mb-5">
         <div class="section-header mb-4">
             <h3 class="text-danger">
@@ -84,7 +112,8 @@
             <li data-i18n="doctors_disclaimer_5">Always consult with a qualified healthcare provider for diagnosis and treatment</li>
         </ul>
         <p class="mb-0 small">
-            <strong data-i18n="doctors_emergency">Emergency:</strong> <span data-i18n="doctors_emergency_text">For medical emergencies, call 108 (National Ambulance Service) or visit the nearest hospital immediately.</span>
+            <strong data-i18n="doctors_emergency">Emergency:</strong>
+            <span data-i18n="doctors_emergency_text">For medical emergencies, call 108 (National Ambulance Service) or visit the nearest hospital immediately.</span>
         </p>
     </div>
 
@@ -105,10 +134,10 @@
 <script src="assets/scripts/shared/i18n.js"></script>
 <script src="assets/scripts/shared/language-modal.js"></script>
 <script src="assets/scripts/shared/supabase-client.js"></script>
+<script src="assets/scripts/shared/inflight-tracker.js"></script>
 <script src="assets/scripts/shared/navbar.js"></script>
 <script src="assets/scripts/shared/footer.js"></script>
 <script src="assets/scripts/shared/nav-auth.js"></script>
-<script src="assets/scripts/data/doctors-data.js"></script>
 <script src="assets/scripts/pages/doctors.js"></script>
 </body>
 </html>
