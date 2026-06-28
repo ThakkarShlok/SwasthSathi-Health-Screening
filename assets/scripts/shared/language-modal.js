@@ -25,8 +25,12 @@
         overlay.innerHTML = `
             <div class="lang-modal-card">
                 <div class="lang-modal-logo">&#129514; SwasthSathi</div>
-                <h2 class="lang-modal-title" id="langModalTitle">${t('lang_modal_heading', 'Choose Your Language')}</h2>
-                <p class="lang-modal-subtitle">${t('lang_modal_subheading', 'Select your preferred language to continue')}</p>
+                <div class="lang-modal-multilang" id="langModalTitle" role="heading" aria-level="2">
+                    <div class="lm-col" lang="en">Choose Your Language</div>
+                    <div class="lm-col" lang="hi">अपनी भाषा चुनें</div>
+                    <div class="lm-col" lang="gu">અપની ભાષા ચુનેં</div>
+                    <div class="lm-col" lang="mr">तुमची भाषा निवडा</div>
+                </div>
                 <div class="lang-btn-grid">
                     <button class="lang-btn" data-lang="en" aria-label="English">
                         <span class="lang-btn-flag">&#127468;&#127463;</span>
