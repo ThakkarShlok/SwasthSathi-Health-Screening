@@ -129,6 +129,8 @@ async function handleOCRProcessing() {
         return;
     }
 
+    if (window.InFlightTracker && !window.InFlightTracker.start('ocr')) return;
+
     processOCRBtn.style.display = 'none';
     ocrProgress.style.display = 'block';
     ocrResults.style.display = 'none';
@@ -140,15 +142,25 @@ async function handleOCRProcessing() {
     };
 
     try {
+        // Attempt Cloud Vision Edge Function first (requires auth)
+        const cloudValues = await tryCloudOCR(uploadedImage, updateProgress);
+        if (cloudValues) {
+            extractedTextEl.textContent = window.translator.t('ocr_cloud_success', 'AI analysis complete');
+            autoFillFormFieldsWithSuggestions(cloudValues);
+            ocrProgress.style.display = 'none';
+            ocrResults.style.display = 'block';
+            ocrResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            return;
+        }
+
+        // Fall back to on-device Tesseract OCR
+        updateProgress(30, window.translator.t('ocr_fallback_local', 'Using device OCR...'));
         if (!window.OCRProcessor) {
             throw new Error('OCR module not loaded. Please refresh the page.');
         }
 
         const result = await window.OCRProcessor.processOCR(uploadedImage, updateProgress);
-
-        if (!result.success) {
-            throw new Error(result.error);
-        }
+        if (!result.success) throw new Error(result.error);
 
         extractedTextEl.textContent = result.text || 'No text detected';
         const medicalValues = window.OCRProcessor.extractMedicalValues(result.text);
@@ -164,7 +176,69 @@ async function handleOCRProcessing() {
         alert(window.translator.t('error_ocr_processing_failed', 'OCR processing failed: {message}', { message: error.message }));
         ocrProgress.style.display = 'none';
         processOCRBtn.style.display = 'block';
+    } finally {
+        if (window.InFlightTracker) window.InFlightTracker.end('ocr');
     }
+}
+
+// Returns structured medical values from Cloud Vision, or null to trigger Tesseract fallback.
+async function tryCloudOCR(file, updateProgress) {
+    if (!window.supabaseClient) return null;
+    const token = window.supabaseClient.getAccessToken();
+    if (!token) return null; // not logged in — skip cloud path
+
+    updateProgress(10, window.translator.t('ocr_upload_start', 'Preparing image...'));
+    const base64 = await fileToBase64(file);
+
+    updateProgress(20, window.translator.t('ocr_cloud_analyzing', 'Analyzing with AI...'));
+
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 10000);
+
+    try {
+        const url = `${window.supabaseClient.supabaseUrl}/functions/v1/ocr-extract`;
+        const resp = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ image: base64, mimeType: file.type }),
+            signal: controller.signal,
+        });
+        clearTimeout(tid);
+
+        if (resp.status === 429) {
+            showNotification('warning', window.translator.t('ocr_rate_limit_exceeded', 'Hourly OCR limit reached. Please try again later.'));
+            return null; // fall through to Tesseract
+        }
+        if (!resp.ok) return null;
+
+        const data = await resp.json();
+        updateProgress(90, window.translator.t('ocr_cloud_success', 'AI analysis complete'));
+
+        // Map Edge Function keys to the shape autoFillFormFieldsWithSuggestions expects
+        return {
+            bloodSugar: data.blood_sugar ?? null,
+            bloodPressure: data.blood_pressure ?? null,
+            hba1c: data.hba1c ?? null,
+        };
+    } catch (e) {
+        clearTimeout(tid);
+        if (e.name === 'AbortError') {
+            updateProgress(25, window.translator.t('ocr_timeout', 'Timed out. Switching to device OCR...'));
+        }
+        return null; // fall through to Tesseract
+    }
+}
+
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
 }
 
 function autoFillFormFieldsWithSuggestions(values) {
