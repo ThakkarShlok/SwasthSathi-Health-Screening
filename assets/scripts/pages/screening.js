@@ -410,7 +410,9 @@ function goToStep(step) {
 }
 
 function nextStep() {
-    if (!validateStep(currentStep)) return;
+    const stepEl = document.getElementById('formStep' + currentStep);
+    const check = validateStep(stepEl);
+    if (!check.valid) { focusInvalid(check.firstInvalid); return; }
     if (currentStep < TOTAL_STEPS) goToStep(currentStep + 1);
 }
 
@@ -418,31 +420,38 @@ function prevStep() {
     if (currentStep > 1) goToStep(currentStep - 1);
 }
 
-function validateStep(step) {
-    if (step !== 1) return true;
+/**
+ * Validates all required inputs/selects/textareas inside a given container.
+ * Returns { valid: bool, firstInvalid: HTMLElement|null }.
+ * Adds .is-invalid class to failing fields, removes it from passing ones.
+ * Works on hidden containers (checkValidity does not require visibility).
+ */
+function validateStep(containerEl) {
+    if (!containerEl) return { valid: true, firstInvalid: null };
+    const fields = containerEl.querySelectorAll(
+        'input[required], select[required], textarea[required]'
+    );
+    let firstInvalid = null;
+    fields.forEach(el => {
+        const ok = el.checkValidity();
+        if (!ok) {
+            el.classList.add('is-invalid');
+            if (!firstInvalid) firstInvalid = el;
+        } else {
+            el.classList.remove('is-invalid');
+        }
+    });
+    return { valid: !firstInvalid, firstInvalid };
+}
 
-    const name   = document.getElementById('name').value.trim();
-    const age    = document.getElementById('age').value;
-    const gender = document.getElementById('gender').value;
-    const height = document.getElementById('height').value;
-    const weight = document.getElementById('weight').value;
-
-    if (!name || !age || !gender || !height || !weight) {
-        showNotification('danger', window.translator
-            ? window.translator.t('error_required_fields', 'Please fill all required fields')
-            : 'Please fill all required fields');
-        return false;
-    }
-
-    const ageNum = parseInt(age);
-    if (ageNum < 15 || ageNum > 120) {
-        showNotification('danger', window.translator
-            ? window.translator.t('error_invalid_age', 'Please enter a valid age (15-120 years)')
-            : 'Please enter a valid age (15-120 years)');
-        return false;
-    }
-
-    return true;
+/**
+ * Scrolls to and focuses an invalid field after a short delay
+ * to allow step-navigation animation to complete.
+ */
+function focusInvalid(el) {
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => el.focus({ preventScroll: true }), 250);
 }
 
 window.nextStep = nextStep;
@@ -454,6 +463,30 @@ window.prevStep = prevStep;
 
 document.getElementById("screeningForm").addEventListener("submit", async function(e) {
     e.preventDefault();
+
+    // Validate all steps before collecting data (handles hidden-step fields)
+    const allSteps = document.querySelectorAll('.form-step');
+    let firstInvalidStep = null;
+    let firstInvalidEl = null;
+    let allValid = true;
+
+    allSteps.forEach(stepEl => {
+        const result = validateStep(stepEl);
+        if (!result.valid) {
+            allValid = false;
+            if (!firstInvalidStep) {
+                firstInvalidStep = stepEl;
+                firstInvalidEl = result.firstInvalid;
+            }
+        }
+    });
+
+    if (!allValid) {
+        const targetStepNum = parseInt(firstInvalidStep.id.replace('formStep', ''), 10);
+        goToStep(targetStepNum);
+        setTimeout(() => focusInvalid(firstInvalidEl), 300);
+        return;
+    }
 
     console.log('📋 Form submission started...');
 
