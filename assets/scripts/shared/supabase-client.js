@@ -473,7 +473,8 @@ class SupabaseClient {
             hypertension_risk_score: patientData.hypertensionRiskScore ?? null,
             risk_category: patientData.riskCategory ?? null,
             algorithm_version: patientData.algorithmVersion ?? null,
-            language_at_screening: patientData.languageAtScreening ?? null
+            language_at_screening: patientData.languageAtScreening ?? null,
+            result_short_code: patientData.resultShortCode ?? null
         };
     }
 
@@ -514,8 +515,47 @@ class SupabaseClient {
             riskCategory: dbData.risk_category ?? null,
             algorithmVersion: dbData.algorithm_version ?? null,
             languageAtScreening: dbData.language_at_screening ?? null,
+            resultShortCode: dbData.result_short_code ?? null,
             timestamp: dbData.created_at
         };
+    }
+
+    // ==========================================
+    // SHAREABLE RESULT METHODS (PHASE 2A)
+    // ==========================================
+
+    async saveShortCode(screeningId, shortCode) {
+        const token = this.getAccessToken();
+        if (!token) return { success: false, error: 'Not authenticated' };
+        try {
+            const resp = await fetch(`${this.apiUrl}?id=eq.${screeningId}`, {
+                method: 'PATCH',
+                headers: {
+                    'apikey': this.supabaseKey,
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal',
+                },
+                body: JSON.stringify({ result_short_code: shortCode }),
+            });
+            return resp.ok ? { success: true } : { success: false, error: `HTTP ${resp.status}` };
+        } catch (e) {
+            return { success: false, error: e.message };
+        }
+    }
+
+    async getByShortCode(code) {
+        try {
+            const resp = await fetch(
+                `${this.apiUrl}?result_short_code=eq.${encodeURIComponent(code)}&select=*&limit=1`,
+                { headers: { 'apikey': this.supabaseKey } },
+            );
+            if (!resp.ok) return null;
+            const rows = await resp.json();
+            return rows.length > 0 ? this.transformFromSupabaseFormat(rows[0]) : null;
+        } catch {
+            return null;
+        }
     }
 }
 

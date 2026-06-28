@@ -293,9 +293,24 @@
         <a href="doctors.html" class="btn btn-primary btn-lg me-2">
             <i class="bi bi-hospital-fill"></i> <span data-i18n="btn_find_doctor">Find a Doctor</span>
         </a>
+        <button id="shareResultBtn" class="btn btn-outline-success btn-lg me-2" style="display:none">
+            <i class="bi bi-share"></i> <span data-i18n="btn_share_result">Share Result</span>
+        </button>
+        <button id="whatsappShareBtn" class="btn btn-success btn-lg me-2" style="display:none">
+            <i class="bi bi-whatsapp"></i> <span data-i18n="btn_share_whatsapp">Share on WhatsApp</span>
+        </button>
         <button class="btn btn-success btn-lg" onclick="window.print()">
             <i class="bi bi-printer"></i> <span data-i18n="btn_print">Print Results</span>
         </button>
+    </div>
+    <!-- Share toast -->
+    <div id="shareToast" class="position-fixed bottom-0 end-0 p-3" style="z-index:1100">
+        <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive">
+            <div class="d-flex">
+                <div class="toast-body" id="shareToastBody" data-i18n="share_link_copied">Link copied to clipboard!</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
     </div>
 </div>  <!-- Closes resultsContainer -->
 
@@ -314,11 +329,13 @@
 <script src="assets/scripts/shared/i18n.js"></script>
 <script src="assets/scripts/shared/language-modal.js"></script>
 <script src="assets/scripts/shared/supabase-client.js"></script>
+<script src="assets/scripts/shared/inflight-tracker.js"></script>
 <script src="assets/scripts/shared/navbar.js"></script>
 <script src="assets/scripts/shared/footer.js"></script>
 <script src="assets/scripts/shared/nav-auth.js"></script>
 <script src="assets/scripts/modules/risk-calculator.js"></script>
 <script src="assets/scripts/modules/factor-explanations.js"></script>
+<link rel="stylesheet" href="assets/styles/recommendation.css">
 <script src="assets/scripts/pages/result.js"></script>
 </body>
 </html>

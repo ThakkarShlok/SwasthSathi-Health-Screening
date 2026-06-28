@@ -135,6 +135,13 @@ async function initializeResultsPage() {
         document.getElementById('loadingState').style.display = 'none';
         document.getElementById('resultsContainer').style.display = 'block';
 
+        // Fire-and-forget: augment with AI recommendation (non-blocking)
+        loadAIRecommendation(assessment, patientData);
+
+        // Show share button if logged in (non-blocking)
+        initShareButton(patientData);
+        initWhatsAppButton(patientData, assessment);
+
         console.log('✅ Results page rendered successfully');
         
     } catch (error) {
@@ -328,6 +335,196 @@ function createRecommendationSection(title, items, type) {
     
     section.appendChild(list);
     return section;
+}
+
+// ==========================================
+// SHAREABLE RESULTS (TASK 6)
+// ==========================================
+
+// Ambiguity-free alphabet: no 0/O/I/1/l
+const SHORT_CODE_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+
+function generateShortCode() {
+    let code = '';
+    const arr = crypto.getRandomValues(new Uint8Array(8));
+    for (const byte of arr) {
+        code += SHORT_CODE_ALPHABET[byte % SHORT_CODE_ALPHABET.length];
+    }
+    return code;
+}
+
+async function initShareButton(patientData) {
+    if (!window.supabaseClient) return;
+    const token = window.supabaseClient.getAccessToken();
+    if (!token) return;
+
+    const btn = document.getElementById('shareResultBtn');
+    if (!btn) return;
+    btn.style.display = 'inline-block';
+
+    btn.addEventListener('click', async () => {
+        btn.disabled = true;
+
+        try {
+            let code = patientData?.resultShortCode;
+            const screeningId = patientData?.id;
+
+            if (!code && screeningId) {
+                code = generateShortCode();
+                const saved = await window.supabaseClient.saveShortCode(screeningId, code);
+                if (!saved.success) { btn.disabled = false; return; }
+                if (patientData) patientData.resultShortCode = code;
+            }
+
+            if (!code) { btn.disabled = false; return; }
+
+            const shareUrl = `${location.origin}${location.pathname.replace('result.html', '')}share.html?code=${code}`;
+            await navigator.clipboard.writeText(shareUrl).catch(() => {
+                prompt(window.translator.t('share_copy_manually', 'Copy this link:'), shareUrl);
+            });
+            showShareToast(window.translator.t('share_link_copied', 'Link copied to clipboard!'));
+        } finally {
+            btn.disabled = false;
+        }
+    });
+}
+
+function showShareToast(message) {
+    const toastEl = document.querySelector('#shareToast .toast');
+    const body = document.getElementById('shareToastBody');
+    if (!toastEl || !body) return;
+    body.textContent = message;
+    const bsToast = bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 3000 });
+    bsToast.show();
+}
+
+async function initWhatsAppButton(patientData, assessment) {
+    if (!window.supabaseClient) return;
+    const token = window.supabaseClient.getAccessToken();
+    if (!token) return;
+
+    const btn = document.getElementById('whatsappShareBtn');
+    if (!btn) return;
+    btn.style.display = 'inline-block';
+
+    btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        try {
+            let code = patientData?.resultShortCode;
+            const screeningId = patientData?.id;
+
+            if (!code && screeningId) {
+                code = generateShortCode();
+                const saved = await window.supabaseClient.saveShortCode(screeningId, code);
+                if (!saved.success) { btn.disabled = false; return; }
+                if (patientData) patientData.resultShortCode = code;
+            }
+
+            const shareUrl = code
+                ? `${location.origin}${location.pathname.replace('result.html', '')}share.html?code=${code}`
+                : location.href;
+
+            const diabetesRisk = assessment?.diabetes?.risk ?? '—';
+            const hypertensionRisk = assessment?.hypertension?.risk ?? '—';
+            const score = Math.round(assessment?.combined?.score ?? 0);
+
+            const template = window.translator.t(
+                'whatsapp_share_template',
+                '📊 My SwasthSathi Health Screening\n\nDiabetes Risk: {diabetes}\nHypertension Risk: {hypertension}\nOverall Score: {score}/100\n\nView result: {url}\n\n🏥 SwasthSathi — Free Health Screening',
+                { diabetes: diabetesRisk, hypertension: hypertensionRisk, score, url: shareUrl },
+            );
+
+            const waUrl = `https://wa.me/?text=${encodeURIComponent(template)}`;
+            window.open(waUrl, '_blank', 'noopener,noreferrer');
+        } finally {
+            btn.disabled = false;
+        }
+    });
+}
+
+// ==========================================
+// AI RECOMMENDATION (TASK 4)
+// ==========================================
+
+async function loadAIRecommendation(assessment, patientData) {
+    if (!window.supabaseClient) return;
+    const token = window.supabaseClient.getAccessToken();
+    if (!token) return;
+    if (window.InFlightTracker && !window.InFlightTracker.start('llm')) return;
+
+    const container = document.getElementById('recommendationsContainer');
+    if (!container) return;
+
+    const aiSection = document.createElement('div');
+    aiSection.id = 'aiRecommendationSection';
+    aiSection.className = 'ai-rec-section';
+    aiSection.innerHTML = `
+        <div class="ai-rec-header">
+            <span class="ai-rec-badge">✨ AI</span>
+            <span data-i18n="ai_rec_title">Personalized AI Insights</span>
+        </div>
+        <div class="ai-rec-loading">
+            <div class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></div>
+            <span data-i18n="ai_rec_loading">Generating personalized recommendation...</span>
+        </div>`;
+    container.appendChild(aiSection);
+    if (window.translator) window.translator.applyTranslations();
+
+    const lang = localStorage.getItem('selectedLanguage') || 'en';
+    const topFactors = [];
+    if (assessment.diabetes?.topFactors) topFactors.push(...assessment.diabetes.topFactors.slice(0, 2));
+    if (assessment.hypertension?.topFactors) topFactors.push(...assessment.hypertension.topFactors.slice(0, 2));
+
+    const riskData = {
+        combined: { score: assessment.combined?.score, risk: assessment.combined?.risk },
+        diabetes: { risk: assessment.diabetes?.risk, score: assessment.diabetes?.score },
+        hypertension: { risk: assessment.hypertension?.risk, score: assessment.hypertension?.score },
+        topFactors: [...new Set(topFactors)],
+    };
+
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 15000);
+
+    try {
+        const url = `${window.supabaseClient.supabaseUrl}/functions/v1/generate-recommendation`;
+        const resp = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                riskData,
+                lang,
+                patientAge: patientData?.age ?? null,
+                patientGender: patientData?.gender ?? null,
+            }),
+            signal: controller.signal,
+        });
+        clearTimeout(tid);
+
+        if (resp.status === 429 || !resp.ok) { aiSection.remove(); return; }
+
+        const { recommendation } = await resp.json();
+        if (!recommendation) { aiSection.remove(); return; }
+
+        aiSection.innerHTML = `
+            <div class="ai-rec-header">
+                <span class="ai-rec-badge">✨ AI</span>
+                <span data-i18n="ai_rec_title">Personalized AI Insights</span>
+            </div>
+            <div class="ai-rec-body">${recommendation.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')}</div>
+            <div class="ai-rec-footer">
+                <small data-i18n="ai_rec_disclaimer">AI-generated. Not a substitute for professional medical advice.</small>
+            </div>`;
+        if (window.translator) window.translator.applyTranslations();
+
+    } catch {
+        clearTimeout(tid);
+        aiSection.remove();
+    } finally {
+        if (window.InFlightTracker) window.InFlightTracker.end('llm');
+    }
 }
 
 // ==========================================
@@ -559,7 +756,9 @@ function renderCompletenessPanel(patientData) {
 window.addEventListener('beforeprint', () => {
     const el = document.getElementById('printDate');
     if (el) {
-        el.textContent = new Date().toLocaleDateString('en-IN', {
+        const localeMap = { en: 'en-IN', hi: 'hi-IN', gu: 'gu-IN', mr: 'mr-IN' };
+        const lang = localStorage.getItem('selectedLanguage') || 'en';
+        el.textContent = new Date().toLocaleDateString(localeMap[lang] || 'en-IN', {
             day: 'numeric', month: 'long', year: 'numeric'
         });
     }
