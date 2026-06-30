@@ -100,6 +100,13 @@ Deno.serve(async (req: Request) => {
 function extractMedicalValues(text: string): Record<string, string | null> {
     const t = text.replace(/\s+/g, ' ');
 
+    console.log("[ocr-extract] text inputs", {
+        rawTextLength: text.length,
+        normalizedTextLength: t.length,
+        rawTextSample: text.slice(0, 2000),
+        normalizedTextSample: t.slice(0, 2000)
+    });
+
     // Fasting / random blood glucose
     const sugarPatterns = [
         /(?:fasting[\s-]*(?:blood[\s-]*)?(?:sugar|glucose)|fbs|fpg)\s*:?\s*(\d{2,3}(?:\.\d)?)/i,
@@ -107,15 +114,28 @@ function extractMedicalValues(text: string): Record<string, string | null> {
         /glucose\s*[\-:]\s*(\d{2,3}(?:\.\d)?)/i,
     ];
     let blood_sugar: string | null = null;
-    for (const p of sugarPatterns) {
+    for (const [i, p] of sugarPatterns.entries()) {
         const m = t.match(p);
+        console.log("[ocr-extract] blood_sugar pattern attempt", {
+            patternIndex: i,
+            patternSource: p.source,
+            matched: !!m,
+            matchedValue: m?.[1] ?? null,
+            matchedFullString: m?.[0] ?? null
+        });
         if (m) { blood_sugar = m[1]; break; }
     }
 
     // HbA1c
-    const hba1cMatch = t.match(
-        /(?:hba1c|glycated[\s-]*h[ae]moglobin|a1c|glyco?h[ae]moglobin)\s*[:\-]?\s*(\d{1,2}\.\d)/i,
-    );
+    const hba1cPattern = /(?:hba1c|glycated[\s-]*h[ae]moglobin|a1c|glyco?h[ae]moglobin)\s*[:\-]?\s*(\d{1,2}\.\d)/i;
+    const hba1cMatch = t.match(hba1cPattern);
+    console.log("[ocr-extract] hba1c pattern attempt", {
+        patternIndex: 0,
+        patternSource: hba1cPattern.source,
+        matched: !!hba1cMatch,
+        matchedValue: hba1cMatch?.[1] ?? null,
+        matchedFullString: hba1cMatch?.[0] ?? null
+    });
     const hba1c = hba1cMatch?.[1] ?? null;
 
     // Blood pressure
@@ -125,13 +145,25 @@ function extractMedicalValues(text: string): Record<string, string | null> {
         /systolic\s*:?\s*(\d{2,3})[\s\S]{0,40}?diastolic\s*:?\s*(\d{2,3})/i,
     ];
     let blood_pressure: string | null = null;
-    for (const p of bpPatterns) {
+    for (const [i, p] of bpPatterns.entries()) {
         const m = t.match(p);
+        console.log("[ocr-extract] blood_pressure pattern attempt", {
+            patternIndex: i,
+            patternSource: p.source,
+            matched: !!m,
+            matchedValue: m?.[2] ? `${m?.[1]}/${m?.[2]}` : m?.[1] ?? null,
+            matchedFullString: m?.[0] ?? null
+        });
         if (m) {
             blood_pressure = m[2] ? `${m[1]}/${m[2]}` : m[1];
             break;
         }
     }
 
+    console.log("[ocr-extract] final extraction", {
+        blood_sugar,
+        hba1c,
+        blood_pressure
+    });
     return { blood_sugar, hba1c, blood_pressure };
 }
