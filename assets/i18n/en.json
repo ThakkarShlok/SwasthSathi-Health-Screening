@@ -408,5 +408,5 @@
     "share_disclaimer_text":  "This is a screening tool result, not a medical diagnosis. Please consult a qualified doctor for proper evaluation.",
     "share_get_own":  "Get Your Own Screening",
     "btn_share_whatsapp":  "Share on WhatsApp",
-    "whatsapp_share_template":  "📊 My SwasthSathi Health Screening\n\nDiabetes Risk: {diabetes}\nHypertension Risk: {hypertension}\nOverall Score: {score}/100\n\nView result: {url}\n\n🏥 SwasthSathi — Free Health Screening"
+    "whatsapp_share_template":  "📊 My SwasthSathi Health Screening\n\nDiabetes Risk: {diabetes}/100\nHypertension Risk: {hypertension}/100\nOverall Score: {score}/100\n\nView result: {url}\n\n🏥 SwasthSathi — Free Health Screening"
 }

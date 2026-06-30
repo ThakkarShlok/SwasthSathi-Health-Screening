@@ -424,8 +424,8 @@ async function initWhatsAppButton(patientData, assessment) {
                 ? `${location.origin}${location.pathname.replace('result.html', '')}share.html?code=${code}`
                 : location.href;
 
-            const diabetesRisk = assessment?.diabetes?.risk ?? '—';
-            const hypertensionRisk = assessment?.hypertension?.risk ?? '—';
+            const diabetesRisk = Math.round(assessment?.diabetes?.score ?? 0);
+            const hypertensionRisk = Math.round(assessment?.hypertension?.score ?? 0);
             const score = Math.round(assessment?.combined?.score ?? 0);
 
             const template = window.translator.t(

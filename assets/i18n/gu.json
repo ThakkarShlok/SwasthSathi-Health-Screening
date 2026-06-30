@@ -409,5 +409,5 @@
     "share_disclaimer_text":  "યહ એક જાંચ ઉપકરણ પરિણામ હૈ, ચિકિત્સા નિદાન નહીં૤ કૃપયા ઉચિત મૂલ્યાંકન કે લિએ યોગ્ય ડૉક્ટર સે પરામર્શ કરેં૤",
     "share_get_own":  "અપની જાંચ કરવાએં",
     "btn_share_whatsapp":  "WhatsApp પર શેયર કરેં",
-    "whatsapp_share_template":  "📊 મેરી SwasthSathi સ્વાસ્થ્ય જાંચ\n\nમધુમેહ જોખિમ: {diabetes}\nઉચ્ચ રક્તચાપ જોખિમ: {hypertension}\nકુલ સ્કોર: {score}/100\n\nપરિણામ દેખેં: {url}\n\n🏥 SwasthSathi — મુફ્ત સ્વાસ્થ્ય જાંચ"
+    "whatsapp_share_template":  "📊 મેરી SwasthSathi સ્વાસ્થ્ય જાંચ\n\nમધુમેહ જોખિમ: {diabetes}/100\nઉચ્ચ રક્તચાપ જોખિમ: {hypertension}/100\nકુલ સ્કોર: {score}/100\n\nપરિણામ દેખેં: {url}\n\n🏥 SwasthSathi — મુફ્ત સ્વાસ્થ્ય જાંચ"
 }

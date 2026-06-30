@@ -440,5 +440,5 @@
     "share_disclaimer_text":  "हे एक तपासणी साधन परिणाम आहे, वैद्यकीय निदान नाही. योग्य मूल्यमापनासाठी कृपया पात्र डॉक्टरांचा सल्ला घ्या.",
     "share_get_own":  "स्वतःची तपासणी करा",
     "btn_share_whatsapp":  "WhatsApp वर शेअर करा",
-    "whatsapp_share_template":  "📊 माझी SwasthSathi आरोग्य तपासणी\n\nमधुमेह जोखीम: {diabetes}\nउच्च रक्तदाब जोखीम: {hypertension}\nएकूण गुण: {score}/100\n\nनिकाल पहा: {url}\n\n🏥 SwasthSathi — मोफत आरोग्य तपासणी"
+    "whatsapp_share_template":  "📊 माझी SwasthSathi आरोग्य तपासणी\n\nमधुमेह जोखीम: {diabetes}/100\nउच्च रक्तदाब जोखीम: {hypertension}/100\nएकूण गुण: {score}/100\n\nनिकाल पहा: {url}\n\n🏥 SwasthSathi — मोफत आरोग्य तपासणी"
 }

@@ -440,5 +440,5 @@
     "share_disclaimer_text":  "यह एक जांच उपकरण परिणाम है, चिकित्सा निदान नहीं। कृपया उचित मूल्यांकन के लिए योग्य डॉक्टर से परामर्श करें।",
     "share_get_own":  "अपनी जांच करवाएं",
     "btn_share_whatsapp":  "WhatsApp पर शेयर करें",
-    "whatsapp_share_template":  "📊 मेरी SwasthSathi स्वास्थ्य जांच\n\nमधुमेह जोखिम: {diabetes}\nउच्च रक्तचाप जोखिम: {hypertension}\nकुल स्कोर: {score}/100\n\nपरिणाम देखें: {url}\n\n🏥 SwasthSathi — मुफ्त स्वास्थ्य जांच"
+    "whatsapp_share_template":  "📊 मेरी SwasthSathi स्वास्थ्य जांच\n\nमधुमेह जोखिम: {diabetes}/100\nउच्च रक्तचाप जोखिम: {hypertension}/100\nकुल स्कोर: {score}/100\n\nपरिणाम देखें: {url}\n\n🏥 SwasthSathi — मुफ्त स्वास्थ्य जांच"
 }

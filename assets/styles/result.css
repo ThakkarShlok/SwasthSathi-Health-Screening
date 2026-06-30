@@ -10,6 +10,10 @@
     padding: 20px;
 }
 
+.share-container {
+    margin: 110px auto 40px;
+}
+
 /* ===== PATIENT INFO HEADER ===== */
 
 .result-header {

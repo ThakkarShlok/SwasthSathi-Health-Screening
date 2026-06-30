@@ -145,7 +145,13 @@ async function handleOCRProcessing() {
         // Attempt Cloud Vision Edge Function first (requires auth)
         const cloudValues = await tryCloudOCR(uploadedImage, updateProgress);
         if (cloudValues) {
-            extractedTextEl.textContent = window.translator.t('ocr_cloud_success', 'AI analysis complete');
+            const statusEl = document.getElementById('ocrStatusMessage');
+            if (statusEl) statusEl.textContent = window.translator.t('ocr_cloud_success', 'AI analysis complete');
+            const parts = [];
+            if (cloudValues.bloodSugar) parts.push(`Blood Sugar: ${cloudValues.bloodSugar} mg/dL`);
+            if (cloudValues.hba1c) parts.push(`HbA1c: ${cloudValues.hba1c}%`);
+            if (cloudValues.bloodPressure) parts.push(`Blood Pressure: ${cloudValues.bloodPressure}`);
+            extractedTextEl.textContent = parts.join('\n');
             autoFillFormFieldsWithSuggestions(cloudValues);
             ocrProgress.style.display = 'none';
             ocrResults.style.display = 'block';
