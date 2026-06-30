@@ -109,8 +109,9 @@ function extractMedicalValues(text: string): Record<string, string | null> {
 
     // Fasting / random blood glucose
     const sugarPatterns = [
-        /(?:fasting[\s-]*(?:blood[\s-]*)?(?:sugar|glucose)|fbs|fpg)\s*:?\s*(\d{2,3}(?:\.\d)?)/i,
-        /(?:blood[\s-]*glucose|random[\s-]*blood[\s-]*sugar|rbs|pp[\s-]*blood[\s-]*sugar)\s*:?\s*(\d{2,3}(?:\.\d)?)/i,
+        /(?:fasting[\s-]*(?:blood[\s-]*)?(?:sugar|glucose)|fasting[\s-]*plasma[\s-]*glucose)(?:\s*\([^)]*\))?.{0,40}?(\d{2,3}(?:\.\d)?)\s*(?:mg\/dl)?/i,
+        /\b(?:fbs|fpg)\b(?:\s*\([^)]*\))?.{0,40}?(\d{2,3}(?:\.\d)?)\s*(?:mg\/dl)?/i,
+        /(?:blood[\s-]*glucose|random[\s-]*blood[\s-]*sugar|rbs)(?:\s*\([^)]*\))?.{0,40}?(\d{2,3}(?:\.\d)?)\s*(?:mg\/dl)?/i,
         /glucose\s*[\-:]\s*(\d{2,3}(?:\.\d)?)/i,
     ];
     let blood_sugar: string | null = null;
@@ -127,7 +128,7 @@ function extractMedicalValues(text: string): Record<string, string | null> {
     }
 
     // HbA1c
-    const hba1cPattern = /(?:hba1c|glycated[\s-]*h[ae]moglobin|a1c|glyco?h[ae]moglobin)\s*[:\-]?\s*(\d{1,2}\.\d)/i;
+    const hba1cPattern = /(?:hba1c|glycated[\s-]*h[ae]moglobin|a1c|glyco?h[ae]moglobin)(?:\s*\([^)]*\))?.{0,40}?(\d{1,2}\.\d)\s*%?/i;
     const hba1cMatch = t.match(hba1cPattern);
     console.log("[ocr-extract] hba1c pattern attempt", {
         patternIndex: 0,
@@ -143,6 +144,7 @@ function extractMedicalValues(text: string): Record<string, string | null> {
         /(?:bp|blood[\s-]*pressure)\s*:?\s*(\d{2,3}\/\d{2,3})/i,
         /(\d{3}\/\d{2,3})\s*(?:mmhg|mm[\s]*hg)/i,
         /systolic\s*:?\s*(\d{2,3})[\s\S]{0,40}?diastolic\s*:?\s*(\d{2,3})/i,
+        /(?:bp|blood[\s-]*pressure)(?:\s*\([^)]*\))?.{0,20}?(\d{2,3}\/\d{2,3})/i,
     ];
     let blood_pressure: string | null = null;
     for (const [i, p] of bpPatterns.entries()) {
