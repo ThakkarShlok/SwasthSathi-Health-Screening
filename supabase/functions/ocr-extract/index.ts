@@ -44,7 +44,7 @@ Deno.serve(async (req: Request) => {
         .maybeSingle();
 
     if (cached?.extracted_json) {
-        return jsonResponse({ ...cached.extracted_json, cached: true }, 200, req);
+        return jsonResponse({ ...cached.extracted_json, full_text: null, cached: true }, 200, req);
     }
 
     // Call Google Cloud Vision
@@ -53,6 +53,14 @@ Deno.serve(async (req: Request) => {
 
     let visionStatus = 502;
     let extracted: Record<string, string | null> = { blood_sugar: null, hba1c: null, blood_pressure: null };
+    let fullText = '';
+
+    console.log("[ocr-extract] vision call start", {
+        timestamp: new Date().toISOString(),
+        imageSizeBytes: image.length,
+        mimeType,
+    });
+    const visionStart = Date.now();
 
     try {
         const visionResp = await fetch(`${VISION_URL}?key=${apiKey}`, {
@@ -68,10 +76,25 @@ Deno.serve(async (req: Request) => {
         });
 
         visionStatus = visionResp.status;
+        const visionData = visionResp.ok ? await visionResp.json() : null;
 
-        if (visionResp.ok) {
-            const visionData = await visionResp.json();
-            const fullText: string = visionData.responses?.[0]?.fullTextAnnotation?.text ?? '';
+        console.log("[ocr-extract] vision call end", {
+            durationMs: Date.now() - visionStart,
+            httpStatus: visionStatus,
+            hasError: false,
+            error: null,
+            visionResponseShape: visionData ? {
+                hasResponses: !!visionData.responses,
+                firstResponseHasError: !!visionData.responses?.[0]?.error,
+                firstResponseErrorCode: visionData.responses?.[0]?.error?.code ?? null,
+                firstResponseErrorMessage: visionData.responses?.[0]?.error?.message ?? null,
+                textAnnotationsCount: visionData.responses?.[0]?.textAnnotations?.length ?? 0,
+                fullTextLength: visionData.responses?.[0]?.fullTextAnnotation?.text?.length ?? 0,
+            } : null,
+        });
+
+        if (visionResp.ok && visionData) {
+            fullText = visionData.responses?.[0]?.fullTextAnnotation?.text ?? '';
             extracted = extractMedicalValues(fullText);
 
             // Store in cache regardless of whether values were found
@@ -84,6 +107,13 @@ Deno.serve(async (req: Request) => {
         }
     } catch (e) {
         const msg = e instanceof Error ? e.message : String(e);
+        console.log("[ocr-extract] vision call end", {
+            durationMs: Date.now() - visionStart,
+            httpStatus: null,
+            hasError: true,
+            error: msg,
+            visionResponseShape: null,
+        });
         await logUsage(userId, 'ocr', 0);
         return errorResponse(`Vision API error: ${msg}`, 502, req);
     }
@@ -94,7 +124,10 @@ Deno.serve(async (req: Request) => {
         return errorResponse('Vision API returned non-200', 502, req);
     }
 
-    return jsonResponse(extracted, 200, req);
+    const full_text = fullText.length > 10000
+        ? `${fullText.slice(0, 10000)}... [truncated]`
+        : (fullText || null);
+    return jsonResponse({ ...extracted, full_text }, 200, req);
 });
 
 function extractMedicalValues(text: string): Record<string, string | null> {
