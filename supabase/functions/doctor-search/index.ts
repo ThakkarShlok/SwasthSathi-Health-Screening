@@ -4,12 +4,15 @@ import { checkRateLimit, logUsage } from '../_shared/rate-limit.ts';
 import { jsonResponse, errorResponse } from '../_shared/errors.ts';
 import { createAdminClient } from '../_shared/supabase-admin.ts';
 
-const PLACES_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+const PLACES_URL = 'https://places.googleapis.com/v1/places:searchText';
 const RADIUS = 5000;
+const FIELD_MASK = 'places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.location,places.googleMapsUri,places.regularOpeningHours';
 
-const KEYWORDS: Record<string, string> = {
-    diabetes: 'diabetologist endocrinologist diabetes specialist',
-    hypertension: 'cardiologist heart specialist hypertension physician',
+const QUERIES: Record<string, string> = {
+    diabetes: 'diabetologist',
+    diabetologist: 'diabetologist',
+    hypertension: 'cardiologist',
+    cardiologist: 'cardiologist',
 };
 
 interface PlaceResult {
@@ -17,8 +20,7 @@ interface PlaceResult {
     vicinity: string | null;
     rating: number | null;
     reviewCount: number;
-    placeId: string;
-    mapsUrl: string;
+    mapsUrl: string | null;
 }
 
 Deno.serve(async (req: Request) => {
@@ -40,7 +42,9 @@ Deno.serve(async (req: Request) => {
 
     const { lat, lng, type = 'diabetes' } = body;
     if (lat === undefined || lng === undefined) return errorResponse('Missing lat/lng', 400, req);
-    if (!KEYWORDS[type]) return errorResponse('Invalid type — must be diabetes or hypertension', 400, req);
+
+    const textQuery = QUERIES[type];
+    if (!textQuery) return errorResponse('Invalid type — must be diabetes or hypertension', 400, req);
 
     // Round to 3dp (~110m precision) for cache key
     const latR = Math.round(lat * 1000) / 1000;
@@ -68,35 +72,50 @@ Deno.serve(async (req: Request) => {
 
     let placesStatus = 502;
     try {
-        const url = new URL(PLACES_URL);
-        url.searchParams.set('location', `${latR},${lngR}`);
-        url.searchParams.set('radius', String(RADIUS));
-        url.searchParams.set('keyword', KEYWORDS[type]);
-        url.searchParams.set('type', 'doctor');
-        url.searchParams.set('key', apiKey);
+        const googleResp = await fetch(PLACES_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Goog-Api-Key': apiKey,
+                'X-Goog-FieldMask': FIELD_MASK,
+            },
+            body: JSON.stringify({
+                textQuery,
+                maxResultCount: 10,
+                locationBias: {
+                    circle: {
+                        center: { latitude: latR, longitude: lngR },
+                        radius: RADIUS,
+                    },
+                },
+            }),
+            signal: AbortSignal.timeout(8000),
+        });
+        placesStatus = googleResp.status;
 
-        const resp = await fetch(url.toString(), { signal: AbortSignal.timeout(8000) });
-        placesStatus = resp.status;
+        const googleData = await googleResp.json();
 
-        if (!resp.ok) {
+        if (!googleResp.ok) {
+            console.error("[doctor-search] Google Places New API failure", {
+                timestamp: new Date().toISOString(),
+                httpStatus: placesStatus,
+                googleError: googleData.error ?? null,
+                googleErrorCode: googleData.error?.code ?? null,
+                googleErrorMessage: googleData.error?.message ?? null,
+                googleErrorStatus: googleData.error?.status ?? null,
+                requestParams: { lat, lng, type },
+            });
             await logUsage(userId, 'places', placesStatus);
-            return errorResponse('Places API HTTP error', 502, req);
+            return errorResponse('Unable to fetch doctors at this time. Please try again.', 502, req);
         }
 
-        const data = await resp.json();
-        if (data.status !== 'OK' && data.status !== 'ZERO_RESULTS') {
-            await logUsage(userId, 'places', 400);
-            return errorResponse(`Places API status: ${data.status}`, 400, req);
-        }
-
-        const places: PlaceResult[] = (data.results ?? []).slice(0, 8).map(
+        const places: PlaceResult[] = (googleData.places ?? []).slice(0, 8).map(
             (p: Record<string, unknown>) => ({
-                name: p.name as string,
-                vicinity: (p.vicinity as string) ?? null,
+                name: (p.displayName as { text?: string })?.text ?? 'Unknown',
+                vicinity: (p.formattedAddress as string) ?? null,
                 rating: (p.rating as number) ?? null,
-                reviewCount: (p.user_ratings_total as number) ?? 0,
-                placeId: p.place_id as string,
-                mapsUrl: `https://www.google.com/maps/place/?q=place_id:${p.place_id}`,
+                reviewCount: (p.userRatingCount as number) ?? 0,
+                mapsUrl: (p.googleMapsUri as string) ?? null,
             }),
         );
 
