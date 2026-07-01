@@ -26,7 +26,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isLoggedIn) {
         if (locationCard) locationCard.style.display = 'block';
         if (findBtn) findBtn.addEventListener('click', handleFindNearby);
-        showFallback('notice');
+
+        let savedCoords = null;
+        try {
+            const raw = sessionStorage.getItem('doctorsLastCoords');
+            if (raw) savedCoords = JSON.parse(raw);
+        } catch { /* ignore corrupt entry */ }
+
+        if (savedCoords) {
+            autoFindNearby(savedCoords);
+        } else {
+            showFallback('notice');
+        }
     } else {
         if (loginCard) loginCard.style.display = 'block';
         showFallback('static');
@@ -39,26 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const coords = await getLocation();
-            const [diabetesPlaces, hypertensionPlaces] = await Promise.all([
-                searchDoctors(coords.latitude, coords.longitude, 'diabetes'),
-                searchDoctors(coords.latitude, coords.longitude, 'hypertension'),
-            ]);
-
-            if (diabetesPlaces && diabetesPlaces.length > 0) {
-                renderPlaces('diabetesDoctors', diabetesPlaces, 'success');
-            } else {
-                renderFallbackSection('diabetesDoctors', 'diabetes', 'success');
-            }
-
-            if (hypertensionPlaces && hypertensionPlaces.length > 0) {
-                renderPlaces('hypertensionDoctors', hypertensionPlaces, 'danger');
-            } else {
-                renderFallbackSection('hypertensionDoctors', 'hypertension', 'danger');
-            }
-
-            setNotice('success', window.translator.t('doctors_live_results', 'Showing doctors near your location'));
+            sessionStorage.setItem('doctorsLastCoords', JSON.stringify({ latitude: coords.latitude, longitude: coords.longitude }));
+            await renderSearchResults(coords);
             if (locationCard) locationCard.style.display = 'none';
-
         } catch (e) {
             if (e.code === 1 /* PERMISSION_DENIED */) {
                 setNotice('warning', window.translator.t('doctors_location_denied', 'Location access denied. Showing sample doctors.'));
@@ -73,6 +67,41 @@ document.addEventListener('DOMContentLoaded', () => {
             if (searchingEl) searchingEl.style.display = 'none';
             if (window.InFlightTracker) window.InFlightTracker.end('places');
         }
+    }
+
+    async function autoFindNearby(coords) {
+        if (window.InFlightTracker && !window.InFlightTracker.start('places')) return;
+        if (searchingEl) searchingEl.style.display = 'block';
+        try {
+            await renderSearchResults(coords);
+            if (locationCard) locationCard.style.display = 'none';
+        } catch {
+            showFallback('notice');
+        } finally {
+            if (searchingEl) searchingEl.style.display = 'none';
+            if (window.InFlightTracker) window.InFlightTracker.end('places');
+        }
+    }
+
+    async function renderSearchResults(coords) {
+        const [diabetesPlaces, hypertensionPlaces] = await Promise.all([
+            searchDoctors(coords.latitude, coords.longitude, 'diabetes'),
+            searchDoctors(coords.latitude, coords.longitude, 'hypertension'),
+        ]);
+
+        if (diabetesPlaces && diabetesPlaces.length > 0) {
+            renderPlaces('diabetesDoctors', diabetesPlaces, 'success');
+        } else {
+            renderFallbackSection('diabetesDoctors', 'diabetes', 'success');
+        }
+
+        if (hypertensionPlaces && hypertensionPlaces.length > 0) {
+            renderPlaces('hypertensionDoctors', hypertensionPlaces, 'danger');
+        } else {
+            renderFallbackSection('hypertensionDoctors', 'hypertension', 'danger');
+        }
+
+        setNotice('success', window.translator.t('doctors_live_results', 'Showing doctors near your location'));
     }
 
     function getLocation() {
