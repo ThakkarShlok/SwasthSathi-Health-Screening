@@ -541,6 +541,7 @@ document.getElementById("screeningForm").addEventListener("submit", async functi
             }
         },
         additionalSymptoms: document.getElementById('additionalSymptoms').value,
+        symptomsConsent: document.getElementById('symptomsConsent')?.checked || false,
         lifestyle: {
             physicalActivity: document.getElementById('physicalActivity').value,
             dietPattern: document.getElementById('dietPattern').value,

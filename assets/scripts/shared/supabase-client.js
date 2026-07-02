@@ -480,7 +480,8 @@ class SupabaseClient {
             hba1c: patientData.readings?.hba1c ?? null,
             assessment_tier: patientData.assessmentTier ?? null,
             data_completeness_percentage: patientData.dataCompletenessPercentage ?? null,
-            factor_contributions: patientData.factorContributions ?? null
+            factor_contributions: patientData.factorContributions ?? null,
+            consent_to_research: patientData.symptomsConsent ?? false
         };
     }
 
@@ -526,6 +527,7 @@ class SupabaseClient {
             assessmentTier: dbData.assessment_tier ?? null,
             dataCompletenessPercentage: dbData.data_completeness_percentage ?? null,
             factorContributions: dbData.factor_contributions ?? null,
+            symptomsConsent: dbData.consent_to_research ?? false,
             timestamp: dbData.created_at
         };
     }

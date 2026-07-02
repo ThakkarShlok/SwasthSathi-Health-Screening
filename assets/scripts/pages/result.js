@@ -504,6 +504,8 @@ async function loadAIRecommendation(assessment, patientData) {
                 lang,
                 patientAge: patientData?.age ?? null,
                 patientGender: patientData?.gender ?? null,
+                additionalSymptoms: patientData?.additionalSymptoms ?? null,
+                symptomsConsent: patientData?.symptomsConsent ?? false,
             }),
             signal: controller.signal,
         });

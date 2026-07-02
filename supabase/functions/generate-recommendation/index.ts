@@ -25,14 +25,17 @@ Deno.serve(async (req: Request) => {
 
     let body: {
         riskData?: {
-            combined?: { score?: number; risk?: string };
+            combined?: { score?: number; risk?: string; tier?: string };
             diabetes?: { risk?: string; score?: number };
             hypertension?: { risk?: string; score?: number };
             topFactors?: string[];
+            topContributions?: Array<{ id: string; label: string; points: number; category: string; direction: string }>;
         };
         lang?: string;
         patientAge?: number;
         patientGender?: string;
+        additionalSymptoms?: string;
+        symptomsConsent?: boolean;
     };
     try {
         body = await req.json();
@@ -48,6 +51,17 @@ Deno.serve(async (req: Request) => {
     const hypertensionRisk = riskData.hypertension?.risk ?? 'unknown';
     const topFactors = (riskData.topFactors ?? []).slice(0, 4).join(', ') || 'none listed';
 
+    const tier = riskData.combined?.tier ?? 'baseline';
+    const contributions = (riskData.topContributions ?? []).slice(0, 3);
+    const contributionsLine = contributions.length > 0
+        ? contributions.map(c => `${c.label} (+${c.points} pts, ${c.category})`).join('; ')
+        : 'none';
+
+    const { additionalSymptoms, symptomsConsent } = body;
+    const symptomsLine = (symptomsConsent && additionalSymptoms)
+        ? `\nPatient mentioned: ${additionalSymptoms.slice(0, 200)}`
+        : '';
+
     const ageLine = patientAge ? `Age: ${patientAge}` : '';
     const genderLine = patientGender ? `Gender: ${patientGender}` : '';
     const demographics = [ageLine, genderLine].filter(Boolean).join(' | ');
@@ -56,6 +70,7 @@ Deno.serve(async (req: Request) => {
         `You are a compassionate health awareness assistant for SwasthSathi, an Indian preventive health screening app.
 Your role is to provide warm, practical, non-alarming health guidance tailored to the Indian context.
 Write in ${language}. Keep the total response under 180 words.
+The assessment tier is "${tier}" — one of baseline (no lab data), partial (some lab data), or enhanced (full lab data). For enhanced tier, reference specific factor magnitudes with confidence. For baseline tier, emphasize that full lab workup would improve the assessment.
 Structure your response in exactly 3 short paragraphs (no bullet points, no headers):
 1. What the results mean for them (encourage, don't alarm)
 2. Two or three specific lifestyle tips with Indian food/activity examples
@@ -64,9 +79,11 @@ Do not repeat the numbers from the screening data. Write conversationally.`;
 
     const userPrompt =
         `Health screening results for this patient:
-${demographics ? demographics + '\n' : ''}Overall risk: ${combinedRisk} (score ${combinedScore}/100)
+${demographics ? demographics + '\n' : ''}Assessment tier: ${tier}
+Overall risk: ${combinedRisk} (score ${combinedScore}/100)
 Diabetes risk: ${diabetesRisk} | Hypertension risk: ${hypertensionRisk}
 Key risk factors: ${topFactors}
+Top contributions: ${contributionsLine}${symptomsLine}
 
 Generate a personalized health recommendation.`;
 
