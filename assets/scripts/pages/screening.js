@@ -575,7 +575,7 @@ document.getElementById("screeningForm").addEventListener("submit", async functi
             patientData.hypertensionRiskScore = riskResult.hypertension?.score ?? null;
             patientData.riskCategory = riskResult.combined?.category ?? null;
             patientData.algorithmVersion = window.RiskCalculator.version ?? null;
-            patientData.languageAtScreening = (window.translator && window.translator.currentLanguage) || 'en';
+            patientData.languageAtScreening = (window.translator && window.translator.currentLang) || 'en';
         }
 
         // ===== STEP 5: Save to Supabase =====
