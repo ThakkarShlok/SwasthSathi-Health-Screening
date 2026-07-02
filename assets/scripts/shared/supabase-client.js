@@ -546,9 +546,9 @@ class SupabaseClient {
 
     async getByShortCode(code) {
         try {
-            const safeFields = 'id,result_short_code,computed_risk_score,diabetes_risk_score,hypertension_risk_score,risk_category,algorithm_version,created_at,assessment_tier,data_completeness_percentage';
+            const viewUrl = `${this.supabaseUrl}/rest/v1/shared_screening_results`;
             const resp = await fetch(
-                `${this.apiUrl}?result_short_code=eq.${encodeURIComponent(code)}&select=${safeFields}&limit=1`,
+                `${viewUrl}?result_short_code=eq.${encodeURIComponent(code)}&select=*&limit=1`,
                 { headers: { 'apikey': this.supabaseKey } },
             );
             if (!resp.ok) return null;
