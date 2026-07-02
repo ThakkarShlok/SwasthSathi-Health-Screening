@@ -290,13 +290,18 @@ function autoFillFormFieldsWithSuggestions(values) {
         showNotification('warning', window.translator.t('notification_ocr_no_values', 'Could not detect blood sugar or blood pressure values. Please enter manually.'));
     }
 
-    if (values.hba1c && window.MedicalValidator) {
-        const validation = window.MedicalValidator.validateHbA1c(values.hba1c);
-        showContextAlert(
-            window.translator.t('notification_hba1c_title', 'HbA1c detected'),
-            window.translator.t('notification_hba1c_context', 'Your HbA1c is {value}% - {message}', { value: values.hba1c, message: validation.message }),
-            validation.severity
-        );
+    if (values.hba1c) {
+        const hba1cField = document.getElementById('hba1c');
+        if (hba1cField) hba1cField.value = values.hba1c;
+
+        if (window.MedicalValidator) {
+            const validation = window.MedicalValidator.validateHbA1c(values.hba1c);
+            showContextAlert(
+                window.translator.t('notification_hba1c_title', 'HbA1c detected'),
+                window.translator.t('notification_hba1c_context', 'Your HbA1c is {value}% - {message}', { value: values.hba1c, message: validation.message }),
+                validation.severity
+            );
+        }
     }
 }
 
@@ -546,7 +551,8 @@ document.getElementById("screeningForm").addEventListener("submit", async functi
         readings: {
             bloodSugar: document.getElementById('sugar').value ?
                         parseFloat(document.getElementById('sugar').value) : null,
-            bloodPressure: document.getElementById('bp').value || null
+            bloodPressure: document.getElementById('bp').value || null,
+            hba1c: document.getElementById('hba1c').value ? parseFloat(document.getElementById('hba1c').value) : null
         }
     };
 
@@ -576,6 +582,12 @@ document.getElementById("screeningForm").addEventListener("submit", async functi
             patientData.riskCategory = riskResult.combined?.category ?? null;
             patientData.algorithmVersion = window.RiskCalculator.version ?? null;
             patientData.languageAtScreening = (window.translator && window.translator.currentLang) || 'en';
+            patientData.assessmentTier = riskResult.assessmentTier ?? null;
+            patientData.dataCompletenessPercentage = riskResult.dataCompletenessPercentage ?? null;
+            patientData.factorContributions = {
+                diabetes: riskResult.diabetes?.factorContributions ?? [],
+                hypertension: riskResult.hypertension?.factorContributions ?? []
+            };
         }
 
         // ===== STEP 5: Save to Supabase =====

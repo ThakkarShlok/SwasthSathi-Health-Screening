@@ -400,6 +400,8 @@ class SupabaseClient {
         const {
             computed_risk_score, diabetes_risk_score, hypertension_risk_score,
             risk_category, algorithm_version, language_at_screening,
+            assessment_tier, data_completeness_percentage, factor_contributions,
+            hba1c,
             ...core
         } = data;
         return core;
@@ -474,7 +476,11 @@ class SupabaseClient {
             risk_category: patientData.riskCategory ?? null,
             algorithm_version: patientData.algorithmVersion ?? null,
             language_at_screening: patientData.languageAtScreening ?? null,
-            result_short_code: patientData.resultShortCode ?? null
+            result_short_code: patientData.resultShortCode ?? null,
+            hba1c: patientData.readings?.hba1c ?? null,
+            assessment_tier: patientData.assessmentTier ?? null,
+            data_completeness_percentage: patientData.dataCompletenessPercentage ?? null,
+            factor_contributions: patientData.factorContributions ?? null
         };
     }
 
@@ -506,7 +512,8 @@ class SupabaseClient {
             },
             readings: {
                 bloodSugar: dbData.blood_sugar,
-                bloodPressure: dbData.blood_pressure
+                bloodPressure: dbData.blood_pressure,
+                hba1c: dbData.hba1c
             },
             // Risk snapshot fields
             computedRiskScore: dbData.computed_risk_score ?? null,
@@ -516,6 +523,9 @@ class SupabaseClient {
             algorithmVersion: dbData.algorithm_version ?? null,
             languageAtScreening: dbData.language_at_screening ?? null,
             resultShortCode: dbData.result_short_code ?? null,
+            assessmentTier: dbData.assessment_tier ?? null,
+            dataCompletenessPercentage: dbData.data_completeness_percentage ?? null,
+            factorContributions: dbData.factor_contributions ?? null,
             timestamp: dbData.created_at
         };
     }
