@@ -122,6 +122,42 @@ function renderStats(screenings) {
     }
 }
 
+function renderTierBadge(screening) {
+    const version = screening.algorithmVersion;
+    const tier = screening.assessmentTier;
+
+    if (version === 'rule-v1.4') {
+        const tierMap = {
+            baseline: { label: window.translator.t('tier_baseline', 'Baseline'), cls: 'bg-secondary-subtle text-secondary' },
+            partial:  { label: window.translator.t('tier_partial', 'Partial'), cls: 'bg-info-subtle text-info' },
+            enhanced: { label: window.translator.t('tier_enhanced', 'Enhanced'), cls: 'bg-success-subtle text-success' }
+        };
+        const t = tierMap[tier] || tierMap.baseline;
+        return `<span class="badge ${t.cls}">v1.4 ${t.label}</span>`;
+    } else if (version === 'rule-v1.3') {
+        return `<span class="badge bg-warning-subtle text-warning">v1.3 Legacy</span>`;
+    } else {
+        // Undefined / NULL / unknown — diagnostic placeholder, not silently coerced to v1.3
+        return `<span class="badge bg-secondary-subtle text-muted" title="Algorithm version not set">—</span>`;
+    }
+}
+
+function renderActionCell(screening, index) {
+    const canRecalculate = screening.algorithmVersion !== 'rule-v1.4'
+        && (screening.readings?.bloodSugar || screening.readings?.bloodPressure || screening.readings?.hba1c);
+
+    return `
+        <button class="btn btn-sm btn-outline-primary" onclick="viewScreeningDetails(${index})">
+            <i class="bi bi-eye"></i> ${window.translator.t('dashboard_btn_view', 'View')}
+        </button>
+        ${canRecalculate ? `
+            <button class="btn btn-sm btn-outline-success ms-1" onclick="recalculateScreening(${index})" title="${window.translator.t('dashboard_btn_recalc_tooltip', 'Recalculate with v1.4 algorithm')}">
+                <i class="bi bi-arrow-repeat"></i> v1.4
+            </button>
+        ` : ''}
+    `;
+}
+
 function renderScreeningHistory(screenings) {
     const container = document.getElementById('screeningHistoryContainer');
 
@@ -144,6 +180,7 @@ function renderScreeningHistory(screenings) {
         <thead>
             <tr>
                 <th>${window.translator.t('dashboard_col_date', 'Date')}</th>
+                <th>${window.translator.t('dashboard_col_tier', 'Assessment')}</th>
                 <th>${window.translator.t('dashboard_col_diabetes_risk', 'Diabetes Risk')}</th>
                 <th>${window.translator.t('dashboard_col_hypertension_risk', 'Hypertension Risk')}</th>
                 <th>${window.translator.t('dashboard_col_combined_risk', 'Combined Risk')}</th>
@@ -171,6 +208,9 @@ function renderScreeningHistory(screenings) {
                         ${index === 0 ? `<span class="badge bg-success ms-2">${window.translator.t('dashboard_badge_latest', 'Latest')}</span>` : ''}
                     </td>
                     <td>
+                        ${renderTierBadge(screening)}
+                    </td>
+                    <td>
                         <span class="badge bg-${assessment.diabetes.color}-custom">
                             ${assessment.diabetes.score}/100
                         </span>
@@ -186,9 +226,7 @@ function renderScreeningHistory(screenings) {
                         </span>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="viewScreeningDetails(${index})">
-                            <i class="bi bi-eye"></i> ${window.translator.t('dashboard_btn_view', 'View')}
-                        </button>
+                        ${renderActionCell(screening, index)}
                     </td>
                 </tr>
             `;
@@ -199,13 +237,14 @@ function renderScreeningHistory(screenings) {
                         <i class="bi bi-calendar3"></i> ${formattedDate}
                         ${index === 0 ? `<span class="badge bg-success ms-2">${window.translator.t('dashboard_badge_latest', 'Latest')}</span>` : ''}
                     </td>
+                    <td>
+                        ${renderTierBadge(screening)}
+                    </td>
                     <td colspan="3">
                         <span class="text-muted">${window.translator.t('dashboard_risk_unavailable', 'Risk data unavailable')}</span>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="viewScreeningDetails(${index})">
-                            <i class="bi bi-eye"></i> ${window.translator.t('dashboard_btn_view', 'View')}
-                        </button>
+                        ${renderActionCell(screening, index)}
                     </td>
                 </tr>
             `;
@@ -220,6 +259,39 @@ async function viewScreeningDetails(index) {
     sessionStorage.setItem('selectedScreeningIndex', index);
     window.location.href = 'result.html';
 }
+
+async function recalculateScreening(index) {
+    const result = await window.supabaseClient.getUserScreenings();
+    if (!result.success) return;
+    const screening = result.screenings[index];
+    if (!screening) return;
+
+    if (!confirm(window.translator.t('dashboard_confirm_recalc', 'Recalculate this screening with the v1.4 algorithm using your existing data? This will update the risk scores.'))) return;
+
+    const riskResult = window.RiskCalculator.assessHealthRisk(screening);
+    const updated = {
+        computed_risk_score: riskResult.combined?.score ?? null,
+        diabetes_risk_score: riskResult.diabetes?.score ?? null,
+        hypertension_risk_score: riskResult.hypertension?.score ?? null,
+        risk_category: riskResult.combined?.category ?? null,
+        algorithm_version: window.RiskCalculator.version,
+        assessment_tier: riskResult.assessmentTier,
+        data_completeness_percentage: riskResult.dataCompletenessPercentage,
+        factor_contributions: {
+            diabetes: riskResult.diabetes?.factorContributions ?? [],
+            hypertension: riskResult.hypertension?.factorContributions ?? []
+        }
+    };
+
+    const patchOk = await window.supabaseClient.patchScreening(screening.id, updated);
+    if (patchOk) {
+        window.location.reload();
+    } else {
+        alert(window.translator.t('dashboard_recalc_failed', 'Recalculation failed. Please try again.'));
+    }
+}
+
+window.recalculateScreening = recalculateScreening;
 
 function showError(message) {
     document.getElementById('loadingState').innerHTML = `

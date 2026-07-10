@@ -532,6 +532,26 @@ class SupabaseClient {
         };
     }
 
+    async patchScreening(screeningId, updates) {
+        const token = this.getAccessToken();
+        if (!token) return false;
+        try {
+            const resp = await fetch(`${this.apiUrl}?id=eq.${screeningId}`, {
+                method: 'PATCH',
+                headers: {
+                    'apikey': this.supabaseKey,
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal',
+                },
+                body: JSON.stringify(updates),
+            });
+            return resp.ok;
+        } catch {
+            return false;
+        }
+    }
+
     // ==========================================
     // SHAREABLE RESULT METHODS (PHASE 2A)
     // ==========================================
