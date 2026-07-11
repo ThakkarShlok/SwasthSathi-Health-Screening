@@ -19,38 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ==========================================
-// MAIN INITIALIZATION FUNCTION
-// ==========================================
-
-function initializeResultsPage() {
-    try {
-        // Fetch patient data from localStorage
-        const patientData = fetchUserData();
-        
-        if (!patientData) {
-            showErrorState();
-            return;
-        }
-
-        // Calculate risk assessment
-        const assessment = window.RiskCalculator.assessHealthRisk(patientData);
-        
-        // Render UI
-        renderResultsUI(assessment);
-        
-        // Hide loading, show results
-        document.getElementById('loadingState').style.display = 'none';
-        document.getElementById('resultsContainer').style.display = 'block';
-        
-        console.log('✓ Results rendered successfully');
-        
-    } catch (error) {
-        console.error('Error initializing results:', error);
-        showErrorState();
-    }
-}
-
-// ==========================================
 // DATA RETRIEVAL - SUPABASE VERSION
 // ==========================================
 
@@ -162,8 +130,8 @@ function renderResultsUI(assessment, patientData) {
     renderPatientInfo(assessment.patientInfo, assessment.timestamp);
     renderCombinedRisk(assessment.combined);
     renderRiskGauge(assessment.combined.score, assessment.combined.color);
-    renderDiabetesRisk(assessment.diabetes);
-    renderHypertensionRisk(assessment.hypertension);
+    renderDiabetesRisk(assessment.diabetes, assessment.assessmentTier);
+    renderHypertensionRisk(assessment.hypertension, assessment.assessmentTier);
     renderFactorCards(assessment.diabetes, assessment.hypertension);
     if (patientData) renderCompletenessPanel(patientData);
     renderRecommendations(assessment.recommendations, assessment.combined.urgency);
@@ -224,20 +192,19 @@ function renderCombinedRisk(combinedRisk) {
 /**
  * Render diabetes risk
  */
-function renderDiabetesRisk(diabetesRisk) {
+function renderDiabetesRisk(diabetesRisk, assessmentTier) {
     const card = document.getElementById('diabetesRiskCard');
     const score = document.getElementById('diabetesScore');
     const badge = document.getElementById('diabetesBadge');
     const factorsList = document.getElementById('diabetesFactors');
-    const confidence = document.getElementById('diabetesConfidence');
 
     // Set score
     animateScore(score, 0, diabetesRisk.score, 1200);
-    
+
     // Set badge
     badge.textContent = diabetesRisk.category;
     badge.className = `badge bg-${diabetesRisk.color}-custom`;
-    
+
     // Set factors
     factorsList.innerHTML = '';
     diabetesRisk.topFactors.forEach(factor => {
@@ -245,11 +212,24 @@ function renderDiabetesRisk(diabetesRisk) {
         li.textContent = factor;
         factorsList.appendChild(li);
     });
-    
-    // Set confidence
-    confidence.textContent = diabetesRisk.confidence;
-    confidence.className = diabetesRisk.confidence === 'High' ? 'text-success fw-bold' : '';
-    
+
+    // Replace confidence with tier badge
+    const tierEl = document.getElementById('diabetesConfidence');
+    if (tierEl && assessmentTier) {
+        const tierLabels = {
+            baseline: window.translator.t('tier_baseline', 'Baseline assessment'),
+            partial: window.translator.t('tier_partial', 'Partial lab data'),
+            enhanced: window.translator.t('tier_enhanced', 'Enhanced with lab data')
+        };
+        const tierColors = {
+            baseline: 'text-muted',
+            partial: 'text-info',
+            enhanced: 'text-success fw-bold'
+        };
+        tierEl.textContent = tierLabels[assessmentTier] || tierLabels.baseline;
+        tierEl.className = tierColors[assessmentTier] || tierColors.baseline;
+    }
+
     // Add border color
     card.style.borderLeft = `5px solid var(--color-${diabetesRisk.color})`;
 }
@@ -257,20 +237,19 @@ function renderDiabetesRisk(diabetesRisk) {
 /**
  * Render hypertension risk
  */
-function renderHypertensionRisk(hypertensionRisk) {
+function renderHypertensionRisk(hypertensionRisk, assessmentTier) {
     const card = document.getElementById('hypertensionRiskCard');
     const score = document.getElementById('hypertensionScore');
     const badge = document.getElementById('hypertensionBadge');
     const factorsList = document.getElementById('hypertensionFactors');
-    const confidence = document.getElementById('hypertensionConfidence');
 
     // Set score
     animateScore(score, 0, hypertensionRisk.score, 1200);
-    
+
     // Set badge
     badge.textContent = hypertensionRisk.category;
     badge.className = `badge bg-${hypertensionRisk.color}-custom`;
-    
+
     // Set factors
     factorsList.innerHTML = '';
     hypertensionRisk.topFactors.forEach(factor => {
@@ -278,11 +257,24 @@ function renderHypertensionRisk(hypertensionRisk) {
         li.textContent = factor;
         factorsList.appendChild(li);
     });
-    
-    // Set confidence
-    confidence.textContent = hypertensionRisk.confidence;
-    confidence.className = hypertensionRisk.confidence === 'High' ? 'text-success fw-bold' : '';
-    
+
+    // Replace confidence with tier badge
+    const tierEl = document.getElementById('hypertensionConfidence');
+    if (tierEl && assessmentTier) {
+        const tierLabels = {
+            baseline: window.translator.t('tier_baseline', 'Baseline assessment'),
+            partial: window.translator.t('tier_partial', 'Partial lab data'),
+            enhanced: window.translator.t('tier_enhanced', 'Enhanced with lab data')
+        };
+        const tierColors = {
+            baseline: 'text-muted',
+            partial: 'text-info',
+            enhanced: 'text-success fw-bold'
+        };
+        tierEl.textContent = tierLabels[assessmentTier] || tierLabels.baseline;
+        tierEl.className = tierColors[assessmentTier] || tierColors.baseline;
+    }
+
     // Add border color
     card.style.borderLeft = `5px solid var(--color-${hypertensionRisk.color})`;
 }
@@ -476,10 +468,24 @@ async function loadAIRecommendation(assessment, patientData) {
     if (assessment.hypertension?.topFactors) topFactors.push(...assessment.hypertension.topFactors.slice(0, 2));
 
     const riskData = {
-        combined: { score: assessment.combined?.score, risk: assessment.combined?.risk },
-        diabetes: { risk: assessment.diabetes?.risk, score: assessment.diabetes?.score },
-        hypertension: { risk: assessment.hypertension?.risk, score: assessment.hypertension?.score },
+        combined: {
+            score: assessment.combined?.score,
+            risk: assessment.combined?.risk || assessment.combined?.category,
+            tier: assessment.assessmentTier
+        },
+        diabetes: {
+            risk: assessment.diabetes?.risk || assessment.diabetes?.category,
+            score: assessment.diabetes?.score
+        },
+        hypertension: {
+            risk: assessment.hypertension?.risk || assessment.hypertension?.category,
+            score: assessment.hypertension?.score
+        },
         topFactors: [...new Set(topFactors)],
+        topContributions: (assessment.diabetes?.factorContributions || [])
+            .concat(assessment.hypertension?.factorContributions || [])
+            .sort((a, b) => b.points - a.points)
+            .slice(0, 3)
     };
 
     const controller = new AbortController();
@@ -498,6 +504,8 @@ async function loadAIRecommendation(assessment, patientData) {
                 lang,
                 patientAge: patientData?.age ?? null,
                 patientGender: patientData?.gender ?? null,
+                additionalSymptoms: patientData?.additionalSymptoms ?? null,
+                symptomsConsent: patientData?.symptomsConsent ?? false,
             }),
             signal: controller.signal,
         });
@@ -625,7 +633,15 @@ function renderFactorCards(diabetesRisk, hypertensionRisk) {
     const container = document.getElementById('factorCardsContainer');
     if (!container) return;
 
-    // Collect unique top factors across both conditions (max 6 cards)
+    // v1.4 path: use factorContributions if available
+    const hasContributions = (diabetesRisk.factorContributions?.length || 0) > 0
+                          || (hypertensionRisk.factorContributions?.length || 0) > 0;
+    if (hasContributions) {
+        renderFactorCardsV14(container, diabetesRisk, hypertensionRisk);
+        return;
+    }
+
+    // v1.3 fallback: collect unique top factors across both conditions (max 6 cards)
     const seen = new Set();
     const allFactors = [
         ...diabetesRisk.topFactors.map(f => ({ factor: f, source: 'diabetes' })),
@@ -689,6 +705,83 @@ function renderFactorCards(diabetesRisk, hypertensionRisk) {
     }
 }
 
+function renderFactorCardsV14(container, diabetesRisk, hypertensionRisk) {
+    const merged = new Map();
+    const all = [
+        ...(diabetesRisk.factorContributions || []).map(f => ({...f, source: 'diabetes'})),
+        ...(hypertensionRisk.factorContributions || []).map(f => ({...f, source: 'hypertension'}))
+    ];
+    all.forEach(f => {
+        const existing = merged.get(f.id);
+        if (!existing || f.points > existing.points) merged.set(f.id, f);
+    });
+    const top = Array.from(merged.values())
+        .sort((a, b) => b.points - a.points)
+        .slice(0, 6);
+
+    const iconMap = {
+        factor_age_title: 'bi-calendar-heart',
+        factor_obesity_title: 'bi-person-fill',
+        factor_overweight_title: 'bi-arrow-up-circle-fill',
+        factor_abdominal_obesity_title: 'bi-rulers',
+        factor_blood_sugar_high_title: 'bi-droplet-fill',
+        factor_blood_sugar_prediabetes_title: 'bi-droplet-half',
+        factor_hba1c_title: 'bi-droplet-fill',
+        factor_blood_pressure_title: 'bi-heart-pulse-fill',
+        factor_diagnosed_diabetes_title: 'bi-clipboard2-pulse-fill',
+        factor_diagnosed_hypertension_title: 'bi-clipboard2-heart-fill',
+        factor_diabetes_symptoms_title: 'bi-activity',
+        factor_htn_symptoms_title: 'bi-broadcast',
+        factor_family_history_title: 'bi-people-fill',
+        factor_sedentary_title: 'bi-tv-fill',
+        factor_diet_title: 'bi-egg-fried',
+        factor_smoking_title: 'bi-wind',
+        factor_alcohol_title: 'bi-cup-fill'
+    };
+
+    const categoryLabels = {
+        modifiable: window.translator.t('factor_cat_modifiable', 'You can change this'),
+        non_modifiable: window.translator.t('factor_cat_non_modifiable', 'Cannot be changed'),
+        clinical: window.translator.t('factor_cat_clinical', 'Clinical measurement')
+    };
+    const categoryColors = {
+        modifiable: 'text-success',
+        non_modifiable: 'text-muted',
+        clinical: 'text-primary'
+    };
+
+    container.innerHTML = top.map(f => {
+        const expl = window.FactorExplanations
+            ? window.FactorExplanations.getFactorExplanation(f.label)
+            : null;
+        const title = expl ? window.translator.t(expl.title_key, f.label) : f.label;
+        const context = expl ? window.translator.t(expl.context_key, '') : '';
+        const icon = expl ? (iconMap[expl.title_key] || 'bi-exclamation-circle') : 'bi-exclamation-circle';
+        const catLabel = categoryLabels[f.category] || '';
+        const catColor = categoryColors[f.category] || 'text-muted';
+
+        return `
+            <div class="col-md-6 col-lg-4">
+                <div class="factor-context-card">
+                    <div class="factor-context-icon ${f.source === 'diabetes' ? 'text-success' : 'text-danger'}">
+                        <i class="bi ${icon}"></i>
+                    </div>
+                    <div class="factor-context-title">${title}</div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge bg-secondary-subtle text-dark">${f.points} pts</span>
+                        <small class="${catColor}"><i class="bi bi-tag-fill"></i> ${catLabel}</small>
+                    </div>
+                    ${context ? `<div class="factor-context-body">${context}</div>` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    if (top.length === 0) {
+        container.innerHTML = `<p class="text-muted small">${window.translator.t('factor_none_detected', 'No significant risk factors detected.')}</p>`;
+    }
+}
+
 // ==========================================
 // DATA COMPLETENESS PANEL
 // ==========================================
@@ -709,6 +802,11 @@ function renderCompletenessPanel(patientData) {
             key: 'blood_pressure',
             label: t('completeness_blood_pressure', 'Blood Pressure'),
             present: !!(patientData.readings && patientData.readings.bloodPressure)
+        },
+        {
+            key: 'hba1c',
+            label: t('completeness_hba1c', 'HbA1c (3-month sugar)'),
+            present: !!(patientData.readings && patientData.readings.hba1c)
         },
         {
             key: 'waist',

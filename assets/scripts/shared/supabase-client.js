@@ -400,6 +400,8 @@ class SupabaseClient {
         const {
             computed_risk_score, diabetes_risk_score, hypertension_risk_score,
             risk_category, algorithm_version, language_at_screening,
+            assessment_tier, data_completeness_percentage, factor_contributions,
+            hba1c,
             ...core
         } = data;
         return core;
@@ -474,7 +476,12 @@ class SupabaseClient {
             risk_category: patientData.riskCategory ?? null,
             algorithm_version: patientData.algorithmVersion ?? null,
             language_at_screening: patientData.languageAtScreening ?? null,
-            result_short_code: patientData.resultShortCode ?? null
+            result_short_code: patientData.resultShortCode ?? null,
+            hba1c: patientData.readings?.hba1c ?? null,
+            assessment_tier: patientData.assessmentTier ?? null,
+            data_completeness_percentage: patientData.dataCompletenessPercentage ?? null,
+            factor_contributions: patientData.factorContributions ?? null,
+            consent_to_research: patientData.symptomsConsent ?? false
         };
     }
 
@@ -506,7 +513,8 @@ class SupabaseClient {
             },
             readings: {
                 bloodSugar: dbData.blood_sugar,
-                bloodPressure: dbData.blood_pressure
+                bloodPressure: dbData.blood_pressure,
+                hba1c: dbData.hba1c
             },
             // Risk snapshot fields
             computedRiskScore: dbData.computed_risk_score ?? null,
@@ -516,8 +524,32 @@ class SupabaseClient {
             algorithmVersion: dbData.algorithm_version ?? null,
             languageAtScreening: dbData.language_at_screening ?? null,
             resultShortCode: dbData.result_short_code ?? null,
+            assessmentTier: dbData.assessment_tier ?? null,
+            dataCompletenessPercentage: dbData.data_completeness_percentage ?? null,
+            factorContributions: dbData.factor_contributions ?? null,
+            symptomsConsent: dbData.consent_to_research ?? false,
             timestamp: dbData.created_at
         };
+    }
+
+    async patchScreening(screeningId, updates) {
+        const token = this.getAccessToken();
+        if (!token) return false;
+        try {
+            const resp = await fetch(`${this.apiUrl}?id=eq.${screeningId}`, {
+                method: 'PATCH',
+                headers: {
+                    'apikey': this.supabaseKey,
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal',
+                },
+                body: JSON.stringify(updates),
+            });
+            return resp.ok;
+        } catch {
+            return false;
+        }
     }
 
     // ==========================================
@@ -546,8 +578,9 @@ class SupabaseClient {
 
     async getByShortCode(code) {
         try {
+            const viewUrl = `${this.supabaseUrl}/rest/v1/shared_screening_results`;
             const resp = await fetch(
-                `${this.apiUrl}?result_short_code=eq.${encodeURIComponent(code)}&select=*&limit=1`,
+                `${viewUrl}?result_short_code=eq.${encodeURIComponent(code)}&select=*&limit=1`,
                 { headers: { 'apikey': this.supabaseKey } },
             );
             if (!resp.ok) return null;

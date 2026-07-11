@@ -32,6 +32,10 @@ const FACTOR_EXPLANATIONS = {
     'High blood sugar (≥126 mg/dL)':      { title_key: 'factor_blood_sugar_high_title',        context_key: 'factor_blood_sugar_high_context' },
     'Pre-diabetes range (100-125 mg/dL)':      { title_key: 'factor_blood_sugar_prediabetes_title', context_key: 'factor_blood_sugar_prediabetes_context' },
 
+    // ===== HbA1c (v1.4) =====
+    'HbA1c ≥6.5% (diabetes range)': { title_key: 'factor_hba1c_title', context_key: 'factor_hba1c_context' },
+    'HbA1c 5.7-6.4% (prediabetes)':  { title_key: 'factor_hba1c_title', context_key: 'factor_hba1c_context' },
+
     // ===== BLOOD PRESSURE =====
     'Hypertensive Crisis (≥180/120)':          { title_key: 'factor_blood_pressure_title', context_key: 'factor_blood_pressure_context' },
     'Stage 2 Hypertension (160-179/100-119)':      { title_key: 'factor_blood_pressure_title', context_key: 'factor_blood_pressure_context' },

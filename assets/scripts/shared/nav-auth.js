@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <li><a class="dropdown-item" href="screening.html">
                         <i class="bi bi-clipboard2-pulse"></i> ${window.translator.t('nav_new_screening', 'New Screening')}
                     </a></li>
+                    <li><a class="dropdown-item" href="comparison.html">
+                        <i class="bi bi-graph-up"></i> ${window.translator.t('nav_compare', 'Compare Screenings')}
+                    </a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" href="#" onclick="handleLogout()">
                         <i class="bi bi-box-arrow-right"></i> ${window.translator.t('nav_logout', 'Logout')}

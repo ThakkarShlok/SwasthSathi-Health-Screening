@@ -122,6 +122,42 @@ function renderStats(screenings) {
     }
 }
 
+function renderTierBadge(screening) {
+    const version = screening.algorithmVersion;
+    const tier = screening.assessmentTier;
+
+    if (version === 'rule-v1.4') {
+        const tierMap = {
+            baseline: { label: window.translator.t('tier_baseline', 'Baseline'), cls: 'bg-secondary-subtle text-secondary' },
+            partial:  { label: window.translator.t('tier_partial', 'Partial'), cls: 'bg-info-subtle text-info' },
+            enhanced: { label: window.translator.t('tier_enhanced', 'Enhanced'), cls: 'bg-success-subtle text-success' }
+        };
+        const t = tierMap[tier] || tierMap.baseline;
+        return `<span class="badge ${t.cls}">v1.4 ${t.label}</span>`;
+    } else if (version === 'rule-v1.3') {
+        return `<span class="badge bg-warning-subtle text-warning">v1.3 Legacy</span>`;
+    } else {
+        // Undefined / NULL / unknown — diagnostic placeholder, not silently coerced to v1.3
+        return `<span class="badge bg-secondary-subtle text-muted" title="Algorithm version not set">—</span>`;
+    }
+}
+
+function renderActionCell(screening, index) {
+    const canRecalculate = screening.algorithmVersion !== 'rule-v1.4'
+        && (screening.readings?.bloodSugar || screening.readings?.bloodPressure || screening.readings?.hba1c);
+
+    return `
+        <button class="btn btn-sm btn-outline-primary" onclick="viewScreeningDetails(${index})">
+            <i class="bi bi-eye"></i> ${window.translator.t('dashboard_btn_view', 'View')}
+        </button>
+        ${canRecalculate ? `
+            <button class="btn btn-sm btn-outline-success ms-1" onclick="recalculateScreening(${index})" title="${window.translator.t('dashboard_btn_recalc_tooltip', 'Recalculate with v1.4 algorithm')}">
+                <i class="bi bi-arrow-repeat"></i> v1.4
+            </button>
+        ` : ''}
+    `;
+}
+
 function renderScreeningHistory(screenings) {
     const container = document.getElementById('screeningHistoryContainer');
 
@@ -144,6 +180,7 @@ function renderScreeningHistory(screenings) {
         <thead>
             <tr>
                 <th>${window.translator.t('dashboard_col_date', 'Date')}</th>
+                <th>${window.translator.t('dashboard_col_tier', 'Assessment')}</th>
                 <th>${window.translator.t('dashboard_col_diabetes_risk', 'Diabetes Risk')}</th>
                 <th>${window.translator.t('dashboard_col_hypertension_risk', 'Hypertension Risk')}</th>
                 <th>${window.translator.t('dashboard_col_combined_risk', 'Combined Risk')}</th>
@@ -171,6 +208,9 @@ function renderScreeningHistory(screenings) {
                         ${index === 0 ? `<span class="badge bg-success ms-2">${window.translator.t('dashboard_badge_latest', 'Latest')}</span>` : ''}
                     </td>
                     <td>
+                        ${renderTierBadge(screening)}
+                    </td>
+                    <td>
                         <span class="badge bg-${assessment.diabetes.color}-custom">
                             ${assessment.diabetes.score}/100
                         </span>
@@ -186,9 +226,7 @@ function renderScreeningHistory(screenings) {
                         </span>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="viewScreeningDetails(${index})">
-                            <i class="bi bi-eye"></i> ${window.translator.t('dashboard_btn_view', 'View')}
-                        </button>
+                        ${renderActionCell(screening, index)}
                     </td>
                 </tr>
             `;
@@ -199,13 +237,14 @@ function renderScreeningHistory(screenings) {
                         <i class="bi bi-calendar3"></i> ${formattedDate}
                         ${index === 0 ? `<span class="badge bg-success ms-2">${window.translator.t('dashboard_badge_latest', 'Latest')}</span>` : ''}
                     </td>
+                    <td>
+                        ${renderTierBadge(screening)}
+                    </td>
                     <td colspan="3">
                         <span class="text-muted">${window.translator.t('dashboard_risk_unavailable', 'Risk data unavailable')}</span>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary" onclick="viewScreeningDetails(${index})">
-                            <i class="bi bi-eye"></i> ${window.translator.t('dashboard_btn_view', 'View')}
-                        </button>
+                        ${renderActionCell(screening, index)}
                     </td>
                 </tr>
             `;
@@ -220,6 +259,68 @@ async function viewScreeningDetails(index) {
     sessionStorage.setItem('selectedScreeningIndex', index);
     window.location.href = 'result.html';
 }
+
+async function recalculateScreening(index) {
+    const result = await window.supabaseClient.getUserScreenings();
+    if (!result.success) return;
+    const screening = result.screenings[index];
+    if (!screening) return;
+
+    if (!confirm(window.translator.t('dashboard_confirm_recalc', 'Recalculate this screening with the v1.4 algorithm using your existing data? This will update the risk scores.'))) return;
+
+    // Capture old scores BEFORE recalculation
+    const oldCombined = Math.round(screening.computedRiskScore || 0);
+    const oldDiabetes = Math.round(screening.diabetesRiskScore || 0);
+    const oldHypertension = Math.round(screening.hypertensionRiskScore || 0);
+
+    const riskResult = window.RiskCalculator.assessHealthRisk(screening);
+    const newCombined = Math.round(riskResult.combined?.score ?? 0);
+    const newDiabetes = Math.round(riskResult.diabetes?.score ?? 0);
+    const newHypertension = Math.round(riskResult.hypertension?.score ?? 0);
+
+    const combinedDelta = newCombined - oldCombined;
+    const diabetesDelta = newDiabetes - oldDiabetes;
+    const hypertensionDelta = newHypertension - oldHypertension;
+    const anyChange = combinedDelta !== 0 || diabetesDelta !== 0 || hypertensionDelta !== 0;
+
+    const updated = {
+        computed_risk_score: newCombined,
+        diabetes_risk_score: newDiabetes,
+        hypertension_risk_score: newHypertension,
+        risk_category: riskResult.combined?.category ?? null,
+        algorithm_version: window.RiskCalculator.version,
+        assessment_tier: riskResult.assessmentTier,
+        data_completeness_percentage: riskResult.dataCompletenessPercentage,
+        factor_contributions: {
+            diabetes: riskResult.diabetes?.factorContributions ?? [],
+            hypertension: riskResult.hypertension?.factorContributions ?? []
+        }
+    };
+
+    const patchOk = await window.supabaseClient.patchScreening(screening.id, updated);
+    if (!patchOk) {
+        alert(window.translator.t('dashboard_recalc_failed', 'Recalculation failed. Please try again.'));
+        return;
+    }
+
+    if (anyChange) {
+        const deltaSign = combinedDelta > 0 ? '+' : '';
+        alert(window.translator.t(
+            'dashboard_recalc_changed_body',
+            'Score updated with v1.4 algorithm. Combined risk changed from {old} to {new} (delta of {sign}{delta} points). This reflects the HbA1c data v1.4 now consumes.',
+            { old: oldCombined, new: newCombined, sign: deltaSign, delta: combinedDelta }
+        ));
+    } else {
+        alert(window.translator.t(
+            'dashboard_recalc_unchanged_body',
+            'Row updated to v1.4 algorithm. Score is unchanged because HbA1c was not provided at screening time. HbA1c is the only lab reading v1.4 processes differently than v1.3. Provide HbA1c on your next screening to see the enhanced assessment.'
+        ));
+    }
+
+    window.location.reload();
+}
+
+window.recalculateScreening = recalculateScreening;
 
 function showError(message) {
     document.getElementById('loadingState').innerHTML = `

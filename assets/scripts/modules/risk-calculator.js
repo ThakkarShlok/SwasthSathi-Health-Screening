@@ -6,7 +6,7 @@
  * ============================================
  */
 
-const ALGORITHM_VERSION = 'rule-v1.3';
+const ALGORITHM_VERSION = 'rule-v1.4';
 
 // ==========================================
 // DIABETES RISK CALCULATION
@@ -19,6 +19,7 @@ const ALGORITHM_VERSION = 'rule-v1.3';
 function calculateDiabetesRisk(patientData) {
     let score = 0;
     let factors = [];
+    let factorContributions = [];
     let confidence = 'Medium';
 
     // ===== AGE FACTOR (Max 30 points) =====
@@ -26,18 +27,23 @@ function calculateDiabetesRisk(patientData) {
     if (patientData.age >= 50) {
         score += 30;
         factors.push({ factor: 'Age ≥50 years', points: 30, severity: 'high' });
+        factorContributions.push({ id: 'age_50_plus', label: 'Age ≥50 years', points: 30, category: 'non_modifiable', direction: 'positive' });
     } else if (patientData.age >= 45) {
         score += 25;
         factors.push({ factor: 'Age 45-49 years', points: 25, severity: 'high' });
+        factorContributions.push({ id: 'age_45_49', label: 'Age 45-49 years', points: 25, category: 'non_modifiable', direction: 'positive' });
     } else if (patientData.age >= 40) {
         score += 20;
         factors.push({ factor: 'Age 40-44 years', points: 20, severity: 'medium' });
+        factorContributions.push({ id: 'age_40_44', label: 'Age 40-44 years', points: 20, category: 'non_modifiable', direction: 'positive' });
     } else if (patientData.age >= 35) {
         score += 12;
         factors.push({ factor: 'Age 35-39 years', points: 12, severity: 'medium' });
+        factorContributions.push({ id: 'age_35_39', label: 'Age 35-39 years', points: 12, category: 'non_modifiable', direction: 'positive' });
     } else if (patientData.age >= 30) {
         score += 6;
         factors.push({ factor: 'Age 30-34 years', points: 6, severity: 'low' });
+        factorContributions.push({ id: 'age_30_34', label: 'Age 30-34 years', points: 6, category: 'non_modifiable', direction: 'positive' });
     }
 
     // ===== BMI FACTOR (Max 25 points) =====
@@ -45,15 +51,19 @@ function calculateDiabetesRisk(patientData) {
     if (patientData.bmi >= 30) {
         score += 25;
         factors.push({ factor: 'Obesity (BMI ≥30)', points: 25, severity: 'high' });
+        factorContributions.push({ id: 'bmi_obese', label: 'Obesity (BMI ≥30)', points: 25, category: 'modifiable', direction: 'positive' });
     } else if (patientData.bmi >= 27.5) {
         score += 20;
         factors.push({ factor: 'Overweight Class II (BMI 27.5-29.9)', points: 20, severity: 'high' });
+        factorContributions.push({ id: 'bmi_overweight_class_ii', label: 'Overweight Class II (BMI 27.5-29.9)', points: 20, category: 'modifiable', direction: 'positive' });
     } else if (patientData.bmi >= 25) {
         score += 15;
         factors.push({ factor: 'Overweight Class I (BMI 25-27.4)', points: 15, severity: 'medium' });
+        factorContributions.push({ id: 'bmi_overweight_class_i', label: 'Overweight Class I (BMI 25-27.4)', points: 15, category: 'modifiable', direction: 'positive' });
     } else if (patientData.bmi >= 23) {
         score += 8;
         factors.push({ factor: 'Overweight (Asian cutoff, BMI 23-24.9)', points: 8, severity: 'medium' });
+        factorContributions.push({ id: 'bmi_overweight_asian', label: 'Overweight (Asian cutoff, BMI 23-24.9)', points: 8, category: 'modifiable', direction: 'positive' });
     }
 
     // ===== WAIST CIRCUMFERENCE (Max 15 points) =====
@@ -63,37 +73,64 @@ function calculateDiabetesRisk(patientData) {
         if (patientData.waistCircumference >= waistThreshold) {
             score += 15;
             factors.push({ factor: 'Abdominal obesity', points: 15, severity: 'high' });
+            factorContributions.push({ id: 'abdominal_obesity', label: 'Abdominal obesity', points: 15, category: 'modifiable', direction: 'positive' });
         }
     }
 
-    // ===== BLOOD SUGAR READING (Max 40 points) =====
+    // ===== GLYCEMIC MARKER: HbA1c or BLOOD SUGAR (Max 40 points) =====
+    // HbA1c is a 3-month average and takes priority over a single blood sugar
+    // reading when both are present, to avoid double-counting the same signal.
+    let bloodSugarPoints = 0;
+    let bloodSugarFactor = null;
     if (patientData.readings.bloodSugar) {
         const sugar = parseFloat(patientData.readings.bloodSugar);
         if (sugar >= 200) {
-            score += 40;
-            factors.push({ factor: 'Very high blood sugar (≥200 mg/dL)', points: 40, severity: 'critical' });
-            confidence = 'High';
+            bloodSugarPoints = 40;
+            bloodSugarFactor = { factor: 'Very high blood sugar (≥200 mg/dL)', points: 40, severity: 'critical', id: 'blood_sugar_very_high' };
         } else if (sugar >= 126) {
-            score += 35;
-            factors.push({ factor: 'High blood sugar (≥126 mg/dL)', points: 35, severity: 'high' });
-            confidence = 'High';
+            bloodSugarPoints = 35;
+            bloodSugarFactor = { factor: 'High blood sugar (≥126 mg/dL)', points: 35, severity: 'high', id: 'blood_sugar_high' };
         } else if (sugar >= 100) {
-            score += 15;
-            factors.push({ factor: 'Pre-diabetes range (100-125 mg/dL)', points: 15, severity: 'medium' });
+            bloodSugarPoints = 15;
+            bloodSugarFactor = { factor: 'Pre-diabetes range (100-125 mg/dL)', points: 15, severity: 'medium', id: 'blood_sugar_prediabetes' };
         }
+    }
+
+    let hba1cPoints = 0;
+    let hba1cFactor = null;
+    if (patientData.readings?.hba1c) {
+        const hba1c = parseFloat(patientData.readings.hba1c);
+        if (hba1c >= 6.5) {
+            hba1cPoints = 35;
+            hba1cFactor = { factor: 'HbA1c ≥6.5% (diabetes range)', points: 35, severity: 'high', id: 'hba1c_diabetes' };
+        } else if (hba1c >= 5.7 && hba1c <= 6.4) {
+            hba1cPoints = 18;
+            hba1cFactor = { factor: 'HbA1c 5.7-6.4% (prediabetes)', points: 18, severity: 'medium', id: 'hba1c_prediabetes' };
+        }
+    }
+
+    const glycemicFactor = hba1cPoints > 0 ? hba1cFactor : bloodSugarFactor;
+    const glycemicPoints = hba1cPoints > 0 ? hba1cPoints : bloodSugarPoints;
+
+    if (glycemicFactor) {
+        score += glycemicPoints;
+        factors.push({ factor: glycemicFactor.factor, points: glycemicFactor.points, severity: glycemicFactor.severity });
+        factorContributions.push({ id: glycemicFactor.id, label: glycemicFactor.factor, points: glycemicFactor.points, category: 'clinical', direction: 'positive' });
+        if (glycemicFactor.severity === 'critical' || glycemicFactor.severity === 'high') confidence = 'High';
     }
 
     // ===== PRIOR DIAGNOSIS (Max 50 points) =====
     if (patientData.diagnosed.diabetes === 'Yes') {
         score += 50;
         factors.push({ factor: 'Previously diagnosed with diabetes', points: 50, severity: 'critical' });
+        factorContributions.push({ id: 'diagnosed_diabetes', label: 'Previously diagnosed with diabetes', points: 50, category: 'non_modifiable', direction: 'positive' });
         confidence = 'High';
     }
 
     // ===== SYMPTOMS CLUSTER (Max 20 points) =====
     let symptomCount = 0;
     const diabetesSymptoms = patientData.symptoms.diabetes;
-    
+
     if (diabetesSymptoms.frequentUrination) { symptomCount++; score += 4; }
     if (diabetesSymptoms.nocturia) { symptomCount++; score += 5; }
     if (diabetesSymptoms.excessiveThirst) { symptomCount++; score += 4; }
@@ -103,40 +140,50 @@ function calculateDiabetesRisk(patientData) {
 
     if (symptomCount >= 3) {
         factors.push({ factor: `${symptomCount} diabetes symptoms present`, points: symptomCount * 4, severity: 'high' });
+        factorContributions.push({ id: 'diabetes_symptoms', label: `${symptomCount} diabetes symptoms present`, points: symptomCount * 4, category: 'clinical', direction: 'positive' });
     } else if (symptomCount > 0) {
         factors.push({ factor: `${symptomCount} diabetes symptom(s)`, points: symptomCount * 4, severity: 'medium' });
+        factorContributions.push({ id: 'diabetes_symptoms', label: `${symptomCount} diabetes symptom(s)`, points: symptomCount * 4, category: 'clinical', direction: 'positive' });
     }
 
     // ===== FAMILY HISTORY (Max 12 points) =====
     if (patientData.lifestyle.familyHistory === 'Yes') {
         score += 12;
         factors.push({ factor: 'Family history of diabetes/hypertension', points: 12, severity: 'medium' });
+        factorContributions.push({ id: 'family_history', label: 'Family history of diabetes/hypertension', points: 12, category: 'non_modifiable', direction: 'positive' });
     }
 
     // ===== LIFESTYLE FACTORS (Max 15 points) =====
     if (patientData.lifestyle.physicalActivity === 'Sedentary (office work, minimal activity)') {
         score += 8;
         factors.push({ factor: 'Sedentary lifestyle', points: 8, severity: 'medium' });
+        factorContributions.push({ id: 'sedentary', label: 'Sedentary lifestyle', points: 8, category: 'modifiable', direction: 'positive' });
     }
 
     if (patientData.lifestyle.dietPattern === 'High fat diet (fried foods, processed foods, sweets)') {
         score += 7;
         factors.push({ factor: 'High fat diet', points: 7, severity: 'medium' });
+        factorContributions.push({ id: 'high_fat_diet', label: 'High fat diet', points: 7, category: 'modifiable', direction: 'positive' });
     }
 
     if (patientData.lifestyle.smoking === 'Yes') {
         score += 5;
         factors.push({ factor: 'Smoking', points: 5, severity: 'medium' });
+        factorContributions.push({ id: 'smoking', label: 'Smoking', points: 5, category: 'modifiable', direction: 'positive' });
     }
 
     if (patientData.lifestyle.alcohol === 'Frequently') {
         score += 5;
         factors.push({ factor: 'Frequent alcohol consumption', points: 5, severity: 'medium' });
+        factorContributions.push({ id: 'frequent_alcohol', label: 'Frequent alcohol consumption', points: 5, category: 'modifiable', direction: 'positive' });
     }
 
     // ===== GENDER ADJUSTMENT =====
+    // Not added to `factors`/topFactors (preserves v1.3 topFactors output exactly);
+    // recorded only in factorContributions since it does contribute score points.
     if (patientData.gender === 'Male') {
         score += 3;
+        factorContributions.push({ id: 'gender_male', label: 'Male gender', points: 3, category: 'non_modifiable', direction: 'positive' });
     }
 
     // Cap score at 100
@@ -171,11 +218,13 @@ function calculateDiabetesRisk(patientData) {
     return {
         score: Math.round(score),
         category,
+        risk: category,
         color,
         urgency,
         topFactors,
         confidence,
-        allFactors: factors
+        allFactors: factors,
+        factorContributions
     };
 }
 
@@ -190,6 +239,7 @@ function calculateDiabetesRisk(patientData) {
 function calculateHypertensionRisk(patientData) {
     let score = 0;
     let factors = [];
+    let factorContributions = [];
     let confidence = 'Medium';
 
     // ===== AGE FACTOR (Max 30 points) =====
@@ -197,18 +247,23 @@ function calculateHypertensionRisk(patientData) {
     if (patientData.age >= 50) {
         score += 30;
         factors.push({ factor: 'Age ≥50 years', points: 30, severity: 'high' });
+        factorContributions.push({ id: 'age_50_plus', label: 'Age ≥50 years', points: 30, category: 'non_modifiable', direction: 'positive' });
     } else if (patientData.age >= 45) {
         score += 25;
         factors.push({ factor: 'Age 45-49 years', points: 25, severity: 'high' });
+        factorContributions.push({ id: 'age_45_49', label: 'Age 45-49 years', points: 25, category: 'non_modifiable', direction: 'positive' });
     } else if (patientData.age >= 40) {
         score += 18;
         factors.push({ factor: 'Age 40-44 years', points: 18, severity: 'medium' });
+        factorContributions.push({ id: 'age_40_44', label: 'Age 40-44 years', points: 18, category: 'non_modifiable', direction: 'positive' });
     } else if (patientData.age >= 35) {
         score += 10;
         factors.push({ factor: 'Age 35-39 years', points: 10, severity: 'medium' });
+        factorContributions.push({ id: 'age_35_39', label: 'Age 35-39 years', points: 10, category: 'non_modifiable', direction: 'positive' });
     } else if (patientData.age >= 30) {
         score += 5;
         factors.push({ factor: 'Age 30-34 years', points: 5, severity: 'low' });
+        factorContributions.push({ id: 'age_30_34', label: 'Age 30-34 years', points: 5, category: 'non_modifiable', direction: 'positive' });
     }
 
     // ===== BMI FACTOR (Max 20 points) =====
@@ -216,15 +271,19 @@ function calculateHypertensionRisk(patientData) {
     if (patientData.bmi >= 30) {
         score += 20;
         factors.push({ factor: 'Obesity (BMI ≥30)', points: 20, severity: 'high' });
+        factorContributions.push({ id: 'bmi_obese', label: 'Obesity (BMI ≥30)', points: 20, category: 'modifiable', direction: 'positive' });
     } else if (patientData.bmi >= 27.5) {
         score += 16;
         factors.push({ factor: 'Overweight Class II', points: 16, severity: 'high' });
+        factorContributions.push({ id: 'bmi_overweight_class_ii', label: 'Overweight Class II', points: 16, category: 'modifiable', direction: 'positive' });
     } else if (patientData.bmi >= 25) {
         score += 12;
         factors.push({ factor: 'Overweight Class I', points: 12, severity: 'medium' });
+        factorContributions.push({ id: 'bmi_overweight_class_i', label: 'Overweight Class I', points: 12, category: 'modifiable', direction: 'positive' });
     } else if (patientData.bmi >= 23) {
         score += 6;
         factors.push({ factor: 'Overweight (Asian cutoff)', points: 6, severity: 'medium' });
+        factorContributions.push({ id: 'bmi_overweight_asian', label: 'Overweight (Asian cutoff)', points: 6, category: 'modifiable', direction: 'positive' });
     }
 
     // ===== BLOOD PRESSURE READING (Max 45 points) =====
@@ -236,21 +295,26 @@ function calculateHypertensionRisk(patientData) {
         if (systolic >= 180 || diastolic >= 120) {
             score += 45;
             factors.push({ factor: 'Hypertensive Crisis (≥180/120)', points: 45, severity: 'critical' });
+            factorContributions.push({ id: 'bp_crisis', label: 'Hypertensive Crisis (≥180/120)', points: 45, category: 'clinical', direction: 'positive' });
             confidence = 'High';
         } else if (systolic >= 160 || diastolic >= 100) {
             score += 40;
             factors.push({ factor: 'Stage 2 Hypertension (160-179/100-119)', points: 40, severity: 'critical' });
+            factorContributions.push({ id: 'bp_stage_2', label: 'Stage 2 Hypertension (160-179/100-119)', points: 40, category: 'clinical', direction: 'positive' });
             confidence = 'High';
         } else if (systolic >= 140 || diastolic >= 90) {
             score += 35;
             factors.push({ factor: 'Stage 1 Hypertension (140-159/90-99)', points: 35, severity: 'high' });
+            factorContributions.push({ id: 'bp_stage_1', label: 'Stage 1 Hypertension (140-159/90-99)', points: 35, category: 'clinical', direction: 'positive' });
             confidence = 'High';
         } else if (systolic >= 130 || diastolic >= 80) {
             score += 20;
             factors.push({ factor: 'Elevated BP (130-139/80-89)', points: 20, severity: 'medium' });
+            factorContributions.push({ id: 'bp_elevated', label: 'Elevated BP (130-139/80-89)', points: 20, category: 'clinical', direction: 'positive' });
         } else if (systolic >= 120) {
             score += 10;
             factors.push({ factor: 'Pre-hypertension (120-129/<80)', points: 10, severity: 'low' });
+            factorContributions.push({ id: 'bp_prehypertension', label: 'Pre-hypertension (120-129/<80)', points: 10, category: 'clinical', direction: 'positive' });
         }
     }
 
@@ -258,13 +322,14 @@ function calculateHypertensionRisk(patientData) {
     if (patientData.diagnosed.hypertension === 'Yes') {
         score += 50;
         factors.push({ factor: 'Previously diagnosed with hypertension', points: 50, severity: 'critical' });
+        factorContributions.push({ id: 'diagnosed_hypertension', label: 'Previously diagnosed with hypertension', points: 50, category: 'non_modifiable', direction: 'positive' });
         confidence = 'High';
     }
 
     // ===== SYMPTOMS CLUSTER (Max 15 points) =====
     let symptomCount = 0;
     const htnSymptoms = patientData.symptoms.hypertension;
-    
+
     if (htnSymptoms.headache) { symptomCount++; score += 3; }
     if (htnSymptoms.dizziness) { symptomCount++; score += 4; }
     if (htnSymptoms.palpitations) { symptomCount++; score += 4; }
@@ -273,40 +338,50 @@ function calculateHypertensionRisk(patientData) {
 
     if (symptomCount >= 2) {
         factors.push({ factor: `${symptomCount} hypertension symptoms`, points: Math.round(symptomCount * 3.5), severity: 'high' });
+        factorContributions.push({ id: 'hypertension_symptoms', label: `${symptomCount} hypertension symptoms`, points: Math.round(symptomCount * 3.5), category: 'clinical', direction: 'positive' });
     } else if (symptomCount > 0) {
         factors.push({ factor: `${symptomCount} hypertension symptom(s)`, points: Math.round(symptomCount * 3.5), severity: 'medium' });
+        factorContributions.push({ id: 'hypertension_symptoms', label: `${symptomCount} hypertension symptom(s)`, points: Math.round(symptomCount * 3.5), category: 'clinical', direction: 'positive' });
     }
 
     // ===== FAMILY HISTORY (Max 10 points) =====
     if (patientData.lifestyle.familyHistory === 'Yes') {
         score += 10;
         factors.push({ factor: 'Family history', points: 10, severity: 'medium' });
+        factorContributions.push({ id: 'family_history', label: 'Family history', points: 10, category: 'non_modifiable', direction: 'positive' });
     }
 
     // ===== LIFESTYLE FACTORS (Max 18 points) =====
     if (patientData.lifestyle.physicalActivity === 'Sedentary (office work, minimal activity)') {
         score += 6;
         factors.push({ factor: 'Sedentary lifestyle', points: 6, severity: 'medium' });
+        factorContributions.push({ id: 'sedentary', label: 'Sedentary lifestyle', points: 6, category: 'modifiable', direction: 'positive' });
     }
 
     if (patientData.lifestyle.smoking === 'Yes') {
         score += 8;
         factors.push({ factor: 'Smoking', points: 8, severity: 'high' });
+        factorContributions.push({ id: 'smoking', label: 'Smoking', points: 8, category: 'modifiable', direction: 'positive' });
     }
 
     if (patientData.lifestyle.alcohol === 'Frequently') {
         score += 7;
         factors.push({ factor: 'Frequent alcohol consumption', points: 7, severity: 'high' });
+        factorContributions.push({ id: 'frequent_alcohol', label: 'Frequent alcohol consumption', points: 7, category: 'modifiable', direction: 'positive' });
     }
 
     if (patientData.lifestyle.dietPattern === 'High fat diet (fried foods, processed foods, sweets)') {
         score += 5;
         factors.push({ factor: 'High fat/salt diet', points: 5, severity: 'medium' });
+        factorContributions.push({ id: 'high_fat_diet', label: 'High fat/salt diet', points: 5, category: 'modifiable', direction: 'positive' });
     }
 
     // ===== GENDER ADJUSTMENT =====
+    // Not added to `factors`/topFactors (preserves v1.3 topFactors output exactly);
+    // recorded only in factorContributions since it does contribute score points.
     if (patientData.gender === 'Male') {
         score += 5;
+        factorContributions.push({ id: 'gender_male', label: 'Male gender', points: 5, category: 'non_modifiable', direction: 'positive' });
     }
 
     // Cap score at 100
@@ -341,11 +416,13 @@ function calculateHypertensionRisk(patientData) {
     return {
         score: Math.round(score),
         category,
+        risk: category,
         color,
         urgency,
         topFactors,
         confidence,
-        allFactors: factors
+        allFactors: factors,
+        factorContributions
     };
 }
 
@@ -394,6 +471,7 @@ function calculateCombinedRisk(diabetesResult, hypertensionResult) {
     return {
         score: Math.round(combinedScore),
         category,
+        risk: category,
         color,
         urgency,
         diabetesScore: diabetesResult.score,
@@ -445,6 +523,28 @@ function generateRecommendations(diabetesRisk, hypertensionRisk, combinedRisk) {
 }
 
 // ==========================================
+// DATA COMPLETENESS
+// ==========================================
+
+/**
+ * Percentage (0-100) of six optional signal fields present.
+ * Drives assessmentTier alongside the hasHba1c/hasBloodSugar/hasBloodPressure checks.
+ */
+function calculateDataCompleteness(patientData) {
+    const checks = [
+        patientData.readings?.bloodSugar != null,
+        !!patientData.readings?.bloodPressure,
+        !!patientData.readings?.hba1c,
+        !!patientData.waistCircumference,
+        Object.values(patientData.symptoms?.diabetes || {}).some(Boolean) ||
+            Object.values(patientData.symptoms?.hypertension || {}).some(Boolean),
+        !!(patientData.lifestyle?.physicalActivity && patientData.lifestyle?.dietPattern)
+    ];
+    const present = checks.filter(Boolean).length;
+    return Math.round((present / checks.length) * 100);
+}
+
+// ==========================================
 // MAIN ASSESSMENT FUNCTION
 // ==========================================
 
@@ -458,12 +558,25 @@ function assessHealthRisk(patientData) {
     const recommendations = generateRecommendations(diabetesRisk, hypertensionRisk, combinedRisk);
     const guidelines = generateHealthGuidelines(combinedRisk, diabetesRisk, hypertensionRisk);
 
+    const hasHba1c = !!patientData.readings?.hba1c;
+    const hasBloodSugar = patientData.readings?.bloodSugar != null;
+    const hasBloodPressure = !!patientData.readings?.bloodPressure;
+
+    let assessmentTier = 'baseline';
+    if (hasHba1c && hasBloodSugar && hasBloodPressure) {
+        assessmentTier = 'enhanced';
+    } else if (hasHba1c || hasBloodSugar || hasBloodPressure) {
+        assessmentTier = 'partial';
+    }
+
     return {
         diabetes: diabetesRisk,
         hypertension: hypertensionRisk,
         combined: combinedRisk,
         recommendations,
         guidelines,  // ⭐ NEW
+        assessmentTier,
+        dataCompletenessPercentage: calculateDataCompleteness(patientData),
         timestamp: new Date().toISOString(),
         patientInfo: {
             name: patientData.name,

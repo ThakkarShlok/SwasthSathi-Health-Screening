@@ -369,7 +369,66 @@ impact_time: 'Quick Screening',
     footer_important: 'Important',
     footer_disclaimer: 'This is a screening tool, not a diagnostic tool. Always consult a qualified healthcare professional for diagnosis and treatment.',
     footer_copyright: '© 2026 SwasthSathi. An open health screening initiative.',
-    footer_privacy_policy: 'Privacy Policy'
+    footer_privacy_policy: 'Privacy Policy',
+
+    // ===== v1.4 HbA1c FORM FIELD =====
+    label_hba1c: 'HbA1c (%)',
+    help_hba1c: 'Optional. From lab report (glycated hemoglobin). Improves diabetes risk accuracy.',
+
+    // ===== v1.4 ASSESSMENT TIER =====
+    tier_baseline: 'Baseline assessment',
+    tier_partial: 'Partial lab data',
+    tier_enhanced: 'Enhanced with lab data',
+
+    // ===== v1.4 FACTOR CATEGORIZATION =====
+    factor_cat_modifiable: 'You can change this',
+    factor_cat_non_modifiable: 'Cannot be changed',
+    factor_cat_clinical: 'Clinical measurement',
+    factor_none_detected: 'No significant risk factors detected.',
+
+    // ===== v1.4 HbA1c FACTOR CARDS =====
+    factor_hba1c_title: 'HbA1c (3-month sugar)',
+    factor_hba1c_context: 'HbA1c reflects your average blood sugar over 2-3 months. Elevated levels indicate consistent high blood sugar and are the gold standard for diabetes diagnosis.',
+    completeness_hba1c: 'HbA1c (3-month sugar)',
+
+    // ===== v1.4 SYMPTOMS CONSENT =====
+    symptoms_consent: 'Use my symptom description to personalize AI recommendations (optional)',
+
+    // ===== v1.4 DASHBOARD ELEMENTS =====
+    dashboard_col_tier: 'Assessment',
+    dashboard_btn_recalc_tooltip: 'Recalculate with v1.4 algorithm',
+    dashboard_confirm_recalc: 'Recalculate this screening with the v1.4 algorithm using your existing data? This will update the risk scores.',
+    dashboard_recalc_failed: 'Recalculation failed. Please try again.',
+
+    // ===== v1.4 DELTA-AWARE RECALC DIALOG =====
+    dashboard_recalc_changed_body: 'Score updated with v1.4 algorithm. Combined risk changed from {old} to {new} (delta of {sign}{delta} points). This reflects the HbA1c data v1.4 now consumes.',
+    dashboard_recalc_unchanged_body: 'Row updated to v1.4 algorithm. Score is unchanged because HbA1c was not provided at screening time. HbA1c is the only lab reading v1.4 processes differently than v1.3. Provide HbA1c on your next screening to see the enhanced assessment.',
+
+    // ===== v1.4 NAVIGATION AND BUTTONS =====
+    nav_compare: 'Compare Screenings',
+    btn_compare: 'Compare',
+    btn_new_screening: 'New Screening',
+
+    // ===== v1.4 COMPARISON PAGE STRUCTURE =====
+    comparison_title: 'Your Screening Journey',
+    comparison_subtitle: 'Track how your health assessment has evolved',
+    comparison_loading: 'Loading your screening comparison...',
+    comparison_empty_title: 'Not enough screenings to compare',
+    comparison_empty: 'You need at least 2 screenings to compare. Take another screening to see progress.',
+    comparison_need_v14: 'Factor evolution requires at least 2 v1.4 screenings.',
+
+    // ===== v1.4 COMPARISON SECTION HEADERS AND LABELS =====
+    comparison_summary: 'Summary',
+    comparison_summary_total: 'Total screenings',
+    comparison_summary_enhanced: 'Enhanced (v1.4)',
+    comparison_summary_partial: 'Partial (v1.4)',
+    comparison_summary_baseline: 'Baseline / Legacy',
+    comparison_timeline: 'Timeline',
+    comparison_latest_vs_previous: 'Latest vs Previous',
+    comparison_factor_evolution: 'Factor Evolution',
+    comparison_previous: 'Previous',
+    comparison_latest: 'Latest',
+    comparison_change: 'change'
 };
 
 // Export globally
