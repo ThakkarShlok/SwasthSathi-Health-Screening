@@ -268,11 +268,25 @@ async function recalculateScreening(index) {
 
     if (!confirm(window.translator.t('dashboard_confirm_recalc', 'Recalculate this screening with the v1.4 algorithm using your existing data? This will update the risk scores.'))) return;
 
+    // Capture old scores BEFORE recalculation
+    const oldCombined = Math.round(screening.computedRiskScore || 0);
+    const oldDiabetes = Math.round(screening.diabetesRiskScore || 0);
+    const oldHypertension = Math.round(screening.hypertensionRiskScore || 0);
+
     const riskResult = window.RiskCalculator.assessHealthRisk(screening);
+    const newCombined = Math.round(riskResult.combined?.score ?? 0);
+    const newDiabetes = Math.round(riskResult.diabetes?.score ?? 0);
+    const newHypertension = Math.round(riskResult.hypertension?.score ?? 0);
+
+    const combinedDelta = newCombined - oldCombined;
+    const diabetesDelta = newDiabetes - oldDiabetes;
+    const hypertensionDelta = newHypertension - oldHypertension;
+    const anyChange = combinedDelta !== 0 || diabetesDelta !== 0 || hypertensionDelta !== 0;
+
     const updated = {
-        computed_risk_score: riskResult.combined?.score ?? null,
-        diabetes_risk_score: riskResult.diabetes?.score ?? null,
-        hypertension_risk_score: riskResult.hypertension?.score ?? null,
+        computed_risk_score: newCombined,
+        diabetes_risk_score: newDiabetes,
+        hypertension_risk_score: newHypertension,
         risk_category: riskResult.combined?.category ?? null,
         algorithm_version: window.RiskCalculator.version,
         assessment_tier: riskResult.assessmentTier,
@@ -284,11 +298,26 @@ async function recalculateScreening(index) {
     };
 
     const patchOk = await window.supabaseClient.patchScreening(screening.id, updated);
-    if (patchOk) {
-        window.location.reload();
-    } else {
+    if (!patchOk) {
         alert(window.translator.t('dashboard_recalc_failed', 'Recalculation failed. Please try again.'));
+        return;
     }
+
+    if (anyChange) {
+        const deltaSign = combinedDelta > 0 ? '+' : '';
+        alert(window.translator.t(
+            'dashboard_recalc_changed_body',
+            'Score updated with v1.4 algorithm. Combined risk changed from {old} to {new} (delta of {sign}{delta} points). This reflects the HbA1c data v1.4 now consumes.',
+            { old: oldCombined, new: newCombined, sign: deltaSign, delta: combinedDelta }
+        ));
+    } else {
+        alert(window.translator.t(
+            'dashboard_recalc_unchanged_body',
+            'Row updated to v1.4 algorithm. Score is unchanged because HbA1c was not provided at screening time. HbA1c is the only lab reading v1.4 processes differently than v1.3. Provide HbA1c on your next screening to see the enhanced assessment.'
+        ));
+    }
+
+    window.location.reload();
 }
 
 window.recalculateScreening = recalculateScreening;
