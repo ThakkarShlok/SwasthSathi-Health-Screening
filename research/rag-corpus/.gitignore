@@ -1,0 +1,11 @@
+﻿# Scratch and generated artifacts
+*.tmp
+*.log
+__pycache__/
+.ipynb_checkpoints/
+
+# If you ever cache embeddings locally, don't commit them
+embeddings-cache/
+*.pkl
+
+# Keep the corpus source files tracked (do NOT ignore .md or .json here)
