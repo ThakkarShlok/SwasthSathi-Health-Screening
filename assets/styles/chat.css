@@ -1,0 +1,233 @@
+/* ============================================
+   GUIDELINE CHAT (Phase 4)
+   Inline result-scoped assistant panel on result.html.
+   Uses the design tokens defined in base.css — this file never modifies them.
+   ============================================ */
+
+/* ---------- Suggestion chips ---------- */
+
+.gc-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+}
+
+.gc-chip {
+    background: var(--primary-ghost);
+    border: 1px solid var(--primary-light);
+    color: var(--primary-dark);
+    border-radius: 999px;
+    padding: 0.55rem 0.95rem;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    /* Mobile-first tap target */
+    min-height: 44px;
+    text-align: left;
+}
+
+.gc-chip:hover,
+.gc-chip:focus-visible {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    outline: none;
+}
+
+.gc-chip:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* ---------- Conversation area ---------- */
+
+.gc-log {
+    max-height: 380px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.25rem;
+    margin-bottom: 0.9rem;
+    scroll-behavior: smooth;
+}
+
+.gc-log:empty {
+    display: none;
+}
+
+.gc-empty {
+    color: var(--gray);
+    font-size: 0.9rem;
+    margin-bottom: 0.9rem;
+}
+
+/* ---------- Bubbles ---------- */
+
+.gc-turn {
+    display: flex;
+    margin-bottom: 0.85rem;
+}
+
+.gc-turn-user {
+    justify-content: flex-end;
+}
+
+.gc-bubble {
+    max-width: 88%;
+    border-radius: 14px;
+    padding: 0.7rem 0.95rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+}
+
+.gc-bubble-user {
+    background: var(--primary);
+    color: var(--white);
+    border-bottom-right-radius: 4px;
+}
+
+.gc-bubble-bot {
+    background: var(--gray-bg);
+    color: var(--dark);
+    border-bottom-left-radius: 4px;
+}
+
+/* Safety refusal — emergency. Deliberately loud. */
+.gc-bubble-emergency {
+    background: var(--danger-light);
+    color: var(--danger-dark);
+    border: 2px solid var(--danger);
+    border-bottom-left-radius: 4px;
+    font-weight: 500;
+}
+
+/* Safety refusal — medication / out of scope. Calm, clearly intentional. */
+.gc-bubble-declined {
+    background: var(--info-light);
+    color: var(--info-dark);
+    border: 1px solid var(--info);
+    border-bottom-left-radius: 4px;
+}
+
+.gc-refusal-head {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+}
+
+.gc-bubble-emergency .gc-refusal-head i {
+    font-size: 1.1rem;
+}
+
+/* ---------- Sources + disclaimer ---------- */
+
+.gc-sources {
+    margin-top: 0.5rem;
+    padding-top: 0.45rem;
+    border-top: 1px solid var(--gray-pale);
+    font-size: 0.78rem;
+    color: var(--gray);
+}
+
+.gc-bubble-emergency .gc-sources,
+.gc-bubble-declined .gc-sources {
+    border-top-color: rgba(0, 0, 0, 0.12);
+}
+
+.gc-disclaimer {
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--gray);
+    font-style: italic;
+}
+
+/* ---------- Typing indicator ---------- */
+
+.gc-typing {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.gc-typing span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gray-light);
+    animation: gcBounce 1.3s infinite ease-in-out;
+}
+
+.gc-typing span:nth-child(2) { animation-delay: 0.18s; }
+.gc-typing span:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes gcBounce {
+    0%, 70%, 100% { transform: translateY(0); opacity: 0.5; }
+    35%           { transform: translateY(-5px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gc-typing span { animation: none; }
+    .gc-log { scroll-behavior: auto; }
+}
+
+/* ---------- Composer ---------- */
+
+.gc-composer {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.gc-composer .form-control {
+    font-size: 0.95rem;
+    min-height: 46px;
+}
+
+.gc-send {
+    min-width: 52px;
+    min-height: 46px;
+}
+
+.gc-counter {
+    font-size: 0.72rem;
+    color: var(--gray-light);
+    text-align: right;
+    margin-top: 0.25rem;
+    min-height: 1em;
+}
+
+.gc-counter.gc-counter-warn {
+    color: var(--danger);
+}
+
+/* ---------- Collapsed-header affordance ---------- */
+
+#guidelineChatCard .card-header {
+    cursor: pointer;
+}
+
+#guidelineChatCard .gc-caret {
+    transition: transform 0.2s ease;
+}
+
+#guidelineChatCard .card-header[aria-expanded="true"] .gc-caret {
+    transform: rotate(180deg);
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 576px) {
+    .gc-bubble { max-width: 94%; font-size: 0.92rem; }
+    .gc-log { max-height: 300px; }
+    .gc-chip { width: 100%; }
+}
+
+/* The panel is interactive; it carries no meaning on paper. */
+@media print {
+    #guidelineChatCard { display: none !important; }
+}

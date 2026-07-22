@@ -1,0 +1,250 @@
+[
+  {
+    "id": "dm-what-is-diabetes",
+    "topic": "diabetes",
+    "subtopic": "basics",
+    "source": "WHO Diabetes Fact Sheet (14 Nov 2024) — https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "question_hint": "What is diabetes / type 2 diabetes?",
+    "text": "Diabetes is a long-term condition that happens when the pancreas does not make enough insulin, or when the body cannot use insulin properly. Insulin is a hormone that controls the sugar (glucose) in your blood. When diabetes is not controlled, blood sugar stays high, and over time this damages the body, especially the nerves and blood vessels. Type 2 diabetes is by far the most common form — more than 95% of people with diabetes have type 2. It affects how your body uses glucose for energy and is often linked to being overweight, not getting enough exercise, and family history. Type 2 diabetes is often preventable, and early detection through simple blood tests helps prevent its most serious effects."
+  },
+  {
+    "id": "dm-symptoms-high-sugar",
+    "topic": "diabetes",
+    "subtopic": "symptoms",
+    "source": "WHO Diabetes Fact Sheet (14 Nov 2024) — https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "question_hint": "What are the symptoms of high blood sugar / diabetes?",
+    "text": "The symptoms of diabetes can include feeling very thirsty, needing to urinate more often than usual, blurred vision, feeling tired, and losing weight without trying. In type 2 diabetes these symptoms are often mild and may take many years to be noticed. In fact, many people have no clear symptoms at all in the early years, and the condition is sometimes found only after complications have already begun. This is exactly why screening matters — checking your blood sugar can find diabetes before you feel unwell. If you have several of these symptoms, it is important to see a doctor for proper testing."
+  },
+  {
+    "id": "dm-why-early-detection",
+    "topic": "diabetes",
+    "subtopic": "importance",
+    "source": "WHO Diabetes Fact Sheet (14 Nov 2024) — https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "question_hint": "Why does finding diabetes early matter?",
+    "text": "Early diagnosis of diabetes matters because, over time, high blood sugar damages the blood vessels and nerves throughout the body. This can lead to serious problems including heart attack, stroke, kidney failure, vision loss, and foot problems that can result in amputation. Because type 2 diabetes often develops with mild or no symptoms, it may go unnoticed for years, and by the time it is found, damage may already have started. The best way to detect diabetes early is to get regular check-ups and blood tests. Finding it early means you can act early — through lifestyle changes and, if needed, treatment — to prevent or delay these complications."
+  },
+  {
+    "id": "dm-what-is-prediabetes",
+    "topic": "diabetes",
+    "subtopic": "prediabetes",
+    "source": "WHO Diabetes Fact Sheet (impaired glucose tolerance / impaired fasting glycaemia) — https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "question_hint": "What is prediabetes and why does it matter?",
+    "text": "Prediabetes describes a stage where blood sugar is higher than normal but not yet high enough to be called diabetes. WHO describes two intermediate conditions — impaired glucose tolerance and impaired fasting glycaemia — that sit between normal blood sugar and diabetes. People in this stage are at high risk of progressing to type 2 diabetes, although this is not inevitable. This is important because it is a warning stage that can often be reversed: reaching a healthy weight, staying physically active, and eating a healthy diet can prevent or delay the move from prediabetes to full diabetes. A prediabetes result is a reason to act now, not a diagnosis of diabetes."
+  },
+  {
+    "id": "dm-prevention",
+    "topic": "diabetes",
+    "subtopic": "prevention",
+    "source": "WHO Diabetes Fact Sheet (Prevention section) — https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "question_hint": "How can I prevent or delay type 2 diabetes?",
+    "text": "According to WHO, lifestyle changes are the best way to prevent or delay type 2 diabetes. To help prevent it and its complications, WHO advises reaching and keeping a healthy body weight, staying physically active with at least 150 minutes of moderate exercise each week, eating a healthy diet while avoiding sugar and saturated fat, and not smoking tobacco. These steps are simple, proven, and effective. They work together — being active helps your body use insulin better, a healthy diet keeps blood sugar and weight in check, and avoiding tobacco protects your blood vessels. Even modest, sustained changes meaningfully lower your risk."
+  },
+  {
+    "id": "dm-hba1c-ranges",
+    "topic": "diabetes",
+    "subtopic": "hba1c",
+    "source": "Thresholds from SwasthSathi risk-calculator.js (align with ADA Standards of Care); HbA1c concept per general clinical guidance",
+    "question_hint": "What does my HbA1c number mean?",
+    "text": "HbA1c is a blood test that shows your average blood sugar over the past two to three months. Because it reflects a longer period than a single reading, it is one of the most reliable ways to understand your blood sugar. In this tool, an HbA1c below 5.7% is treated as normal. A result from 5.7% up to 6.4% falls in the prediabetes range, meaning your blood sugar is higher than normal and your risk of developing diabetes is increased. An HbA1c of 6.5% or higher falls in the diabetes range and should be confirmed by a doctor with repeat testing. These ranges follow widely used diabetes guidelines. Remember that a single number is not a diagnosis — only a doctor can confirm diabetes using proper testing."
+  },
+  {
+    "id": "dm-fasting-glucose-ranges",
+    "topic": "diabetes",
+    "subtopic": "blood_sugar",
+    "source": "Thresholds from SwasthSathi risk-calculator.js (align with ADA Standards of Care)",
+    "question_hint": "What do my fasting blood sugar numbers mean?",
+    "text": "Fasting blood sugar is measured after you have not eaten for at least eight hours, which is why it is usually taken in the morning before breakfast. In this tool, a fasting blood sugar below 100 mg/dL is treated as normal. A reading from 100 to 125 mg/dL falls in the prediabetes range, showing that your blood sugar is higher than normal. A fasting reading of 126 mg/dL or higher falls in the diabetes range and should be confirmed by a doctor with repeat testing. Fasting is important for an accurate result — eating before the test can raise the number. As with any single reading, this is not a diagnosis; a doctor confirms diabetes using proper medical tests."
+  },
+  {
+    "id": "dm-random-glucose",
+    "topic": "diabetes",
+    "subtopic": "blood_sugar",
+    "source": "Threshold from SwasthSathi risk-calculator.js (random glucose interpretation, standard clinical value)",
+    "question_hint": "What does a random blood sugar reading of 200 or more mean?",
+    "text": "A random blood sugar test is done at any time of day, without fasting. Because it is affected by what and when you last ate, it is used differently from a fasting test. A random blood sugar reading of 200 mg/dL or higher, especially if you also have symptoms like excessive thirst, frequent urination, or unexplained weight loss, suggests diabetes and needs to be confirmed by a doctor. A single high random reading on its own is not a diagnosis, because normal meals can raise blood sugar temporarily. Your doctor will confirm using a fasting blood sugar test or an HbA1c test, which give a clearer picture. If your random reading is high, do not panic, but do arrange to see a doctor."
+  },
+  {
+    "id": "htn-what-is-hypertension",
+    "topic": "hypertension",
+    "subtopic": "basics",
+    "source": "WHO Hypertension Fact Sheet — https://www.who.int/news-room/fact-sheets/detail/hypertension",
+    "question_hint": "What is blood pressure and high blood pressure?",
+    "text": "Blood pressure is written as two numbers. The first number, called systolic, is the pressure in your blood vessels when your heart beats. The second number, called diastolic, is the pressure when your heart rests between beats. Hypertension, or high blood pressure, means the pressure in your blood vessels is too high. According to WHO, hypertension is diagnosed when, measured on two different days, the systolic reading is 140 mmHg or higher on both days, and/or the diastolic reading is 90 mmHg or higher on both days. High blood pressure is very common and can be serious if not treated, but most people with it feel no symptoms at all. The only way to know if you have high blood pressure is to have it measured. The good news is that lifestyle changes, and medicines when needed, can bring it under control."
+  },
+  {
+    "id": "htn-bp-categories",
+    "topic": "hypertension",
+    "subtopic": "categories",
+    "source": "BP band definitions from SwasthSathi risk-calculator.js (WHO/JNC-8 aligned: hypertension begins at 140/90)",
+    "question_hint": "What do my blood pressure numbers mean?",
+    "text": "This tool groups blood pressure readings into bands. A reading below 120/80 mmHg is in the normal range. From 120 to 129 systolic (with diastolic below 80) is a slightly raised level sometimes called pre-hypertension. From 130 to 139 systolic or 80 to 89 diastolic is elevated blood pressure. A reading of 140 to 159 systolic or 90 to 99 diastolic falls in Stage 1 hypertension, and 160 to 179 systolic or 100 to 119 diastolic falls in Stage 2. A reading of 180/120 or higher is a hypertensive crisis and, especially with symptoms, needs urgent medical care. These bands follow the WHO definition in which hypertension begins at 140/90. Importantly, a single high reading is not a diagnosis — blood pressure should be measured on more than one occasion by a health professional before hypertension is confirmed."
+  },
+  {
+    "id": "htn-why-dangerous",
+    "topic": "hypertension",
+    "subtopic": "importance",
+    "source": "WHO Hypertension Fact Sheet — https://www.who.int/news-room/fact-sheets/detail/hypertension",
+    "question_hint": "Why is high blood pressure dangerous?",
+    "text": "High blood pressure is dangerous because, when uncontrolled, the excessive pressure harms your arteries and organs over time — often without you feeling anything. WHO explains that this pressure can harden the arteries, decreasing the flow of blood and oxygen to the heart. This can lead to chest pain, heart attack (when blood supply to the heart is blocked and heart muscle dies from lack of oxygen), and heart failure (when the heart cannot pump enough blood to the body). High blood pressure can also burst or block the arteries that supply the brain, causing a stroke, and it can damage the kidneys, leading to kidney failure. Because this damage builds silently over years, high blood pressure is often called a \"silent\" condition — which is exactly why regular measurement and control matter so much."
+  },
+  {
+    "id": "htn-symptoms",
+    "topic": "hypertension",
+    "subtopic": "symptoms",
+    "source": "WHO Hypertension Fact Sheet — https://www.who.int/news-room/fact-sheets/detail/hypertension",
+    "question_hint": "Does high blood pressure have symptoms?",
+    "text": "Most people with high blood pressure feel no symptoms at all. This is what makes it dangerous — you can have it for years without knowing, while it quietly damages your body. Because of this, WHO stresses that checking your blood pressure is the only reliable way to know if it is high. Some people with very high blood pressure, usually 180/120 mmHg or higher, may experience warning signs such as severe headaches, chest pain, dizziness, difficulty breathing, nausea, vomiting, blurred vision, anxiety, confusion, buzzing in the ears, nosebleeds, or an abnormal heart rhythm. If you have these symptoms along with a very high reading, seek medical care immediately. But remember: the absence of symptoms does not mean your blood pressure is normal. Only measurement can tell."
+  },
+  {
+    "id": "rf-age",
+    "topic": "risk_factor",
+    "subtopic": "age",
+    "source": "WHO Hypertension Fact Sheet (age as non-modifiable risk factor) + WHO Diabetes Fact Sheet",
+    "question_hint": "How does age affect my diabetes and blood pressure risk?",
+    "text": "Age is one of the factors that raises the risk of both high blood pressure and type 2 diabetes. WHO lists older age among the non-modifiable risk factors for hypertension, alongside family history and conditions like diabetes or kidney disease. As we get older, blood vessels become stiffer and the body's handling of blood sugar can change, which is why risk tends to climb with age, particularly from the forties onward. Age cannot be changed, but knowing that your risk rises over time is useful: it means regular screening becomes more important as you get older, so that any rise in blood sugar or blood pressure is caught early. Staying active, eating well, and keeping a healthy weight remain valuable at every age."
+  },
+  {
+    "id": "rf-bmi-asian-cutoffs",
+    "topic": "risk_factor",
+    "subtopic": "bmi",
+    "source": "BMI cutoffs from SwasthSathi risk-calculator.js (WHO Asia-Pacific / South Asian guidance)",
+    "question_hint": "Why are the BMI cutoffs lower for Indians?",
+    "text": "Body mass index, or BMI, is a measure of weight relative to height. For people of South Asian background, health risks from excess weight begin at a lower BMI than for Western populations, so this tool uses Asian cutoffs. Being overweight for South Asians starts at a BMI of 23, rather than the 25 often used elsewhere. A BMI from 23 to 24.9 is considered overweight by the Asian cutoff, 25 to 27.4 is overweight class I, 27.5 to 29.9 is overweight class II, and 30 or above is obesity. The reason for the lower cutoffs is that South Asians tend to develop diabetes and heart disease risk at lower body weights, often carrying more fat around the abdomen. This is why a BMI that looks \"borderline\" by Western standards can still raise your risk, and why weight management matters even at modest numbers."
+  },
+  {
+    "id": "rf-waist-abdominal",
+    "topic": "risk_factor",
+    "subtopic": "waist",
+    "source": "Waist cutoffs from SwasthSathi risk-calculator.js (South Asian thresholds)",
+    "question_hint": "Why does waist size matter for my risk?",
+    "text": "Waist size matters because fat carried around the abdomen is a particularly strong risk factor for diabetes and heart disease — sometimes more telling than overall body weight. This tool uses South Asian waist thresholds: a waist of 90 cm or more in men, and 80 cm or more in women, indicates abdominal obesity and raises risk. These thresholds are lower than those used for Western populations because South Asians tend to accumulate harmful fat around the waist and internal organs even at lower body weights. You can have a normal-looking weight and still have a high-risk waist measurement. The encouraging part is that waist size responds to lifestyle changes — regular physical activity and a healthy diet reduce abdominal fat and lower your risk over time."
+  },
+  {
+    "id": "rf-family-history",
+    "topic": "risk_factor",
+    "subtopic": "family_history",
+    "source": "WHO Diabetes Fact Sheet (genetics) + WHO Hypertension Fact Sheet (family history) — https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "question_hint": "Does family history increase my risk?",
+    "text": "Family history is one of the factors that contributes to both type 2 diabetes and high blood pressure. WHO lists genetics among the factors behind type 2 diabetes, and family history of hypertension among the non-modifiable risk factors for high blood pressure. Having a parent, brother, or sister with type 2 diabetes or high blood pressure increases your own risk, partly because families share genes and partly because they often share eating and activity habits. Family history cannot be changed, but knowing about it is useful: it means you should be more attentive about screening and more consistent with healthy lifestyle habits, since your baseline risk is higher than someone without that history."
+  },
+  {
+    "id": "rf-physical-inactivity",
+    "topic": "risk_factor",
+    "subtopic": "activity",
+    "source": "WHO Diabetes Fact Sheet (prevention) + WHO Hypertension Fact Sheet (physical inactivity as modifiable risk) — https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "question_hint": "How does being inactive affect my risk?",
+    "text": "Not getting enough exercise is one of the main factors that contributes to developing type 2 diabetes, according to WHO, and physical inactivity is also listed among the modifiable risk factors for high blood pressure. Being inactive contributes to weight gain, higher blood sugar, and higher blood pressure. The good news is that this is a factor you can change. WHO recommends staying physically active with at least 150 minutes of moderate exercise each week to help prevent type 2 diabetes and support healthy blood pressure. Regular activity helps your body use insulin more effectively, helps control weight, and lowers blood pressure. Activity does not have to mean the gym — brisk walking, farm or household work, and other everyday movement all count toward keeping you active."
+  },
+  {
+    "id": "rf-tobacco",
+    "topic": "risk_factor",
+    "subtopic": "tobacco",
+    "source": "WHO Diabetes Fact Sheet (not smoking in prevention) + WHO Hypertension Fact Sheet (tobacco as modifiable risk) — https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "question_hint": "How does tobacco use affect my risk?",
+    "text": "Avoiding tobacco is one of the key ways WHO recommends to prevent or delay type 2 diabetes, and tobacco use is also listed among the modifiable risk factors for high blood pressure. Tobacco use — whether smoked or smokeless — damages blood vessels, raises blood pressure, and increases the risk of diabetes and heart disease. This is a factor you can change. Stopping tobacco use is important both to reduce your risk of developing these conditions and, for people who already have them, to avoid serious complications. If you use tobacco in any form, quitting is one of the most valuable steps you can take for your long-term health, and the benefits to your blood pressure and heart begin soon after you stop."
+  },
+  {
+    "id": "rf-alcohol",
+    "topic": "risk_factor",
+    "subtopic": "alcohol",
+    "source": "WHO Hypertension Fact Sheet (alcohol as modifiable risk; intake guidance) — https://www.who.int/news-room/fact-sheets/detail/hypertension",
+    "question_hint": "How does alcohol affect my blood pressure and sugar?",
+    "text": "Drinking too much alcohol is one of the modifiable risk factors for high blood pressure identified by WHO. Frequent or heavy alcohol use raises blood pressure, and it can also affect blood sugar and add extra calories that contribute to weight gain — all of which increase risk for diabetes and heart disease. Because this is a factor within your control, cutting down can genuinely help. WHO's guidance on preventing high blood pressure advises not drinking too much alcohol, suggesting a maximum of about one drink per day for women and two for men. Reducing your alcohol intake helps lower blood pressure and supports healthier weight and blood sugar. If you find it difficult to cut down, your doctor can offer support."
+  },
+  {
+    "id": "ls-physical-activity",
+    "topic": "lifestyle",
+    "subtopic": "activity",
+    "source": "WHO Diabetes Fact Sheet (150 min) + WHO Hypertension Fact Sheet (activity guidance) — https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "question_hint": "How much exercise do I need?",
+    "text": "WHO recommends at least 150 minutes of moderate exercise each week to help prevent type 2 diabetes and support healthy blood pressure. This does not need to be done all at once — it can be split into shorter sessions across the week, such as about 20 to 30 minutes on most days. Moderate activity means movement that raises your heart rate and breathing a little, like brisk walking. WHO also suggests strength-building activity, such as lifting or carrying, on two or more days each week. For people in rural settings, everyday activities such as walking to work, farming, and household tasks contribute toward this goal. Regular activity helps your body use insulin better, supports a healthy weight, and lowers blood pressure — benefiting both diabetes and hypertension risk at the same time."
+  },
+  {
+    "id": "ls-diet-diabetes-india",
+    "topic": "lifestyle",
+    "subtopic": "diet_diabetes",
+    "source": "WHO Diabetes Fact Sheet (healthy diet, avoid sugar and saturated fat) — https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "question_hint": "What should I eat to lower my diabetes risk?",
+    "text": "WHO's advice for preventing type 2 diabetes includes eating a healthy diet while avoiding sugar and saturated fat. In an everyday Indian diet, this means favouring whole grains such as whole wheat, brown rice, and millets like jowar and bajra over refined grains like white rice and maida. Include plenty of vegetables and protein-rich foods such as dals and legumes, which release energy more slowly and help keep blood sugar steady. Try to limit sweets, sugary drinks, deep-fried foods, and refined snacks, and be mindful of portion sizes. Small, consistent changes work best — swapping refined grains for whole ones, adding vegetables to each meal, and keeping sugary treats occasional rather than daily. These habits lower blood sugar risk while supporting a healthy weight. For a plan suited to your needs, a doctor or dietitian can help."
+  },
+  {
+    "id": "ls-diet-bp-salt",
+    "topic": "lifestyle",
+    "subtopic": "diet_bp",
+    "source": "WHO Hypertension Fact Sheet (low-salt diet, intake guidance) — https://www.who.int/news-room/fact-sheets/detail/hypertension",
+    "question_hint": "What should I eat to lower my blood pressure?",
+    "text": "To help lower blood pressure, WHO advises eating a healthy, low-salt diet, eating more vegetables and fruits, and avoiding foods high in saturated and trans fats. The WHO hypertension guidance suggests keeping salt intake low — under about 2 grams per day. In an everyday Indian diet, the biggest sources of salt are often pickles, papad, salted snacks, and processed or packaged foods, so cutting back on these makes a real difference. Cooking with less added salt, tasting before adding more, and using herbs and spices for flavour all help. Eating more fruits and vegetables adds potassium, which supports healthy blood pressure. These changes, kept up consistently, can meaningfully lower blood pressure over time. If you already have high blood pressure, your doctor may give you a specific salt target."
+  },
+  {
+    "id": "ls-weight-management",
+    "topic": "lifestyle",
+    "subtopic": "weight",
+    "source": "WHO Diabetes Fact Sheet (healthy body weight) + WHO Hypertension Fact Sheet (lose weight if overweight) — https://www.who.int/news-room/fact-sheets/detail/diabetes",
+    "question_hint": "How does losing weight help my risk?",
+    "text": "Reaching and keeping a healthy body weight is one of WHO's core recommendations for preventing type 2 diabetes, and losing weight if you are overweight is part of WHO's advice for lowering high blood pressure. Excess weight, especially around the abdomen, makes it harder for the body to use insulin and puts extra strain on the heart and blood vessels. The encouraging news is that you do not need dramatic weight loss to benefit — even a modest reduction in weight can improve blood sugar and lower blood pressure. Combining more physical activity with a healthy, balanced diet is the most reliable way to reach a healthier weight and keep it there. Because both diabetes and high blood pressure respond to weight, this single change helps on two fronts at once. A doctor can help you set a realistic goal."
+  },
+  {
+    "id": "res-high-risk-meaning",
+    "topic": "results",
+    "subtopic": "interpretation",
+    "source": "SwasthSathi tool statement + universal screening principle (screening != diagnosis)",
+    "question_hint": "What does a high-risk result mean? Do I have diabetes?",
+    "text": "A high-risk result from this screening does not mean you have diabetes or high blood pressure. It means that, based on the information you provided, several risk factors are present, and it would be wise to get proper testing from a doctor. Screening is designed to flag who should be checked further — it estimates risk, it does not diagnose a condition. Many people with a high-risk screening result turn out, after proper medical tests, not to have the condition, while the screening still did its job by prompting a check. So a high-risk result is best understood as a helpful nudge, not a verdict. The right next step is not to worry, but to see a doctor or visit a health centre for confirmatory tests. Only a qualified doctor, using proper medical tests, can diagnose diabetes or hypertension."
+  },
+  {
+    "id": "res-see-doctor",
+    "topic": "results",
+    "subtopic": "next_steps",
+    "source": "SwasthSathi tool statement + universal screening principle",
+    "question_hint": "I got a high-risk result — what should I do next?",
+    "text": "If your screening shows a high risk, the most useful next step is to see a doctor or visit your nearest health centre for proper testing. Bring your screening result with you — it can help the doctor understand which risk factors were flagged. Do not panic: a screening result is a starting point, not a diagnosis, and many conditions are very manageable when found early. At the same time, do not ignore it — the value of screening comes from acting on it. Your doctor may order blood tests, measure your blood pressure on more than one occasion, and ask about your history before deciding anything. Continuing healthy habits in the meantime — a balanced diet, regular activity, and avoiding tobacco — supports your health whatever the tests show. Taking that next step early is the best thing you can do."
+  },
+  {
+    "id": "res-tests-doctor-orders",
+    "topic": "results",
+    "subtopic": "diagnosis",
+    "source": "WHO Hypertension Fact Sheet (BP measured over two days) + general diabetes testing (fasting glucose, HbA1c, OGTT)",
+    "question_hint": "What tests will a doctor do to confirm diabetes or high BP?",
+    "text": "To confirm diabetes, a doctor typically uses one or more blood tests: a fasting blood sugar test (taken after not eating for at least eight hours), an HbA1c test (which shows average blood sugar over two to three months), or sometimes an oral glucose tolerance test, where blood sugar is checked before and after a sugary drink. A single high reading is usually confirmed with a repeat test. To confirm high blood pressure, a doctor measures your blood pressure on more than one occasion — WHO notes that hypertension is diagnosed when readings are high on two different days — because a single high reading can happen for many reasons. The doctor may also check for related conditions. These proper tests are what turn a screening result into a confirmed diagnosis, which is why seeing a doctor after a high-risk screening matters."
+  },
+  {
+    "id": "res-screening-frequency",
+    "topic": "results",
+    "subtopic": "frequency",
+    "source": "SwasthSathi tool statement + general preventive-care principle; specific interval to be set by a doctor",
+    "question_hint": "How often should I get screened?",
+    "text": "How often you should check your blood sugar and blood pressure depends on your age, your risk factors, and your doctor's advice. As a general principle, adults — especially those over 40, or with risk factors like family history, excess weight, or an inactive lifestyle — benefit from having their blood sugar and blood pressure checked regularly, rather than only when they feel unwell. Because both diabetes and high blood pressure can develop silently, regular checks are how they are caught early. If you have already been flagged as higher risk, more frequent checks may be sensible. Rather than fixing a single rule for everyone, the best approach is to ask your doctor how often you specifically should be screened, based on your health. Using this tool periodically can also help you keep track of your risk factors over time."
+  },
+  {
+    "id": "res-screening-vs-diagnosis",
+    "topic": "results",
+    "subtopic": "interpretation",
+    "source": "SwasthSathi tool statement + universal screening principle",
+    "question_hint": "What is the difference between screening and diagnosis?",
+    "text": "Screening and diagnosis are two different things, and understanding the difference helps you read your result correctly. Screening is a quick, simple check that estimates your risk and helps decide whether you need further testing. It does not confirm whether you have a condition — it points to who should be looked at more closely. Diagnosis is when a qualified doctor confirms whether you actually have a condition, using proper medical tests such as blood tests or repeated blood pressure measurements. This tool performs screening, not diagnosis. So a result here — whether low or high risk — is an estimate to guide your next step, not a medical conclusion. If your screening suggests higher risk, the diagnosis stage happens with a doctor, who has the tests needed to confirm or rule out the condition."
+  },
+  {
+    "id": "safe-urgent-care",
+    "topic": "safety",
+    "subtopic": "emergency",
+    "source": "WHO Hypertension Fact Sheet (very high BP warning signs; \"seek care immediately\") — https://www.who.int/news-room/fact-sheets/detail/hypertension",
+    "question_hint": "When should I see a doctor urgently?",
+    "text": "Some situations need prompt medical attention rather than waiting. WHO notes that people with very high blood pressure — usually 180/120 mmHg or higher — may experience warning signs such as severe headache, chest pain, dizziness, difficulty breathing, nausea, vomiting, blurred vision or other vision changes, confusion, or an abnormal heartbeat. If you have a very high blood pressure reading together with any of these symptoms, seek medical care immediately — go to a doctor or hospital. Similarly, very high blood sugar with severe symptoms such as extreme thirst, confusion, or difficulty breathing needs urgent medical attention. This assistant cannot handle emergencies and does not provide emergency treatment. If you or someone else has these warning signs, do not rely on an app — contact a doctor or go to the nearest hospital right away."
+  },
+  {
+    "id": "safe-not-a-diagnosis",
+    "topic": "safety",
+    "subtopic": "disclaimer",
+    "source": "SwasthSathi tool statement",
+    "question_hint": "Is this tool a substitute for a doctor?",
+    "text": "SwasthSathi is a health screening and education aid. It is designed to help you understand your risk of diabetes and high blood pressure and to encourage timely testing — but it is not a diagnosis and not a substitute for professional medical care. The information provided here is general and educational. It cannot examine you, cannot run medical tests, and cannot account for your full personal health history the way a doctor can. Any decision about your health — including whether you have a condition, what treatment you need, or what medicines to take — should be made with a qualified doctor. Please use this tool as a helpful first step that guides you toward professional care, not as a replacement for it. If anything about your health concerns you, see a doctor."
+  },
+  {
+    "id": "safe-medication-boundary",
+    "topic": "safety",
+    "subtopic": "scope",
+    "source": "SwasthSathi tool statement",
+    "question_hint": "Can you tell me what medicine or dose to take?",
+    "text": "This assistant does not provide medication names, doses, or treatment prescriptions. Decisions about medicines — whether to start one, which one, how much, or whether to change or stop one — must be made by a qualified doctor who knows your full medical history and can examine you. Medicines for diabetes and blood pressure need to be matched carefully to the individual, and the wrong choice or dose can be harmful, which is why this must come from a professional rather than an app. If you have questions about medication, please ask your doctor or pharmacist. What this assistant can do is help you understand your screening results, explain risk factors, and share general guidance on healthy habits — always as a step toward seeing a doctor, never as a replacement for medical treatment."
+  }
+]
