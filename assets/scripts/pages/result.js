@@ -99,6 +99,11 @@ async function initializeResultsPage() {
         // Render UI (pass patientData for completeness panel)
         renderResultsUI(assessment, patientData);
 
+        // Publish the already-computed result for the guideline chat panel
+        // (Phase 4). Read-only handoff — the chat never recomputes risk.
+        window.SwasthResult = { assessment, patientData };
+        document.dispatchEvent(new CustomEvent('swasth:result-ready'));
+
         // Hide loading, show results
         document.getElementById('loadingState').style.display = 'none';
         document.getElementById('resultsContainer').style.display = 'block';

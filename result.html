@@ -192,6 +192,46 @@
         </div>
     </div>
 
+    <!-- Guideline Assistant (Phase 4) — available to every user with a result -->
+    <div class="card mb-4" id="guidelineChatCard">
+        <div class="card-header bg-info-subtle" role="button" tabindex="0"
+             data-bs-toggle="collapse" data-bs-target="#gcBody"
+             aria-expanded="false" aria-controls="gcBody">
+            <h5 class="mb-0 d-flex align-items-center">
+                <i class="bi bi-chat-dots-fill me-2"></i>
+                <span data-i18n="gc_title">Ask About Your Results</span>
+                <i class="bi bi-chevron-down ms-auto gc-caret"></i>
+            </h5>
+            <small class="text-muted" data-i18n="gc_subtitle">
+                Get answers based on published health guidelines
+            </small>
+        </div>
+        <div class="collapse" id="gcBody">
+            <div class="card-body">
+                <p class="gc-empty" data-i18n="gc_intro">
+                    Ask a question about your screening. Answers come from published
+                    health guidelines, not from personal medical advice.
+                </p>
+
+                <div class="gc-chips" id="gcChips"><!-- Populated by JS --></div>
+
+                <div class="gc-log" id="gcLog" aria-live="polite"><!-- Conversation --></div>
+
+                <div class="gc-composer">
+                    <input type="text" class="form-control" id="gcInput"
+                           data-i18n="gc_placeholder"
+                           placeholder="Type your question..."
+                           autocomplete="off">
+                    <button type="button" class="btn btn-primary gc-send" id="gcSend"
+                            aria-label="Send question">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </div>
+                <div class="gc-counter" id="gcCounter"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Data Completeness Panel -->
     <div class="card mb-4" id="completenessCard">
         <div class="card-header">
@@ -336,6 +376,8 @@
 <script src="assets/scripts/modules/risk-calculator.js"></script>
 <script src="assets/scripts/modules/factor-explanations.js"></script>
 <link rel="stylesheet" href="assets/styles/recommendation.css">
+<link rel="stylesheet" href="assets/styles/chat.css">
 <script src="assets/scripts/pages/result.js"></script>
+<script src="assets/scripts/pages/guideline-chat.js"></script>
 </body>
 </html>
