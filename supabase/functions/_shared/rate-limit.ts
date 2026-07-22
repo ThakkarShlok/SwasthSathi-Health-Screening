@@ -1,6 +1,11 @@
 import { createAdminClient } from './supabase-admin.ts';
 
-const LIMITS: Record<string, number> = { ocr: 10, llm: 5, places: 5 };
+// 'rag' = Phase 4 guideline-chat. Kept separate from 'llm' so assistant
+// questions don't consume the recommendation budget and so RAG spend is
+// attributable on its own. NOTE: an api_name missing from this map is NOT
+// rate limited at all (checkRateLimit returns true) — add the key before
+// shipping any new paid endpoint.
+const LIMITS: Record<string, number> = { ocr: 10, llm: 5, places: 5, rag: 20 };
 const WINDOW_MS = 60 * 60 * 1000; // 1 hour
 
 export async function checkRateLimit(userId: string, apiName: string): Promise<boolean> {
