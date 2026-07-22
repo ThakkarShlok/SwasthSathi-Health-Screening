@@ -8,4 +8,9 @@ __pycache__/
 embeddings-cache/
 *.pkl
 
+# Secrets for ingest.mjs — service-role key and Google API key live here.
+# .env.example IS committed (placeholders only); .env NEVER is.
+.env
+node_modules/
+
 # Keep the corpus source files tracked (do NOT ignore .md or .json here)
