@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-lg-4 mb-4">
                 <h5>
-                    <i class="bi bi-heart-pulse-fill me-2"></i>SwasthSathi
+                    <img src="assets/logo/swasthsathi-icon.svg" alt="" class="footer-brand-icon me-2">SwasthSathi
                 </h5>
                 <p class="text-muted" data-i18n="footer_tagline">Your trusted companion for early health screening. Evidence-based, multilingual, and free for everyone.</p>
             </div>
@@ -26,6 +26,7 @@
                 <a href="about.html" data-i18n="nav_about">About Us</a>
                 <a href="screening.html" data-i18n="nav_screening">Screening</a>
                 <a href="doctors.html" data-i18n="nav_doctors">Find Doctors</a>
+                <a href="contact.html" data-i18n="nav_contact">Contact Us</a>
                 <a href="privacy.html" data-i18n="footer_privacy_policy">Privacy Policy</a>
             </div>
             <div class="col-lg-4 mb-4">
