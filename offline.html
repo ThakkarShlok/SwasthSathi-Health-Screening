@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - SwasthSathi</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#10b981">
+    <link rel="icon" href="assets/icons/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="assets/styles/base.css">
+    <link rel="stylesheet" href="assets/styles/pwa.css">
+</head>
+<body>
+    <main class="offline-screen">
+        <img src="assets/logo/swasthsathi-icon.svg" alt="SwasthSathi" class="offline-logo" width="96" height="96">
+        <h1 class="offline-title">You are offline</h1>
+        <p class="offline-text">
+            This page needs an internet connection. Please check your network and try again.
+        </p>
+        <p class="offline-subtext">
+            The health screening form still works offline — your risk result is calculated on your device.
+        </p>
+        <div class="offline-actions">
+            <button type="button" class="offline-btn offline-btn-primary" onclick="location.reload()">Retry</button>
+            <a class="offline-btn offline-btn-outline" href="screening.html">Go to Screening</a>
+        </div>
+    </main>
+</body>
+</html>

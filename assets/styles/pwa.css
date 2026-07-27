@@ -1,0 +1,154 @@
+/* ============================================
+   PWA STATES (Phase 4)
+   Offline fallback screen + service-worker update toast.
+   Uses base.css design tokens — never modifies them.
+   ============================================ */
+
+/* ---------- Offline fallback (offline.html) ---------- */
+
+.offline-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%);
+}
+
+.offline-logo {
+    width: 96px;
+    height: 96px;
+    margin-bottom: 1.5rem;
+}
+
+.offline-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 0.75rem;
+}
+
+.offline-text {
+    color: var(--gray);
+    max-width: 30rem;
+    margin-bottom: 0.5rem;
+}
+
+.offline-subtext {
+    color: var(--gray-light);
+    font-size: 0.9rem;
+    max-width: 30rem;
+    margin-bottom: 1.75rem;
+}
+
+.offline-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.offline-btn {
+    display: inline-block;
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid var(--primary);
+    min-height: 46px;
+}
+
+.offline-btn-primary {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.offline-btn-outline {
+    background: transparent;
+    color: var(--primary-dark);
+}
+
+/* ---------- Service-worker update toast ---------- */
+
+.pwa-update-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 1.25rem;
+    transform: translateX(-50%) translateY(150%);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    max-width: 92vw;
+    background: var(--dark);
+    color: var(--white);
+    padding: 0.85rem 1.1rem;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease;
+    font-size: 0.92rem;
+}
+
+.pwa-update-toast.pwa-update-show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.pwa-update-toast button {
+    border: none;
+    border-radius: var(--radius-base);
+    padding: 0.45rem 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.pwa-update-refresh {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.pwa-update-dismiss {
+    background: transparent;
+    color: var(--gray-light);
+    padding: 0.45rem 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pwa-update-toast { transition: none; }
+}
+
+/* ---------- Brand logo (navbar + footer) ----------
+   Loaded on every page (this stylesheet ships site-wide for the update toast),
+   so brand-mark sizing lives here rather than in a frozen CSS file. */
+
+.navbar-brand .brand-logo-full {
+    height: 40px;
+    width: auto;
+    display: block;
+}
+
+.navbar-brand .brand-logo-icon {
+    height: 40px;
+    width: 40px;
+    display: none;
+}
+
+/* Very small screens: switch the horizontal lockup for the icon-only mark
+   so the wordmark never crowds the hamburger toggle. */
+@media (max-width: 400px) {
+    .navbar-brand .brand-logo-full { display: none; }
+    .navbar-brand .brand-logo-icon { display: block; }
+}
+
+/* Footer uses the white-tile icon mark; the "SwasthSathi" text stays in the
+   footer's existing white styling (the horizontal logo's dark wordmark would
+   be unreadable on the dark footer). */
+.footer .footer-brand-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    vertical-align: middle;
+}

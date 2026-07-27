@@ -15,6 +15,17 @@
 <link rel="stylesheet" href="assets/styles/screening.css">
 <link rel="stylesheet" href="assets/styles/result.css">
 <link rel="stylesheet" href="assets/styles/print.css" media="print">
+    <!-- PWA + icons -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#10b981">
+    <link rel="icon" href="assets/icons/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="SwasthSathi">
+    <link rel="stylesheet" href="assets/styles/pwa.css">
 </head>
 <body>
 
@@ -339,6 +350,9 @@
         <button id="whatsappShareBtn" class="btn btn-success btn-lg me-2" style="display:none">
             <i class="bi bi-whatsapp"></i> <span data-i18n="btn_share_whatsapp">Share on WhatsApp</span>
         </button>
+        <button id="emailResultBtn" class="btn btn-outline-success btn-lg me-2" style="display:none">
+            <i class="bi bi-envelope-fill"></i> <span data-i18n="btn_email_result">Email My Result</span>
+        </button>
         <button class="btn btn-success btn-lg" onclick="window.print()">
             <i class="bi bi-printer"></i> <span data-i18n="btn_print">Print Results</span>
         </button>
@@ -377,7 +391,10 @@
 <script src="assets/scripts/modules/factor-explanations.js"></script>
 <link rel="stylesheet" href="assets/styles/recommendation.css">
 <link rel="stylesheet" href="assets/styles/chat.css">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="assets/scripts/pages/result.js"></script>
 <script src="assets/scripts/pages/guideline-chat.js"></script>
+<script src="assets/scripts/pages/email-result.js"></script>
+    <script src="assets/scripts/shared/pwa-register.js"></script>
 </body>
 </html>

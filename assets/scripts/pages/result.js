@@ -350,6 +350,33 @@ function generateShortCode() {
     return code;
 }
 
+/**
+ * Resolve this result's share short code, creating and persisting one lazily
+ * on first use. Returns the code, or null if it could not be produced.
+ * Single source of truth for Share, WhatsApp, and Email My Result.
+ */
+async function getOrCreateShareCode(patientData) {
+    let code = patientData?.resultShortCode;
+    const screeningId = patientData?.id;
+
+    if (!code && screeningId) {
+        code = generateShortCode();
+        const saved = await window.supabaseClient.saveShortCode(screeningId, code);
+        if (!saved.success) return null;
+        if (patientData) patientData.resultShortCode = code;
+    }
+    return code || null;
+}
+
+/** Build the canonical share.html URL for a given short code. */
+function buildShareUrl(code) {
+    return `${location.origin}${location.pathname.replace('result.html', '')}share.html?code=${code}`;
+}
+
+// Exposed so the Email My Result module (email-result.js) reuses the exact
+// same link generation rather than duplicating it.
+window.SwasthShare = { getOrCreateShareCode, buildShareUrl };
+
 async function initShareButton(patientData) {
     if (!window.supabaseClient) return;
     const token = window.supabaseClient.getAccessToken();
@@ -363,19 +390,10 @@ async function initShareButton(patientData) {
         btn.disabled = true;
 
         try {
-            let code = patientData?.resultShortCode;
-            const screeningId = patientData?.id;
-
-            if (!code && screeningId) {
-                code = generateShortCode();
-                const saved = await window.supabaseClient.saveShortCode(screeningId, code);
-                if (!saved.success) { btn.disabled = false; return; }
-                if (patientData) patientData.resultShortCode = code;
-            }
-
+            const code = await getOrCreateShareCode(patientData);
             if (!code) { btn.disabled = false; return; }
 
-            const shareUrl = `${location.origin}${location.pathname.replace('result.html', '')}share.html?code=${code}`;
+            const shareUrl = buildShareUrl(code);
             await navigator.clipboard.writeText(shareUrl).catch(() => {
                 prompt(window.translator.t('share_copy_manually', 'Copy this link:'), shareUrl);
             });
@@ -407,19 +425,8 @@ async function initWhatsAppButton(patientData, assessment) {
     btn.addEventListener('click', async () => {
         btn.disabled = true;
         try {
-            let code = patientData?.resultShortCode;
-            const screeningId = patientData?.id;
-
-            if (!code && screeningId) {
-                code = generateShortCode();
-                const saved = await window.supabaseClient.saveShortCode(screeningId, code);
-                if (!saved.success) { btn.disabled = false; return; }
-                if (patientData) patientData.resultShortCode = code;
-            }
-
-            const shareUrl = code
-                ? `${location.origin}${location.pathname.replace('result.html', '')}share.html?code=${code}`
-                : location.href;
+            const code = await getOrCreateShareCode(patientData);
+            const shareUrl = code ? buildShareUrl(code) : location.href;
 
             const diabetesRisk = Math.round(assessment?.diabetes?.score ?? 0);
             const hypertensionRisk = Math.round(assessment?.hypertension?.score ?? 0);

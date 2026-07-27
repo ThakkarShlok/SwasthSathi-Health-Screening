@@ -13,9 +13,9 @@
         mount.innerHTML = `
 <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="index.html">
-            <i class="bi bi-heart-pulse-fill"></i>
-            SwasthSathi
+        <a class="navbar-brand" href="index.html" aria-label="SwasthSathi">
+            <img src="assets/logo/swasthsathi-logo-horizontal.svg" alt="SwasthSathi" class="brand-logo-full">
+            <img src="assets/logo/swasthsathi-icon.svg" alt="SwasthSathi" class="brand-logo-icon">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -33,6 +33,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="doctors.html" data-i18n="nav_doctors">Find Doctors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html" data-i18n="nav_contact">Contact Us</a>
                 </li>
 
                 <!-- Language Dropdown -->

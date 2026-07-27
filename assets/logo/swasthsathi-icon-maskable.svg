@@ -1,0 +1,33 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SwasthSathi maskable icon">
+  <defs>
+    <linearGradient id="ssMaskGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- FULL-BLEED gradient background: Android may crop this to circle/squircle/rounded-square.
+       Because the whole canvas is filled, no crop ever shows a hard edge. -->
+  <rect x="0" y="0" width="512" height="512" fill="url(#ssMaskGrad)"/>
+
+  <!-- Subtle depth wash -->
+  <circle cx="256" cy="220" r="230" fill="#ffffff" opacity="0.06"/>
+
+  <!-- Mark rendered in WHITE, kept inside the ~40% safe zone (center 205px radius).
+       The shield-leaf + pulse sit well within the guaranteed-visible circle. -->
+  <g transform="translate(178,150) scale(2.6)">
+    <!-- White shield-leaf outline so it reads on the gradient -->
+    <path d="M32 2
+             C32 2 54 8 54 8
+             C54 8 54 34 54 34
+             C54 50 44 60 32 64
+             C20 60 10 50 10 34
+             C10 34 10 8 10 8
+             C10 8 32 2 32 2 Z"
+          fill="#ffffff"/>
+    <!-- Pulse cut in gradient color inside the white shield -->
+    <path d="M15 35 L23 35 L27 24 L33 46 L38 32 L42 35 L49 35"
+          fill="none" stroke="url(#ssMaskGrad)" stroke-width="3.6"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
