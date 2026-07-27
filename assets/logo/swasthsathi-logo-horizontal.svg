@@ -1,0 +1,42 @@
+<svg width="320" height="80" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SwasthSathi">
+  <defs>
+    <linearGradient id="ssGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Icon mark: shield-leaf enclosing a pulse -->
+  <g transform="translate(8,8)">
+    <!-- Shield-leaf silhouette -->
+    <path d="M32 2
+             C32 2 54 8 54 8
+             C54 8 54 34 54 34
+             C54 50 44 60 32 64
+             C20 60 10 50 10 34
+             C10 34 10 8 10 8
+             C10 8 32 2 32 2 Z"
+          fill="url(#ssGrad)"/>
+    <!-- Inner soft highlight -->
+    <path d="M32 8
+             C32 8 48 12.5 48 12.5
+             C48 12.5 48 34 48 34
+             C48 46 40 54 32 57
+             C24 54 16 46 16 34
+             C16 34 16 12.5 16 12.5
+             C16 12.5 32 8 32 8 Z"
+          fill="#ffffff" opacity="0.16"/>
+    <!-- Pulse line (heartbeat) in white -->
+    <path d="M15 35 L23 35 L27 24 L33 46 L38 32 L42 35 L49 35"
+          fill="none" stroke="#ffffff" stroke-width="3.2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(78,0)">
+    <text x="0" y="42" font-family="Segoe UI, system-ui, -apple-system, Roboto, sans-serif"
+          font-size="30" font-weight="800" fill="#1f2937" letter-spacing="-0.5">Swasth<tspan fill="url(#ssGrad)">Sathi</tspan></text>
+    <text x="1" y="62" font-family="Segoe UI, system-ui, -apple-system, Roboto, sans-serif"
+          font-size="11.5" font-weight="600" fill="#6b7280" letter-spacing="0.3">Your health companion</text>
+  </g>
+</svg>
