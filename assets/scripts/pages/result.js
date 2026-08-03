@@ -379,7 +379,7 @@ window.SwasthShare = { getOrCreateShareCode, buildShareUrl };
 
 async function initShareButton(patientData) {
     if (!window.supabaseClient) return;
-    const token = window.supabaseClient.getAccessToken();
+    const token = await window.supabaseClient.getValidAccessToken();
     if (!token) return;
 
     const btn = document.getElementById('shareResultBtn');
@@ -415,7 +415,7 @@ function showShareToast(message) {
 
 async function initWhatsAppButton(patientData, assessment) {
     if (!window.supabaseClient) return;
-    const token = window.supabaseClient.getAccessToken();
+    const token = await window.supabaseClient.getValidAccessToken();
     if (!token) return;
 
     const btn = document.getElementById('whatsappShareBtn');
@@ -452,7 +452,7 @@ async function initWhatsAppButton(patientData, assessment) {
 
 async function loadAIRecommendation(assessment, patientData) {
     if (!window.supabaseClient) return;
-    const token = window.supabaseClient.getAccessToken();
+    const token = await window.supabaseClient.getValidAccessToken();
     if (!token) return;
     if (window.InFlightTracker && !window.InFlightTracker.start('llm')) return;
 
