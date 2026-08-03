@@ -284,7 +284,7 @@
             return;
         }
 
-        const token = window.supabaseClient.getAccessToken();
+        const token = await window.supabaseClient.getValidAccessToken();
         if (!token) {
             addUserTurn(q);
             addErrorTurn('gc_err_auth', 'Please log in again to use the assistant.');

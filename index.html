@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SwasthSathi - AI-powered offline health screening for diabetes and hypertension">
-    <title>SwasthSathi - Your Health Companion</title>
-    
+    <meta name="description" content="SwasthSathi - free, offline-capable screening for diabetes and hypertension risk, grounded in ADA, WHO and JNC-8 guideline thresholds. Available in English, Hindi, Gujarati and Marathi.">
+    <title>SwasthSathi - Guideline-Grounded Health Screening for India</title>
+
     <!-- Bootstrap 5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Base Styles (LOAD FIRST) -->
+    <!-- Base Styles (LOAD FIRST — FROZEN) -->
     <link rel="stylesheet" href="assets/styles/base.css">
     <link rel="stylesheet" href="assets/styles/language-modal.css">
     <!-- Page-specific styles -->
     <link rel="stylesheet" href="assets/styles/style.css">
+    <!-- Additive enhancement layer (LOAD LAST) -->
+    <link rel="stylesheet" href="assets/styles/enhance.css">
     <!-- PWA + icons -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#10b981">
@@ -30,35 +32,39 @@
 <body>
     <div id="navbar-mount"></div>
 
-    <!-- Hero Section -->
+    <!-- ============================================
+         HERO
+         Claim changed: the risk engine is deterministic and
+         rule-based, not "AI-powered". AI is used for OCR and for
+         the guideline assistant only. Say what is true.
+         ============================================ -->
     <section class="hero-section" id="home">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 hero-content fade-in">
-                    <h1 data-i18n="hero_title">Early Health Screening for Every Indian</h1>
-                    <p class="lead" data-i18n="hero_subtitle">AI-powered screening for diabetes and hypertension with medical report OCR. Get evidence-based risk assessment in your language, completely free.</p>
-                    <div class="d-flex gap-2 mb-4 flex-wrap">
-                        <div class="feature-badge">
-                            <i class="bi bi-camera-fill"></i>
-                            <span data-i18n="feature_ocr">OCR Report Scanning</span>
-                        </div>
-                        <div class="feature-badge">
-                            <i class="bi bi-translate"></i>
-                            <span data-i18n="feature_multilingual">Multilingual</span>
-                        </div>
-                        <div class="feature-badge">
-                            <i class="bi bi-shield-check"></i>
-                            <span data-i18n="feature_free">100% Free</span>
-                        </div>
+                    <span class="ss-eyebrow" data-i18n="hero_eyebrow">Diabetes &amp; hypertension screening</span>
+                    <h1 data-i18n="hero_title">Know your risk before the symptoms do.</h1>
+                    <p class="lead" data-i18n="hero_subtitle">
+                        A free screening tool that scores your diabetes and hypertension risk against
+                        published ADA, WHO and JNC-8 thresholds. Works without internet, in four languages,
+                        and explains every point of your score.
+                    </p>
+
+                    <div class="ss-trust mb-4">
+                        <span class="ss-chip"><i class="bi bi-wifi-off"></i><span data-i18n="chip_offline">Works offline</span></span>
+                        <span class="ss-chip"><i class="bi bi-translate"></i><span data-i18n="chip_languages">4 languages</span></span>
+                        <span class="ss-chip"><i class="bi bi-shield-lock"></i><span data-i18n="chip_private">Your data stays yours</span></span>
+                        <span class="ss-chip"><i class="bi bi-cash-stack"></i><span data-i18n="chip_free">Free, no ads</span></span>
                     </div>
+
                     <div class="d-flex gap-3 mb-3 flex-wrap">
-                        <a href="screening.html" class="btn btn-primary-custom btn-lg" data-i18n="btn_start_screening">Start Screening</a>
+                        <a href="screening.html" class="btn btn-primary-custom btn-lg" data-i18n="btn_start_screening">Start screening</a>
                         <button class="btn btn-outline-secondary btn-lg" onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})" data-i18n="btn_learn_more">
-                            Learn More
+                            See how it works
                         </button>
                     </div>
-                    <small class="text-muted" data-i18n="takes_5min">
-                        <i class="bi bi-clock me-1"></i>Takes only 5 minutes • No registration needed
+                    <small class="text-muted d-block">
+                        <i class="bi bi-clock me-1"></i><span data-i18n="takes_5min">About 5 minutes. No account needed to get a result.</span>
                     </small>
                 </div>
                 <div class="col-lg-6 text-center">
@@ -71,224 +77,362 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
+    <!-- ============================================
+         STATS — now single-sourced and citable.
+         Source: Anjana RM et al., ICMR-INDIAB-17,
+         Lancet Diabetes Endocrinol 2023;11:474-89.
+         The old 220M / 77M / 60.5% figures were removed:
+         the first two were superseded by this study, and the
+         third had no traceable source.
+         ============================================ -->
     <section class="stats-section">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-6">
                     <div class="stat-card">
-                        <h2>220M+</h2>
-                        <p data-i18n="stats_hypertension">People with Hypertension</p>
+                        <h2>315M</h2>
+                        <p data-i18n="stats_hypertension">Adults in India with hypertension</p>
+                        <span class="ss-stat-note">35.5% prevalence</span>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="stat-card">
-                        <h2>77M+</h2>
-                        <p data-i18n="stats_diabetes">People with Diabetes</p>
+                        <h2>101M</h2>
+                        <p data-i18n="stats_diabetes">Adults in India with diabetes</p>
+                        <span class="ss-stat-note">11.4% prevalence</span>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="stat-card">
-                        <h2>60.5%</h2>
-                        <p data-i18n="stats_cooccurrence">Co-occurrence Rate</p>
+                        <h2>136M</h2>
+                        <p data-i18n="stats_prediabetes">Living with prediabetes</p>
+                        <span class="ss-stat-note" data-i18n="stats_prediabetes_note">Most do not know yet</span>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="stat-card">
-                        <h2>5 min</h2>
-                        <p data-i18n="stats_quick">Quick Screening</p>
+                        <h2>4</h2>
+                        <p data-i18n="stats_languages">Languages supported</p>
+                        <span class="ss-stat-note">EN / HI / GU / MR</span>
                     </div>
                 </div>
             </div>
+            <p class="ss-source text-center mt-3 mb-0">
+                <span data-i18n="stats_source_label">Prevalence figures:</span>
+                <cite data-i18n="stats_source_cite">Anjana RM et al., Metabolic non-communicable disease health
+                report of India: the ICMR-INDIAB national cross-sectional study (ICMR-INDIAB-17), The Lancet
+                Diabetes &amp; Endocrinology, 2023</cite>
+                <span data-i18n="stats_source_note">— a survey of 113,043 adults across 31 states and union territories.</span>
+            </p>
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- ============================================
+         FEATURES — the guideline assistant now leads,
+         because it is the most distinctive capability.
+         "Curated list of 12 specialists" claim REMOVED:
+         doctor discovery is a live Google Places search.
+         ============================================ -->
     <section class="features-section" id="features">
         <div class="container">
-            <h2 class="section-title" data-i18n="section_why_choose">Why Choose SwasthSathi?</h2>
-            <p class="section-subtitle" data-i18n="section_subtitle_features">Comprehensive health screening designed for rural India</p>
-            
+            <div class="text-center">
+                <span class="ss-eyebrow" data-i18n="features_eyebrow">What you get</span>
+            </div>
+            <h2 class="section-title" data-i18n="section_why_choose">Built for people who don't get screened</h2>
+            <p class="section-subtitle" data-i18n="section_subtitle_features">
+                Every feature below exists because a clinic visit is hard to reach, expensive, or in the wrong language.
+            </p>
+
             <div class="row g-4">
+                <!-- 1. RAG guideline assistant — previously missing entirely -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-success-subtle">
+                            <i class="bi bi-chat-square-quote-fill"></i>
+                        </div>
+                        <h4 data-i18n="feature_assistant_title">Ask about your result</h4>
+                        <p class="text-muted" data-i18n="feature_assistant_desc">
+                            A question-answering assistant that only answers from a fixed set of guideline passages.
+                            If your question isn't covered, it says so instead of guessing. It will not suggest
+                            medicines or doses, and it points you to emergency care when a question needs it.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. Risk engine -->
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-card">
                         <div class="feature-icon bg-primary-subtle">
                             <i class="bi bi-clipboard-check-fill"></i>
                         </div>
-                        <h4 data-i18n="feature_evidence_title">Evidence-Based Algorithm</h4>
-                        <p class="text-muted" data-i18n="feature_evidence_desc">Risk calculations grounded in NFHS-5 research, ADA guidelines, and JNC-8 standards used by medical professionals worldwide.</p>
+                        <h4 data-i18n="feature_evidence_title">A score you can check</h4>
+                        <p class="text-muted" data-i18n="feature_evidence_desc">
+                            Risk is scored by fixed published thresholds — ADA glycaemic cut-offs, WHO and JNC-8
+                            blood pressure stages, Asian-specific BMI and waist limits. Your result breaks down
+                            which factors added points, and which of those you can change.
+                        </p>
                     </div>
                 </div>
+
+                <!-- 3. Offline -->
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-card">
-                        <div class="feature-icon bg-primary-subtle">
-                            <i class="bi bi-translate"></i>
+                        <div class="feature-icon bg-info-subtle">
+                            <i class="bi bi-wifi-off"></i>
                         </div>
-                        <h4 data-i18n="feature_multilingual_title">Multilingual Support</h4>
-                        <p class="text-muted" data-i18n="feature_multilingual_desc">Available in 4 Indian languages: English, Hindi, Gujarati, and Marathi. User-friendly interface for all literacy levels.</p>
+                        <h4 data-i18n="feature_offline_title">Finishes without a signal</h4>
+                        <p class="text-muted" data-i18n="feature_offline_desc">
+                            The scoring runs on your phone, not on a server. Install SwasthSathi once and the
+                            screening still completes when the network drops — which is exactly when a clinic
+                            is furthest away.
+                        </p>
                     </div>
                 </div>
+
+                <!-- 4. OCR -->
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-card">
                         <div class="feature-icon bg-warning-subtle">
                             <i class="bi bi-camera-fill"></i>
                         </div>
-                        <h4 data-i18n="feature_ocr_title">AI-Powered OCR</h4>
-                        <p class="text-muted" data-i18n="feature_ocr_desc">Photograph your medical reports and our AI automatically extracts key health values - no typing needed!</p>
+                        <h4 data-i18n="feature_ocr_title">Photograph your lab report</h4>
+                        <p class="text-muted" data-i18n="feature_ocr_desc">
+                            Point your camera at a printed report and the values are read out of it — HbA1c,
+                            fasting glucose, blood pressure. Every extracted value is shown to you as a
+                            suggestion first. Nothing is entered until you accept it.
+                        </p>
                     </div>
                 </div>
 
-                <!-- Smart Suggestion System -->
+                <!-- 5. Multilingual -->
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-card">
                         <div class="feature-icon bg-primary-subtle">
-                            <i class="bi bi-check2-square"></i>
+                            <i class="bi bi-translate"></i>
                         </div>
-                        <h4 data-i18n="feature_suggestions_title">Smart Suggestions</h4>
-                        <p class="text-muted" data-i18n="feature_suggestions_desc">OCR-extracted values shown as suggestions you can review, accept, or reject. You stay in control of your data.</p>
+                        <h4 data-i18n="feature_multilingual_title">In your language</h4>
+                        <p class="text-muted" data-i18n="feature_multilingual_desc">
+                            The full screening, results and advice in English, Hindi, Gujarati and Marathi.
+                            Questions are written in plain words, not clinical vocabulary.
+                        </p>
                     </div>
                 </div>
 
-                <!-- Printable Results -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon bg-info-subtle">
-                            <i class="bi bi-printer-fill"></i>
-                        </div>
-                        <h4 data-i18n="feature_print_title">Printable Results</h4>
-                        <p class="text-muted" data-i18n="feature_print_desc">Take your comprehensive risk assessment report to your doctor. Includes risk scores, contributing factors, and personalized recommendations.</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon bg-info-subtle">
-                            <i class="bi bi-activity"></i>
-                        </div>
-                        <h4 data-i18n="feature_corisk_title">Co-Risk Screening</h4>
-                        <p class="text-muted" data-i18n="feature_corisk_desc">Unique system that screens for diabetes AND hypertension together, identifying combined health risks.</p>
-                    </div>
-                </div>
+                <!-- 6. Doctor discovery — CORRECTED -->
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-card">
                         <div class="feature-icon bg-danger-subtle">
-                            <i class="bi bi-hospital-fill"></i>
+                            <i class="bi bi-geo-alt-fill"></i>
                         </div>
-                        <h4 data-i18n="feature_doctors_title">Specialist Directory</h4>
-                        <p class="text-muted" data-i18n="feature_doctors_desc">Curated list of 12 diabetes and hypertension specialists across India with ratings, experience, and contact information.</p>
+                        <h4 data-i18n="feature_doctors_title">Find doctors near you</h4>
+                        <p class="text-muted" data-i18n="feature_doctors_desc">
+                            Search live for diabetes and hypertension specialists around your current location,
+                            with the listing and rating shown exactly as the public map data provides it.
+                            SwasthSathi does not rank, recommend or endorse any doctor.
+                        </p>
                     </div>
                 </div>
+
+                <!-- 7. Privacy -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-info-subtle">
+                            <i class="bi bi-shield-lock-fill"></i>
+                        </div>
+                        <h4 data-i18n="feature_privacy_title">Only you can read your results</h4>
+                        <p class="text-muted" data-i18n="feature_privacy_desc">
+                            Saved screenings are locked to your account by the database itself, not just by the
+                            app. You can screen without an account at all — in that case nothing is stored.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 8. Track over time -->
                 <div class="col-lg-4 col-md-6">
                     <div class="feature-card">
                         <div class="feature-icon bg-success-subtle">
-                            <i class="bi bi-clipboard-check"></i>
+                            <i class="bi bi-graph-up-arrow"></i>
                         </div>
-                        <h4 data-i18n="feature_advice_title">Personalized Advice</h4>
-                        <p class="text-muted" data-i18n="feature_advice_desc">Culturally appropriate Do's & Don'ts in your language with local food examples and exercises.</p>
+                        <h4 data-i18n="feature_compare_title">See whether it's moving</h4>
+                        <p class="text-muted" data-i18n="feature_compare_desc">
+                            Screen again after a few months and compare side by side. Change over time tells you
+                            more than any single score does.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 9. Print / share -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-warning-subtle">
+                            <i class="bi bi-printer-fill"></i>
+                        </div>
+                        <h4 data-i18n="feature_print_title">Something to hand your doctor</h4>
+                        <p class="text-muted" data-i18n="feature_print_desc">
+                            Print or share a clean summary with your scores, the factors behind them and the
+                            thresholds used, so a consultation starts from evidence instead of memory.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- How It Works -->
+    <!-- ============================================
+         HOW IT WORKS (user-facing sequence)
+         ============================================ -->
     <section class="how-it-works-section" id="how-it-works">
         <div class="container">
-            <h2 class="section-title" data-i18n="how_it_works_title">How It Works</h2>
-            <p class="section-subtitle" data-i18n="how_it_works_subtitle">Complete health screening in just 5 minutes</p>
-            
+            <div class="text-center">
+                <span class="ss-eyebrow" data-i18n="how_eyebrow">Four steps</span>
+            </div>
+            <h2 class="section-title" data-i18n="how_it_works_title">How a screening runs</h2>
+            <p class="section-subtitle" data-i18n="how_it_works_subtitle">About five minutes, start to result.</p>
+
             <div class="row g-4">
                 <div class="col-lg-3 col-md-6">
                     <div class="step-card">
                         <div class="step-number">1</div>
-                        <div class="step-icon">
-                            <i class="bi bi-translate"></i>
-                        </div>
-                        <h5 data-i18n="step1_title">Select Language</h5>
-                        <p class="text-muted" data-i18n="step1_desc">Choose from English, Hindi, Gujarati, or Marathi</p>
+                        <div class="step-icon"><i class="bi bi-translate"></i></div>
+                        <h5 data-i18n="step1_title">Pick your language</h5>
+                        <p class="text-muted" data-i18n="step1_desc">English, Hindi, Gujarati or Marathi.</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="step-card">
                         <div class="step-number">2</div>
-                        <div class="step-icon">
-                            <i class="bi bi-person-fill"></i>
-                        </div>
-                        <h5 data-i18n="step2_title">Basic Information</h5>
-                        <p class="text-muted" data-i18n="step2_desc">Age, gender, height, and weight</p>
+                        <div class="step-icon"><i class="bi bi-person-fill"></i></div>
+                        <h5 data-i18n="step2_title">Answer basic questions</h5>
+                        <p class="text-muted" data-i18n="step2_desc">Age, height, weight, waist, family history, habits.</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="step-card">
                         <div class="step-number">3</div>
-                        <div class="step-icon">
-                            <i class="bi bi-clipboard2-pulse"></i>
-                        </div>
-                        <h5 data-i18n="step3_title">Health Questions</h5>
-                        <p class="text-muted" data-i18n="step3_desc">Simple symptoms and lifestyle questions</p>
+                        <div class="step-icon"><i class="bi bi-camera-fill"></i></div>
+                        <h5 data-i18n="step3_title">Add lab values if you have them</h5>
+                        <p class="text-muted" data-i18n="step3_desc">Type them in, or photograph the report. Optional — the screening works without them.</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="step-card">
                         <div class="step-number">4</div>
-                        <div class="step-icon">
-                            <i class="bi bi-graph-up-arrow"></i>
-                        </div>
-                        <h5 data-i18n="step4_title">Get Results</h5>
-                        <p class="text-muted" data-i18n="step4_desc">Instant risk scores and personalized advice</p>
+                        <div class="step-icon"><i class="bi bi-clipboard2-pulse"></i></div>
+                        <h5 data-i18n="step4_title">Read your result</h5>
+                        <p class="text-muted" data-i18n="step4_desc">Risk level, the factors behind it, what to do next — and you can ask follow-up questions.</p>
                     </div>
                 </div>
             </div>
 
             <div class="text-center mt-5">
-                <a href="screening.html" class="btn btn-primary-custom btn-lg px-5" data-i18n="btn_start_screening">Start Your Screening Now</a>
+                <a href="screening.html" class="btn btn-primary-custom btn-lg px-5" data-i18n="btn_start_screening_long">Start your screening</a>
             </div>
         </div>
     </section>
 
-    <!-- Impact Section -->
-    <section class="py-5" style="background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);" id="impact">
+    <!-- ============================================
+         SIGNATURE SECTION: how the answer is produced.
+         This is the honest split between what is computed
+         deterministically and what a language model touches.
+         ============================================ -->
+    <section class="ss-pipeline-section" id="under-the-hood">
         <div class="container">
-            <div class="text-center text-white mb-5">
-                <h2 class="section-title text-white" data-i18n="impact_title_new">What We Offer</h2>
-                <p class="section-subtitle text-white" style="opacity: 0.9;" data-i18n="impact_subtitle_new">Comprehensive screening designed for rural India</p>
+            <div class="text-center mb-5">
+                <span class="ss-eyebrow ss-eyebrow--muted" data-i18n="pipeline_eyebrow">Under the hood</span>
+                <h2 class="section-title" data-i18n="pipeline_title">Where the machine guesses, and where it doesn't</h2>
+                <p class="section-subtitle" data-i18n="pipeline_subtitle">
+                    Your risk score is never produced by a language model. It is arithmetic over published
+                    thresholds, and it runs on your device. A model is used in two narrow places, and both
+                    are checked afterwards.
+                </p>
             </div>
-            <div class="row g-4">
-                <div class="col-md-3 col-6">
-                    <div class="text-center text-white">
-                        <h2 class="display-4 fw-bold mb-2">4</h2>
-                        <p class="mb-0" data-i18n="impact_languages">Indian Languages</p>
-                    </div>
+
+            <div class="ss-pipeline">
+                <div class="ss-stage">
+                    <h5 data-i18n="pipeline_1_title">Your answers</h5>
+                    <p data-i18n="pipeline_1_desc">Values are bounds-checked against what is physiologically possible before anything is scored.</p>
+                    <span class="ss-tag ss-tag--rule" data-i18n="tag_deterministic">Deterministic</span>
                 </div>
-                <div class="col-md-3 col-6">
-                    <div class="text-center text-white">
-                        <h2 class="display-4 fw-bold mb-2">12</h2>
-                        <p class="mb-0" data-i18n="impact_specialists">Specialists Listed</p>
-                    </div>
+                <div class="ss-stage">
+                    <h5 data-i18n="pipeline_2_title">Reading a report</h5>
+                    <p data-i18n="pipeline_2_desc">Optical character recognition pulls values off a photographed report. You confirm each one before it counts.</p>
+                    <span class="ss-tag ss-tag--model" data-i18n="tag_model">Model-assisted</span>
                 </div>
-                <div class="col-md-3 col-6">
-                    <div class="text-center text-white">
-                        <h2 class="display-4 fw-bold mb-2">2</h2>
-                        <p class="mb-0" data-i18n="impact_conditions">Conditions Screened</p>
-                    </div>
+                <div class="ss-stage">
+                    <h5 data-i18n="pipeline_3_title">Risk scoring</h5>
+                    <p data-i18n="pipeline_3_desc">Fixed ADA, WHO, JNC-8 and Asian BMI thresholds, computed on your phone. Same input always gives the same score.</p>
+                    <span class="ss-tag ss-tag--rule" data-i18n="tag_deterministic">Deterministic</span>
                 </div>
-                <div class="col-md-3 col-6">
-                    <div class="text-center text-white">
-                        <h2 class="display-4 fw-bold mb-2">5min</h2>
-                        <p class="mb-0" data-i18n="impact_time">Quick Screening</p>
+                <div class="ss-stage">
+                    <h5 data-i18n="pipeline_4_title">Answering your questions</h5>
+                    <p data-i18n="pipeline_4_desc">Your question is matched against a fixed set of guideline passages. If nothing matches closely enough, the assistant declines rather than improvising.</p>
+                    <span class="ss-tag ss-tag--model" data-i18n="tag_model">Model-assisted</span>
+                </div>
+                <div class="ss-stage">
+                    <h5 data-i18n="pipeline_5_title">Checking the answer</h5>
+                    <p data-i18n="pipeline_5_desc">Every citation is re-checked against the passages actually retrieved. Anything unverified is dropped before you see it.</p>
+                    <span class="ss-tag ss-tag--guard" data-i18n="tag_verified">Verified server-side</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         LIMITATIONS — states plainly what this is not.
+         ============================================ -->
+    <section class="ss-limits-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="ss-limits-card">
+                        <h3 data-i18n="limits_title">What SwasthSathi is not</h3>
+                        <ul class="ss-limits-list">
+                            <li>
+                                <strong data-i18n="limits_1_title">It is not a diagnosis.</strong>
+                                <span data-i18n="limits_1_body">A screening result tells you whether it is worth
+                                getting tested. It cannot tell you whether you have a condition. Only a clinician
+                                and a laboratory can do that.</span>
+                            </li>
+                            <li>
+                                <strong data-i18n="limits_2_title">The risk engine has not been clinically validated.</strong>
+                                <span data-i18n="limits_2_body">It applies published guideline thresholds correctly,
+                                but it has not been trialled against patient outcomes. Treat the score as a prompt
+                                to see a doctor, not as a finding.</span>
+                            </li>
+                            <li>
+                                <strong data-i18n="limits_3_title">It will not tell you what to take.</strong>
+                                <span data-i18n="limits_3_body">The assistant refuses all questions about medicines
+                                and doses, in every language, by design.</span>
+                            </li>
+                            <li>
+                                <strong data-i18n="limits_4_title">It is not for emergencies.</strong>
+                                <span data-i18n="limits_4_body">If you have chest pain, trouble breathing, weakness
+                                on one side, confusion or fainting, stop and call 108 now.</span>
+                            </li>
+                        </ul>
+                        <p class="ss-source mb-0 mt-4">
+                            <span data-i18n="limits_footer">We would rather under-claim and be trusted. If you
+                            think something here is wrong,</span>
+                            <a href="contact.html" data-i18n="limits_footer_link">tell us</a>.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
+    <!-- ============================================
+         CTA — now fully translatable (was hardcoded English)
+         ============================================ -->
     <section class="cta-section">
         <div class="container">
             <div class="cta-card text-center text-white">
-                <h2>Take Control of Your Health Today</h2>
-                <p class="lead mb-4">Early detection can prevent serious complications. Get your free screening in just 5 minutes.</p>
-                <a href="screening.html" class="btn btn-light-custom btn-lg">Start Free Screening</a>
+                <h2 data-i18n="cta_home_title">Five minutes now, or a hospital bill later.</h2>
+                <p class="lead mb-4" data-i18n="cta_home_subtitle">
+                    Diabetes and high blood pressure are quiet for years. Screening is how you find them
+                    while they are still easy to act on.
+                </p>
+                <a href="screening.html" class="btn btn-light-custom btn-lg" data-i18n="cta_home_button">Start free screening</a>
             </div>
         </div>
     </section>

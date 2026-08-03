@@ -194,7 +194,7 @@ async function handleOCRProcessing() {
 // Returns structured medical values from Cloud Vision, or null to trigger Tesseract fallback.
 async function tryCloudOCR(file, updateProgress) {
     if (!window.supabaseClient) return null;
-    const token = window.supabaseClient.getAccessToken();
+    const token = await window.supabaseClient.getValidAccessToken();
     if (!token) return null; // not logged in — skip cloud path
 
     updateProgress(10, window.translator.t('ocr_upload_start', 'Preparing image...'));

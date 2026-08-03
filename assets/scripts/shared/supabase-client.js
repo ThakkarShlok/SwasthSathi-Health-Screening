@@ -46,8 +46,11 @@ class SupabaseClient {
                 return user;
             }
             
-            // Token expired/invalid
+            // Token rejected. Try one refresh before tearing the session down:
+            // an expired access token is normal after an hour and is recoverable.
             if (response.status === 401) {
+                const refreshed = await this.refreshSession();
+                if (refreshed) return this.checkAuthState();
                 console.log('ℹ️ Session expired - clearing tokens');
                 this.clearTokens();
             }
@@ -310,6 +313,103 @@ class SupabaseClient {
 
     getAccessToken() {
         return localStorage.getItem('supabase_access_token') || '';
+    }
+
+    getRefreshToken() {
+        return localStorage.getItem('supabase_refresh_token') || '';
+    }
+
+    /**
+     * Read the `exp` claim from a JWT without verifying it. Verification is the
+     * server's job; we only need to know whether it is worth sending.
+     */
+    _tokenExpiry(token) {
+        try {
+            const payload = token.split('.')[1];
+            const json = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+            const exp = JSON.parse(json).exp;
+            return typeof exp === 'number' ? exp * 1000 : 0;
+        } catch {
+            return 0;
+        }
+    }
+
+    /** True when the access token is missing, unreadable, or expires within `skewMs`. */
+    isAccessTokenStale(skewMs = 60000) {
+        const token = this.getAccessToken();
+        if (!token) return true;
+        const expiry = this._tokenExpiry(token);
+        if (!expiry) return true;
+        return Date.now() + skewMs >= expiry;
+    }
+
+    /**
+     * Exchange the refresh token for a new session.
+     *
+     * Single-flight: concurrent callers share one in-progress request. Supabase
+     * rotates the refresh token on every use, so a burst of parallel refreshes
+     * would invalidate all but one and log the user out.
+     */
+    async refreshSession() {
+        if (this._refreshInFlight) return this._refreshInFlight;
+
+        const refreshToken = this.getRefreshToken();
+        if (!refreshToken) return null;
+
+        this._refreshInFlight = (async () => {
+            try {
+                const response = await fetch(`${this.authUrl}/token?grant_type=refresh_token`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': this.supabaseKey,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ refresh_token: refreshToken })
+                });
+
+                if (!response.ok) {
+                    // The refresh token itself is dead. The session is genuinely
+                    // over, so clear it rather than leaving a zombie logged-in UI.
+                    if (response.status === 400 || response.status === 401) this.clearTokens();
+                    return null;
+                }
+
+                const data = await response.json();
+                if (!data.access_token) return null;
+
+                this.storeTokens({
+                    access_token: data.access_token,
+                    refresh_token: data.refresh_token || refreshToken,
+                    user: data.user || this.getStoredUser()
+                });
+                return data.access_token;
+            } catch {
+                return null;
+            } finally {
+                this._refreshInFlight = null;
+            }
+        })();
+
+        return this._refreshInFlight;
+    }
+
+    /**
+     * The only token accessor callers should use before hitting an Edge
+     * Function or PostgREST. Refreshes first when the token is stale.
+     * Returns '' when there is no usable session.
+     */
+    async getValidAccessToken() {
+        if (!this.isAccessTokenStale()) return this.getAccessToken();
+        const refreshed = await this.refreshSession();
+        return refreshed || '';
+    }
+
+    getStoredUser() {
+        try {
+            return JSON.parse(localStorage.getItem('supabase_user') || 'null');
+        } catch {
+            return null;
+        }
     }
 
     clearTokens() {
@@ -595,5 +695,4 @@ class SupabaseClient {
 // Initialize global client
 window.supabaseClient = new SupabaseClient();
 
-console.log('✅ Supabase client initialized (v3.1 — resilient save)');
-
+console.log('✅ Supabase client initialized (v3.1 — resilient save + session refresh)');
