@@ -362,24 +362,35 @@
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--ink);
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.65rem;
     letter-spacing: -0.012em;
 }
 
+/* The role is the second thing a reader should register after the name,
+   so it is a discrete object rather than styled text. It previously sat
+   at 0.9rem — smaller than the body bullets — which buried it. */
 .ss2-person .ss2-role {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    font-size: 0.9rem;
-    font-weight: 600;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
     color: var(--accent-dark);
-    margin-bottom: 0.3rem;
+    background: var(--accent-ghost);
+    border: 1px solid var(--accent-pale);
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
 }
 
+.ss2-person .ss2-role i { font-size: 1.05rem; opacity: 0.85; }
+
 .ss2-person .ss2-scope {
-    font-size: 0.84rem;
+    font-size: 0.88rem;
     color: var(--muted);
-    line-height: 1.6;
+    line-height: 1.65;
     margin-bottom: 1.35rem;
     padding-bottom: 1.2rem;
     border-bottom: 1px solid var(--line);
@@ -520,6 +531,7 @@
     .ss2-figure { max-width: 260px; margin-bottom: 2rem; }
     .ss2-person-body { padding: 1.6rem 1.35rem; }
     .ss2-person-media { padding: 1.9rem 1.35rem; }
+    .ss2-person .ss2-role { font-size: 0.95rem; padding: 0.45rem 0.85rem; }
     .ss2-photo { max-width: 200px; }
     .ss2-decision { flex-direction: column; gap: 0.5rem; }
 }
