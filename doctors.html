@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SwasthSathi | Find a Qualified Doctor</title>
+    <title>SwasthSathi | Find a doctor near you</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Search for diabetes and hypertension specialists near your location. SwasthSathi does not rank, recommend or endorse any doctor.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-<!-- Base Styles (LOAD FIRST) -->
-<link rel="stylesheet" href="assets/styles/base.css">
-<link rel="stylesheet" href="assets/styles/language-modal.css">
-<!-- Page-specific styles -->
-<link rel="stylesheet" href="assets/styles/doctors.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Base Styles (LOAD FIRST — FROZEN) -->
+    <link rel="stylesheet" href="assets/styles/base.css">
+    <link rel="stylesheet" href="assets/styles/language-modal.css">
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="assets/styles/doctors.css">
+    <!-- Additive enhancement layer (LOAD LAST) -->
+    <link rel="stylesheet" href="assets/styles/enhance.css">
     <!-- PWA + icons -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#10b981">
@@ -27,113 +30,121 @@
 <div id="navbar-mount"></div>
 
 <div class="doctors-container">
+
     <div class="page-header text-center mb-4">
+        <span class="ss-eyebrow" data-i18n="doctors_eyebrow">Next step after screening</span>
         <h2 class="fw-bold text-primary mb-3">
-            <i class="bi bi-hospital"></i> <span data-i18n="doctors_title">Consult a Qualified Doctor</span>
+            <i class="bi bi-hospital"></i> <span data-i18n="doctors_title">Find a doctor near you</span>
         </h2>
         <p class="lead text-muted mb-4" data-i18n="doctors_subtitle">
-            Based on your screening result, consulting a qualified medical specialist is advised for proper diagnosis and treatment planning.
+            A screening result is only useful if it reaches a clinician. Search for diabetes and
+            hypertension specialists around your current location.
         </p>
-        <div class="alert alert-info">
-            <i class="bi bi-info-circle-fill"></i>
-            <strong data-i18n="doctors_info_notice">Information Purpose Only:</strong>
-            <span data-i18n="doctors_info_text">The doctors listed are sourced from publicly available platforms. This platform does not recommend, rank, or endorse any doctor.</span>
+        <span class="ss-provenance">
+            <i class="bi bi-google"></i>
+            <span data-i18n="doctors_provenance">Listings come live from public map data. We do not maintain our own list.</span>
+        </span>
+    </div>
+
+    <!-- Emergency first: anyone who needs this needs it before anything else -->
+    <div class="ss-emergency-card mb-4">
+        <i class="bi bi-exclamation-octagon-fill"></i>
+        <div>
+            <h5 data-i18n="doctors_emergency_title">Do not search — call 108</h5>
+            <p data-i18n="doctors_emergency_text">
+                If you have chest pain, difficulty breathing, sudden weakness on one side, slurred speech,
+                confusion or fainting, call 108 for an ambulance or go to the nearest hospital now.
+            </p>
         </div>
     </div>
 
-    <!-- Location search card (shown when logged in) -->
+    <!-- Search card (signed in) -->
     <div id="locationSearchCard" class="card mb-4 border-primary-subtle" style="display:none">
         <div class="card-body text-center py-4">
             <i class="bi bi-geo-alt-fill text-primary fs-2 mb-2 d-block"></i>
-            <h5 class="mb-1" data-i18n="doctors_location_heading">Find Doctors Near You</h5>
-            <p class="text-muted small mb-3" data-i18n="doctors_location_sub">Search for specialists within 5 km of your location</p>
+            <h5 class="mb-1" data-i18n="doctors_location_heading">Search around you</h5>
+            <p class="text-muted small mb-3" data-i18n="doctors_location_sub">
+                We use your location once, for this search only. It is not saved to your account.
+            </p>
             <button id="findNearbyBtn" class="btn btn-primary">
-                <i class="bi bi-geo-alt"></i> <span data-i18n="btn_use_my_location">Use My Location</span>
+                <i class="bi bi-crosshair"></i> <span data-i18n="btn_use_my_location">Search near me</span>
             </button>
             <div id="locationSearching" class="mt-3" style="display:none">
                 <div class="spinner-border spinner-border-sm text-primary me-2" role="status" aria-hidden="true"></div>
-                <span data-i18n="doctors_searching">Searching for nearby doctors...</span>
+                <span data-i18n="doctors_searching">Searching…</span>
             </div>
         </div>
     </div>
 
-    <!-- Login prompt (shown when not logged in) -->
-    <div id="loginPromptCard" class="alert alert-secondary mb-4" style="display:none">
-        <i class="bi bi-person-circle"></i>
-        <span data-i18n="doctors_login_for_live">Sign in to search for doctors near your location.</span>
-        <a href="auth.html" class="alert-link ms-1" data-i18n="btn_sign_in">Sign In</a>
+    <!-- Sign-in prompt (signed out) -->
+    <div id="loginPromptCard" class="card mb-4 border-primary-subtle" style="display:none">
+        <div class="card-body text-center py-4">
+            <i class="bi bi-person-lock text-primary fs-2 mb-2 d-block"></i>
+            <h5 class="mb-1" data-i18n="doctors_login_heading">Sign in to search</h5>
+            <p class="text-muted small mb-3" data-i18n="doctors_login_for_live">
+                Doctor search needs an account so the service can stay free and protected from abuse.
+                Your location is used once for the search and is never saved.
+            </p>
+            <a href="login.html" class="btn btn-primary me-2" data-i18n="btn_sign_in">Sign in</a>
+            <a href="signup.html" class="btn btn-outline-secondary" data-i18n="btn_create_account">Create account</a>
+        </div>
     </div>
 
-    <!-- Notice bar (shown after a search or fallback) -->
-    <div id="searchNotice" class="alert mb-3" style="display:none" role="alert"></div>
+    <!-- Search status -->
+    <div id="searchNotice" class="alert mb-3" style="display:none" role="alert" aria-live="polite"></div>
 
-    <!-- Diabetes specialists section -->
+    <!-- Diabetes -->
     <section class="specialists-section mb-5">
         <div class="section-header mb-4">
             <h3 class="text-success">
-                <i class="bi bi-droplet-fill"></i> <span data-i18n="doctors_diabetes_title">Diabetes Specialists</span>
+                <i class="bi bi-droplet-fill"></i> <span data-i18n="doctors_diabetes_title">Diabetes specialists</span>
             </h3>
             <p class="text-muted small" data-i18n="doctors_diabetes_subtitle">
-                Endocrinologists, Diabetologists, and MD Medicine doctors specializing in diabetes care
+                Endocrinologists, diabetologists and general medicine doctors who manage diabetes.
             </p>
         </div>
-        <div class="row g-4" id="diabetesDoctors">
-            <div class="col-12 text-center">
-                <div class="spinner-border text-success" role="status">
-                    <span class="visually-hidden" data-i18n="loading">Loading...</span>
-                </div>
-            </div>
-        </div>
+        <div class="row g-4" id="diabetesDoctors"></div>
     </section>
 
     <hr class="my-5">
 
-    <!-- Hypertension specialists section -->
+    <!-- Hypertension -->
     <section class="specialists-section mb-5">
         <div class="section-header mb-4">
             <h3 class="text-danger">
-                <i class="bi bi-heart-pulse"></i> <span data-i18n="doctors_hypertension_title">Hypertension Specialists</span>
+                <i class="bi bi-heart-pulse"></i> <span data-i18n="doctors_hypertension_title">Hypertension specialists</span>
             </h3>
             <p class="text-muted small" data-i18n="doctors_hypertension_subtitle">
-                Cardiologists and Internal Medicine specialists with expertise in hypertension management
+                Cardiologists and internal medicine doctors who manage high blood pressure.
             </p>
         </div>
-        <div class="row g-4" id="hypertensionDoctors">
-            <div class="col-12 text-center">
-                <div class="spinner-border text-danger" role="status">
-                    <span class="visually-hidden" data-i18n="loading">Loading...</span>
-                </div>
-            </div>
-        </div>
+        <div class="row g-4" id="hypertensionDoctors"></div>
     </section>
 
+    <!-- Disclaimer -->
     <div class="alert alert-warning disclaimer-box">
         <h5 class="alert-heading">
-            <i class="bi bi-exclamation-triangle-fill"></i> <span data-i18n="doctors_disclaimer_title">Important Disclaimer</span>
+            <i class="bi bi-exclamation-triangle-fill"></i> <span data-i18n="doctors_disclaimer_title">Read before you book</span>
         </h5>
         <hr>
         <p class="mb-2">
-            <strong data-i18n="doctors_disclaimer_text">This platform does not recommend, rank, or endorse any doctor.</strong>
+            <strong data-i18n="doctors_disclaimer_text">SwasthSathi does not recommend, rank or endorse any doctor.</strong>
         </p>
         <ul class="mb-2">
-            <li data-i18n="doctors_disclaimer_1">Doctor information is provided for awareness purposes only</li>
-            <li data-i18n="doctors_disclaimer_2">Data is sourced from publicly available platforms (Google Maps, Practo, Hospital websites)</li>
-            <li data-i18n="doctors_disclaimer_3">Ratings and reviews are from third-party platforms</li>
-            <li data-i18n="doctors_disclaimer_4">Please verify credentials, availability, and fees independently before consultation</li>
-            <li data-i18n="doctors_disclaimer_5">Always consult with a qualified healthcare provider for diagnosis and treatment</li>
+            <li data-i18n="doctors_disclaimer_1">Results are returned live from public map data and shown in the order that service provides. We do not reorder them.</li>
+            <li data-i18n="doctors_disclaimer_2">Ratings and review counts are written by the public on that platform. They are not a measure of clinical quality.</li>
+            <li data-i18n="doctors_disclaimer_3">A listing here is not a check on anyone's qualifications. Verify registration, specialty, availability and fees yourself before consulting.</li>
+            <li data-i18n="doctors_disclaimer_4">Listings can be out of date, closed or wrongly categorised. Call ahead.</li>
+            <li data-i18n="doctors_disclaimer_5">Your government primary health centre or district hospital is also a valid first stop, and is usually free.</li>
         </ul>
-        <p class="mb-0 small">
-            <strong data-i18n="doctors_emergency">Emergency:</strong>
-            <span data-i18n="doctors_emergency_text">For medical emergencies, call 108 (National Ambulance Service) or visit the nearest hospital immediately.</span>
-        </p>
     </div>
 
     <div class="text-center my-5">
         <a href="result.html" class="btn btn-outline-primary btn-lg me-2">
-            <i class="bi bi-arrow-left-circle"></i> <span data-i18n="btn_back_results">Back to Results</span>
+            <i class="bi bi-arrow-left-circle"></i> <span data-i18n="btn_back_results">Back to results</span>
         </a>
         <a href="index.html" class="btn btn-outline-secondary btn-lg">
-            <i class="bi bi-house-fill"></i> <span data-i18n="btn_back_home">Back to Home</span>
+            <i class="bi bi-house-fill"></i> <span data-i18n="btn_back_home">Home</span>
         </a>
     </div>
 </div>
@@ -150,6 +161,6 @@
 <script src="assets/scripts/shared/footer.js"></script>
 <script src="assets/scripts/shared/nav-auth.js"></script>
 <script src="assets/scripts/pages/doctors.js"></script>
-    <script src="assets/scripts/shared/pwa-register.js"></script>
+<script src="assets/scripts/shared/pwa-register.js"></script>
 </body>
 </html>
