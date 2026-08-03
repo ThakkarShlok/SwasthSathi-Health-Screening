@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="About SwasthSathi - Our mission to make early health screening accessible to rural India">
-    <title>About Us - SwasthSathi</title>
-    
-   <!-- Bootstrap 5.3 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<!-- Base Styles (LOAD FIRST) -->
-<link rel="stylesheet" href="assets/styles/base.css">
-<link rel="stylesheet" href="assets/styles/language-modal.css">
-<!-- Page-specific styles -->
-<link rel="stylesheet" href="assets/styles/style.css">
-<link rel="stylesheet" href="assets/styles/about.css">
+    <meta name="description" content="About SwasthSathi - why we built a guideline-grounded screening tool for rural India, how it works, and who built what.">
+    <title>About - SwasthSathi</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Base Styles (LOAD FIRST — FROZEN) -->
+    <link rel="stylesheet" href="assets/styles/base.css">
+    <link rel="stylesheet" href="assets/styles/language-modal.css">
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="assets/styles/style.css">
+    <link rel="stylesheet" href="assets/styles/about.css">
+    <!-- Additive layers (LOAD LAST) -->
+    <link rel="stylesheet" href="assets/styles/enhance.css">
+    <link rel="stylesheet" href="assets/styles/about-revamp.css">
     <!-- PWA + icons -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#10b981">
@@ -28,263 +29,438 @@
     <meta name="apple-mobile-web-app-title" content="SwasthSathi">
     <link rel="stylesheet" href="assets/styles/pwa.css">
 </head>
-<body>
+<body class="ss2">
     <div id="navbar-mount"></div>
 
-    <!-- Hero Section -->
-    <section class="about-hero">
+    <!-- ============ HERO ============ -->
+    <section class="ss2-hero">
         <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html" data-i18n="nav_home">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-i18n="nav_about">About Us</li>
-                </ol>
-            </nav>
-            <h1 class="display-4 fw-bold mb-3" data-i18n="about_hero_title">About Us</h1>
-            <p class="lead text-muted" data-i18n="about_hero_subtitle">Building technology-driven solutions for early health risk awareness.</p>
+            <span class="ss2-pill">
+                <i class="bi bi-clipboard2-pulse"></i>
+                <span data-i18n="about_eyebrow">About SwasthSathi</span>
+            </span>
+            <h1>
+                <span data-i18n="about_hero_title">Early screening for the people the health system</span>
+                
+            </h1>
+            <p class="ss2-lead" data-i18n="about_hero_subtitle">
+                A free diabetes and hypertension screening tool built by four Computer Engineering
+                students at LDRP-ITR, Gandhinagar. It scores risk against published clinical thresholds,
+                works without an internet connection, and speaks four Indian languages.
+            </p>
+            <div class="ss2-principle">
+                <i class="bi bi-lightbulb-fill"></i>
+                <span>
+                    <strong data-i18n="about_principle_label">The principle:</strong>
+                    <span data-i18n="about_principle">deterministic rules for anything clinical, models only
+                    where the output can be checked afterwards.</span>
+                </span>
+            </div>
         </div>
     </section>
 
-    <!-- Mission Section -->
-    <section class="mission-section">
+    <!-- ============ MISSION ============ -->
+    <section class="ss2-section">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <div class="mission-icon-wrapper">
-                        <i class="bi bi-bullseye"></i>
-                    </div>
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5">
+                    <div class="ss2-figure"><i class="bi bi-bullseye"></i></div>
                 </div>
-                <div class="col-lg-6">
-                    <h2 class="section-title mb-4" data-i18n="mission_title">Our Mission</h2>
-                    <p class="mission-text" data-i18n="mission_text1">
-                        SwasthSathi exists to bridge the gap between rural communities and early health awareness. 
-                        In India, millions of people discover chronic conditions like diabetes and hypertension only 
-                        after symptoms become severe—often too late for preventive care.
+                <div class="col-lg-7">
+                    <span class="ss2-eyebrow" data-i18n="mission_eyebrow">Our mission</span>
+                    <h2 class="ss2-title" data-i18n="mission_title">Close the gap between risk and awareness</h2>
+                    <div class="ss2-rule"></div>
+                    <p class="ss2-lead mb-4" data-i18n="mission_text1">
+                        In India, most people meet their diabetes or hypertension for the first time in a
+                        hospital, years after it began. By then the inexpensive interventions — diet,
+                        movement, an early prescription — have been overtaken by the expensive ones.
                     </p>
-                    <p class="mission-text" data-i18n="mission_text2">
-                        We believe that early screening should be accessible to everyone, regardless of 
-                        location, literacy, or economic status. Our platform is designed to support timely medical consultation, 
-                        not replace it. We use technology responsibly to empower individuals with awareness, helping them take 
-                        the first step toward better health.
+                    <p class="ss2-lead" data-i18n="mission_text2">
+                        The gap is not medical knowledge. The thresholds that define risk have been published
+                        for decades. The gap is that a person in a village has no free, private, five-minute
+                        way to check themselves against those thresholds in a language they read. That gap is
+                        what SwasthSathi fills, and nothing more.
                     </p>
-                    <div class="mission-highlight">
+                    <div class="ss2-quote">
                         <i class="bi bi-lightbulb-fill"></i>
-                        <span data-i18n="mission_highlight">Supporting doctors, not replacing them</span>
+                        <span data-i18n="mission_highlight">Send people to doctors sooner. Never stand in for one.</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Problem Section -->
-    <section class="problem-section">
+    <!-- ============ PROBLEM ============ -->
+    <section class="ss2-section ss2-section--alt">
         <div class="container">
-            <h2 class="section-title text-center mb-5" data-i18n="problem_title">The Problem We Are Solving</h2>
+            <div class="text-center mb-5">
+                <span class="ss2-eyebrow" data-i18n="problem_eyebrow">The problem</span>
+                <h2 class="ss2-title" data-i18n="problem_title">Why screening doesn't happen</h2>
+                <div class="ss2-rule ss2-rule--center"></div>
+            </div>
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3">
-                    <div class="problem-card">
-                        <div class="problem-icon text-danger">
-                            <i class="bi bi-exclamation-triangle-fill"></i>
-                        </div>
-                        <h5 data-i18n="problem_late_title">Late Diagnosis</h5>
-                        <p class="text-muted" data-i18n="problem_late_desc">Most chronic diseases are detected only after complications arise, when treatment becomes costly and complex.</p>
+                    <div class="ss2-card">
+                        <div class="ss2-ico"><i class="bi bi-hourglass-bottom"></i></div>
+                        <h5 data-i18n="problem_late_title">Found too late</h5>
+                        <p data-i18n="problem_late_desc">Both conditions are painless for years. They are usually detected once an organ has already been affected.</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3">
-                    <div class="problem-card">
-                        <div class="problem-icon text-warning">
-                            <i class="bi bi-info-circle-fill"></i>
-                        </div>
-                        <h5 data-i18n="problem_awareness_title">Lack of Awareness</h5>
-                        <p class="text-muted" data-i18n="problem_awareness_desc">Early symptoms of diabetes and hypertension often go unnoticed, especially in rural areas with limited health education.</p>
+                    <div class="ss2-card">
+                        <div class="ss2-ico"><i class="bi bi-question-circle"></i></div>
+                        <h5 data-i18n="problem_awareness_title">Nothing feels wrong</h5>
+                        <p data-i18n="problem_awareness_desc">Without a reason to suspect anything, nobody spends a day's wage and a bus fare on a test.</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3">
-                    <div class="problem-card">
-                        <div class="problem-icon text-primary">
-                            <i class="bi bi-geo-alt-fill"></i>
-                        </div>
-                        <h5 data-i18n="problem_access_title">Accessibility Barriers</h5>
-                        <p class="text-muted" data-i18n="problem_access_desc">Rural India faces challenges like distance to clinics, lack of transport, and shortage of healthcare workers.</p>
+                    <div class="ss2-card">
+                        <div class="ss2-ico"><i class="bi bi-signpost-split"></i></div>
+                        <h5 data-i18n="problem_access_title">The clinic is far</h5>
+                        <p data-i18n="problem_access_desc">Distance, transport, lost wages and staff shortages sit between a rural household and a check-up. So do patchy networks.</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3">
-                    <div class="problem-card">
-                        <div class="problem-icon text-success">
-                            <i class="bi bi-hospital-fill"></i>
-                        </div>
-                        <h5 data-i18n="problem_overcrowded_title">Overcrowded Systems</h5>
-                        <p class="text-muted" data-i18n="problem_overcrowded_desc">Public hospitals are overwhelmed with patients, leaving little time for preventive care and early screening.</p>
+                    <div class="ss2-card">
+                        <div class="ss2-ico"><i class="bi bi-translate"></i></div>
+                        <h5 data-i18n="problem_language_title">It is all in English</h5>
+                        <p data-i18n="problem_language_desc">Reliable material online is written in clinical English, for readers who already know what HbA1c means.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Team Section -->
-<section class="team-section">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title mb-3" data-i18n="team_title">Meet Team COGNITEX</h2>
-            <p class="lead text-muted" data-i18n="team_subtitle">A collaborative, interdisciplinary team of four tech enthusiasts united by a shared vision: making healthcare accessible through responsible technology.</p>
-        </div>
-
-        <div class="row g-4">
-            <!-- Team Member 1: Shlok Thakkar -->
-            <div class="col-lg-6">
-                <div class="team-card">
-                    <div class="team-card-header">
-                        <div class="team-member-photo">
-                            <img src="Images\Professional Photo (5).png" alt="Shlok Thakkar" class="member-img">
-                        </div>
-                        <div class="team-member-info">
-                            <h4 class="member-name">Shlok Thakkar</h4>
-                            <p class="member-role">Team Leader & Core Developer</p>
-                            <a href="https://www.linkedin.com/in/shlok-thakkar-58a033354?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" class="linkedin-btn">
-                                <i class="bi bi-linkedin"></i> <span data-i18n="team_connect">Connect</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="team-card-body">
-                        <h6 class="responsibility-title" data-i18n="team_responsibilities">Key Responsibilities:</h6>
-                        <ul class="responsibility-list">
-                            <li>Overall product architect and technical leader</li>
-                            <li>Designed UI/UX across the entire platform</li>
-                            <li>Developed screening flow and data collection logic</li>
-                            <li>Built core risk assessment and algorithm logic for Result Page</li>
-                            <li>Integrated OCR capability for report data extraction</li>
-                            <li>Managed product direction, architecture, and integration</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Team Member 2: Dhrupalsinh Solanki -->
-            <div class="col-lg-6">
-                <div class="team-card">
-                    <div class="team-card-header">
-                        <div class="team-member-photo">
-                            <img src="Images/Dhrupal.jpeg" alt="Dhrupalsinh Solanki" class="member-img">
-                        </div>
-                        <div class="team-member-info">
-                            <h4 class="member-name">Dhrupalsinh Solanki</h4>
-                            <p class="member-role">Feature Ideation Contributor</p>
-                            <a href="https://www.linkedin.com/in/dhrupalsinh-solanki-662442332?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer" class="linkedin-btn">
-                                <i class="bi bi-linkedin"></i> <span data-i18n="team_connect">Connect</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="team-card-body">
-                        <h6 class="responsibility-title" data-i18n="team_responsibilities">Key Responsibilities:</h6>
-                        <ul class="responsibility-list">
-                            <li>Conceptualized personalized health recommendations in Result Page</li>
-                            <li>Designed exercise suggestions logic based on risk levels</li>
-                            <li>Proposed printable result report feature for patient documentation</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Team Member 3: Aryan Thakkar -->
-            <div class="col-lg-6">
-                <div class="team-card">
-                    <div class="team-card-header">
-                        <div class="team-member-photo">
-                            <img src="Images/Aryan.jpeg" alt="Aryan Thakkar" class="member-img">
-                        </div>
-                        <div class="team-member-info">
-                            <h4 class="member-name">Aryan Thakkar</h4>
-                            <p class="member-role">Feature Ideation Contributor</p>
-                            <a href="https://www.linkedin.com/in/aryan-thakkar-126a76345?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" class="linkedin-btn">
-                                <i class="bi bi-linkedin"></i> <span data-i18n="team_connect">Connect</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="team-card-body">
-                        <h6 class="responsibility-title" data-i18n="team_responsibilities">Key Responsibilities:</h6>
-                        <ul class="responsibility-list">
-                            <li>Proposed doctor discovery feature for post-screening support</li>
-                            <li>Conceptualized flow for suggesting qualified doctors</li>
-                            <li>Designed doctor recommendation logic based on public ratings</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Team Member 4: Akshay Somani -->
-            <div class="col-lg-6">
-                <div class="team-card">
-                    <div class="team-card-header">
-                        <div class="team-member-photo">
-                            <img src="Images/Akshay.jpeg" alt="Akshay Somani" class="member-img">
-                        </div>
-                        <div class="team-member-info">
-                            <h4 class="member-name">Akshay Somani</h4>
-                            <p class="member-role">Feature Ideation Contributor</p>
-                            <a href="https://www.linkedin.com/in/akshay-somani-881622383?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" class="linkedin-btn">
-                                <i class="bi bi-linkedin"></i> <span data-i18n="team_connect">Connect</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="team-card-body">
-                        <h6 class="responsibility-title" data-i18n="team_responsibilities">Key Responsibilities:</h6>
-                        <ul class="responsibility-list">
-                            <li>Conceptualized personalized Do's and Don'ts based on screening outcomes</li>
-                            <li>Contributed ideas for lifestyle guidance and patient education</li>
-                            <li>Focused on culturally appropriate health recommendations</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-    <!-- Ethical Commitment Section -->
-    <section class="ethics-section">
+    <!-- ============ ENGINEERING ============ -->
+    <section class="ss2-section">
         <div class="container">
-            <div class="ethics-card">
-                <div class="ethics-icon">
-                    <i class="bi bi-shield-check"></i>
+            <div class="row g-5">
+                <div class="col-lg-7">
+                    <span class="ss2-eyebrow" data-i18n="build_eyebrow">How it was built</span>
+                    <h2 class="ss2-title" data-i18n="build_title">Three decisions we had to defend</h2>
+                    <div class="ss2-rule"></div>
+
+                    <div class="ss2-decision">
+                        <div class="ss2-num">01</div>
+                        <div>
+                            <h5 data-i18n="build_1_title">The risk score is not generated by a language model</h5>
+                            <p data-i18n="build_1_desc">
+                                It is a rule engine over published cut-offs — ADA glycaemic thresholds, WHO and
+                                JNC-8 blood pressure stages, Asian-specific BMI and waist limits. Identical
+                                answers always produce an identical score, and every point traces to a named
+                                threshold. A model producing a plausible-sounding number would have been easier
+                                to build and impossible to check.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ss2-decision">
+                        <div class="ss2-num">02</div>
+                        <div>
+                            <h5 data-i18n="build_2_title">No clinical sentence here was written by an AI</h5>
+                            <p data-i18n="build_2_desc">
+                                The passages behind the guideline assistant come from WHO material, and every
+                                numeric threshold in them is taken directly from the same rule engine the
+                                screening uses — so the assistant and the calculator can never disagree.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ss2-decision">
+                        <div class="ss2-num">03</div>
+                        <div>
+                            <h5 data-i18n="build_3_title">The server does not trust the model's output</h5>
+                            <p data-i18n="build_3_desc">
+                                Citations the model claims are re-checked against the passages actually
+                                retrieved, and anything unverified is dropped. If a response cannot be parsed,
+                                the request fails closed rather than degrading into a guess. Medication and
+                                dosing questions are refused, and anything reading as an emergency is routed to
+                                emergency guidance first.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="mb-4" data-i18n="ethics_title">Our Ethical Commitment</h3>
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <div class="ethics-point">
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                            <p><strong data-i18n="ethics_not_diagnostic">Not a Diagnostic Tool</strong><br><span data-i18n="ethics_not_diagnostic_desc">SwasthSathi is a screening platform, not a medical diagnosis system.</span></p>
+
+                <div class="col-lg-5">
+                    <div class="ss2-panel">
+                        <span class="ss2-eyebrow" data-i18n="build_specs_eyebrow">System at a glance</span>
+                        <ul class="ss2-specs mt-2">
+                            <li><span class="k" data-i18n="spec_languages">Languages</span><span class="v">EN / HI / GU / MR</span></li>
+                            <li><span class="k" data-i18n="spec_engine">Risk engine</span><span class="v">Rule-based, on-device</span></li>
+                            <li><span class="k" data-i18n="spec_corpus">Guideline passages</span><span class="v">31</span></li>
+                            <li><span class="k" data-i18n="spec_embed">Embedding dimensions</span><span class="v">768, normalised</span></li>
+                            <li><span class="k" data-i18n="spec_functions">Edge functions</span><span class="v">4</span></li>
+                            <li><span class="k" data-i18n="spec_migrations">DB migrations</span><span class="v">8, idempotent</span></li>
+                            <li><span class="k" data-i18n="spec_offline">Offline screening</span><span class="v">Yes</span></li>
+                            <li><span class="k" data-i18n="spec_account">Account required</span><span class="v">No</span></li>
+                        </ul>
+
+                        <div class="ss2-tags">
+                            <span class="ss2-tag">ES6 modules</span>
+                            <span class="ss2-tag">Bootstrap 5.3</span>
+                            <span class="ss2-tag">PWA</span>
+                            <span class="ss2-tag">TypeScript · Deno</span>
+                            <span class="ss2-tag">Supabase</span>
+                            <span class="ss2-tag">PostgreSQL · RLS</span>
+                            <span class="ss2-tag">pgvector</span>
+                            <span class="ss2-tag">Cloud Vision</span>
                         </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="ethics-point">
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                            <p><strong data-i18n="ethics_awareness">Supporting Awareness</strong><br><span data-i18n="ethics_awareness_desc">We empower users with early risk awareness to seek timely medical consultation.</span></p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="ethics-point">
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                            <p><strong data-i18n="ethics_professional">Professional Guidance Required</strong><br><span data-i18n="ethics_professional_desc">Final medical decisions must always be taken by certified healthcare professionals.</span></p>
-                        </div>
+
+                        <p class="mt-4 mb-0" style="font-size:0.82rem;color:var(--gray);line-height:1.65" data-i18n="build_grant">
+                            Built under an ImpactThon 2025–26 student grant of ₹10,000, which covered every API
+                            and hosting cost of the deployed system.
+                        </p>
                     </div>
                 </div>
-                <p class="text-muted text-center mt-4 mb-0">
-                    <small data-i18n="ethics_footer">We are committed to using technology responsibly, transparently, and ethically in healthcare.</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TEAM ============
+         Every card uses the identical structure and styling.
+         >>> BEFORE DEPLOY: search for "VERIFY" and replace each
+         placeholder with what actually happened. <<<
+         ============================================ -->
+    <section class="ss2-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="ss2-eyebrow" data-i18n="team_eyebrow">The team</span>
+                <h2 class="ss2-title" data-i18n="team_title">Team COGNITEX</h2>
+                <div class="ss2-rule ss2-rule--center"></div>
+                <p class="ss2-lead mx-auto" data-i18n="team_subtitle">
+                    Computer Engineering students at LDRP-ITR, Kadi Sarva Vishwavidyalaya, Gandhinagar.
                 </p>
             </div>
+
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="ss2-person">
+                        <div class="row g-0">
+                            <div class="col-lg-4">
+                                <div class="ss2-person-media">
+                                    <div class="ss2-photo">
+                                        <img src="Images/Professional Photo (5).png" alt="Shlok Thakkar">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="ss2-person-body">
+                                    <h4>Shlok Thakkar</h4>
+                                    <p class="ss2-role"><i class="bi bi-diagram-3"></i><span data-i18n="role_lead">Team Lead &amp; Architect</span></p>
+                                    <p class="ss2-scope" data-i18n="role_lead_scope">Risk engine · retrieval pipeline · database &amp; backend · OCR · localisation</p>
+                                    <ul class="ss2-did">
+                                <li><strong>Owned the end-to-end architecture</strong> — client, database schema and all four serverless functions — and set the technical direction the team worked to.</li>
+                                <li><strong>Wrote the offline-capable risk engine</strong> with tiered assessment and a per-factor breakdown separating modifiable from non-modifiable risk.</li>
+                                <li><strong>Designed and shipped the guideline assistant:</strong> vector retrieval over a curated corpus, a relevance gate that declines before any model is called, and server-side re-derivation of every citation.</li>
+                                <li><strong>Modelled the PostgreSQL schema</strong> with row-level security at the database layer and eight sequential idempotent migrations.</li>
+                                <li><strong>Built the API cost-control layer</strong> — auth before any billable call, per-API rate limits, timeouts and usage logging — keeping the project inside a ₹10,000 grant.</li>
+                                    </ul>
+                                    <div class="ss2-contacts">
+                                        <a class="ss2-contact ss2-contact--solid" href="https://github.com/ThakkarShlok" target="_blank" rel="noopener noreferrer">
+                                            <i class="bi bi-github"></i> GitHub
+                                        </a>
+                                        <a class="ss2-contact" href="https://www.linkedin.com/in/shlok-thakkar-58a033354" target="_blank" rel="noopener noreferrer">
+                                            <i class="bi bi-linkedin"></i> LinkedIn
+                                        </a>
+                                        <a class="ss2-contact" href="mailto:thakkarshlok2007@gmail.com">
+                                            <i class="bi bi-envelope-fill"></i> Email
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="ss2-person">
+                        <div class="row g-0">
+                            <div class="col-lg-4">
+                                <div class="ss2-person-media">
+                                    <div class="ss2-photo">
+                                        <img src="Images/Dhrupal.jpeg" alt="Dhrupalsinh Solanki">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="ss2-person-body">
+                                    <h4>Dhrupalsinh Solanki</h4>
+                                    <p class="ss2-role"><i class="bi bi-box-seam"></i><span data-i18n="role_integration">Integration</span></p>
+                                    <p class="ss2-scope" data-i18n="role_integration_scope">Email result delivery · offline install layer</p>
+                                    <ul class="ss2-did">
+                                <li><strong>Shipped the email result-delivery flow</strong> into the production codebase, including the contact form’s spam and rate-limit protections.</li>
+                                <li><strong>Shipped the progressive web app layer</strong> — service worker registration, offline caching and install manifest — so a screening completes without a network connection.</li>
+                                <!-- VERIFY: replace with what actually happened -->
+                                <li>Verified install and offline behaviour on Android and reported the failures fixed before launch.</li>
+                                    </ul>
+                                    <div class="ss2-contacts">
+                                        <a class="ss2-contact ss2-contact--solid" href="https://github.com/Dhrupal-01" target="_blank" rel="noopener noreferrer">
+                                            <i class="bi bi-github"></i> GitHub
+                                        </a>
+                                        <a class="ss2-contact" href="https://www.linkedin.com/in/dhrupalsinh-solanki-662442332" target="_blank" rel="noopener noreferrer">
+                                            <i class="bi bi-linkedin"></i> LinkedIn
+                                        </a>
+                                        <a class="ss2-contact" href="mailto:dhrupalsinhsolanki97@gmail.com">
+                                            <i class="bi bi-envelope-fill"></i> Email
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="ss2-person">
+                        <div class="row g-0">
+                            <div class="col-lg-4">
+                                <div class="ss2-person-media">
+                                    <div class="ss2-photo">
+                                        <img src="Images/Aryan.jpeg" alt="Aryan Thakkar">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="ss2-person-body">
+                                    <h4>Aryan Thakkar</h4>
+                                    <p class="ss2-role"><i class="bi bi-clipboard-data"></i><span data-i18n="role_research">Requirements &amp; Research</span></p>
+                                    <p class="ss2-scope" data-i18n="role_research_scope">Co-lead · product requirements · user walkthroughs</p>
+                                    <ul class="ss2-did">
+                                <!-- VERIFY: replace with what actually happened -->
+                                <li>Defined requirements for post-screening doctor discovery, including the rule that the platform must never rank or endorse a listed doctor.</li>
+                                <!-- VERIFY: replace with what actually happened -->
+                                <li>Reviewed the screening questionnaire for length and comprehension, driving the cut to a five-minute flow.</li>
+                                <!-- VERIFY: replace with what actually happened -->
+                                <li>Ran walkthroughs with first-time users and reported the confusion points that changed the result page wording.</li>
+                                    </ul>
+                                    <div class="ss2-contacts">
+                                        <a class="ss2-contact ss2-contact--solid" href="https://github.com/Ant091206" target="_blank" rel="noopener noreferrer">
+                                            <i class="bi bi-github"></i> GitHub
+                                        </a>
+                                        <a class="ss2-contact" href="https://www.linkedin.com/in/aryan-thakkar-126a76345" target="_blank" rel="noopener noreferrer">
+                                            <i class="bi bi-linkedin"></i> LinkedIn
+                                        </a>
+                                        <a class="ss2-contact" href="mailto:aaryanthakkar06@gmail.com">
+                                            <i class="bi bi-envelope-fill"></i> Email
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="ss2-person">
+                        <div class="row g-0">
+                            <div class="col-lg-4">
+                                <div class="ss2-person-media">
+                                    <div class="ss2-photo">
+                                        <img src="Images/Akshay.jpeg" alt="Akshay Somani">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="ss2-person-body">
+                                    <h4>Akshay Somani</h4>
+                                    <p class="ss2-role"><i class="bi bi-translate"></i><span data-i18n="role_content">Content &amp; QA</span></p>
+                                    <p class="ss2-scope" data-i18n="role_content_scope">Language review · device testing</p>
+                                    <ul class="ss2-did">
+                                <!-- VERIFY: replace with what actually happened -->
+                                <li>Reviewed Hindi and Gujarati interface copy for readability and flagged translations that read as clinical rather than plain language.</li>
+                                <!-- VERIFY: replace with what actually happened -->
+                                <li>Tested the screening flow on low-end Android devices and reported layout and input problems.</li>
+                                <!-- VERIFY: replace with what actually happened -->
+                                <li>Gathered feedback on the lifestyle guidance so food and activity examples matched what people locally recognise.</li>
+                                    </ul>
+                                    <div class="ss2-contacts">
+                                        <a class="ss2-contact ss2-contact--solid" href="https://github.com/akshaysomani" target="_blank" rel="noopener noreferrer">
+                                            <i class="bi bi-github"></i> GitHub
+                                        </a>
+                                        <a class="ss2-contact" href="https://www.linkedin.com/in/akshay-somani-881622383" target="_blank" rel="noopener noreferrer">
+                                            <i class="bi bi-linkedin"></i> LinkedIn
+                                        </a>
+                                        <a class="ss2-contact" href="mailto:akshaysomani1804@gmail.com">
+                                            <i class="bi bi-envelope-fill"></i> Email
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section-about">
-        <div class="container text-center">
-            <h2 class="mb-4" data-i18n="cta_about_title">Ready to Take Control of Your Health?</h2>
-            <p class="lead text-muted mb-4" data-i18n="cta_about_subtitle">Experience early health screening designed for rural India—free, fast, and accessible.</p>
-            <a href="screening.html" class="btn btn-primary-custom btn-lg" data-i18n="cta_about_button">Start Free Screening</a>
+    <!-- ============ COMMITMENTS ============ -->
+    <section class="ss2-section ss2-section--alt">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="ss2-eyebrow" data-i18n="ethics_eyebrow">Where we draw the line</span>
+                <h2 class="ss2-title" data-i18n="ethics_title">What we promise</h2>
+                <div class="ss2-rule ss2-rule--center"></div>
+                <p class="ss2-lead mx-auto" data-i18n="ethics_intro">
+                    Four commitments we hold the product to, including where it falls short.
+                </p>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="ss2-commit">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        <p class="mb-0">
+                            <strong data-i18n="ethics_not_diagnostic">Screening, never diagnosis</strong>
+                            <span data-i18n="ethics_not_diagnostic_desc">A result tells you whether to get tested. It never tells you what you have.</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="ss2-commit">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        <p class="mb-0">
+                            <strong data-i18n="ethics_provenance">No AI-written medical text</strong>
+                            <span data-i18n="ethics_provenance_desc">Every clinical statement traces to published guidance. A language model never authored one.</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="ss2-commit">
+                        <i class="bi bi-exclamation-circle-fill text-warning"></i>
+                        <p class="mb-0">
+                            <strong data-i18n="ethics_validation">Not clinically validated</strong>
+                            <span data-i18n="ethics_validation_desc">The engine applies published thresholds correctly, but has not been trialled against patient outcomes. We say so rather than implying otherwise.</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="ss2-commit">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        <p class="mb-0">
+                            <strong data-i18n="ethics_professional">A doctor decides</strong>
+                            <span data-i18n="ethics_professional_desc">Diagnosis and treatment belong to a qualified clinician. This tool exists to get you to one sooner.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center mt-4 mb-0" style="font-size:0.85rem;color:var(--gray)">
+                <span data-i18n="ethics_footer">If something here is inaccurate, we want to hear it.</span>
+                <a href="contact.html" style="color:var(--primary-dark);text-decoration:underline" data-i18n="ethics_footer_link">Write to us</a>.
+            </p>
         </div>
     </section>
 
-   <div id="footer-mount"></div>
+    <!-- ============ CTA ============ -->
+    <section class="ss2-cta text-center">
+        <div class="container">
+            <h2 data-i18n="cta_about_title">Find out where you stand</h2>
+            <p data-i18n="cta_about_subtitle">
+                Free, five minutes, no account needed — and it works without a signal.
+            </p>
+            <a href="screening.html" class="ss2-btn" data-i18n="cta_about_button">Start free screening</a>
+        </div>
+    </section>
+
+    <div id="footer-mount"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/scripts/data/language-data.js"></script>
