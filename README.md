@@ -391,7 +391,7 @@ Built the **serverless backend** in TypeScript on Deno — four Edge Functions, 
 
 Developed the **risk-assessment engine** through to v1.4 — tiered assessment, per-factor contribution analysis, measurement precedence, and data-completeness reporting — along with the OCR extraction and parsing pipeline, the four-locale internationalization system, the Progressive Web App layer, and the UI/UX and design system across every surface.
 
-[LinkedIn](https://www.linkedin.com/in/thakkar-shlok)
+[LinkedIn](http://www.linkedin.com/in/thakkar-shlok)
 
 ### Dhrupalsinh Solanki — Feature Design: Guidance & Result Delivery
 
