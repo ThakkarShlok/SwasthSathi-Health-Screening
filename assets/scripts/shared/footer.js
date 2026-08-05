@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-lg-4 mb-4">
                 <h5>
-                    <img src="assets/logo/swasthsathi-icon.svg" alt="" class="footer-brand-icon me-2">SwasthSathi
+                    <img src="assets/logo/swasthsathi-icon.svg" alt="" class="footer-brand-icon me-2" width="32" height="32" loading="lazy">SwasthSathi
                 </h5>
                 <p class="text-muted" data-i18n="footer_tagline">Your trusted companion for early health screening. Evidence-based, multilingual, and free for everyone.</p>
             </div>

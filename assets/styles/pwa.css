@@ -37,7 +37,7 @@
 }
 
 .offline-subtext {
-    color: var(--gray-light);
+    color: var(--gray);
     font-size: 0.9rem;
     max-width: 30rem;
     margin-bottom: 1.75rem;
