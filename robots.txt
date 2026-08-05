@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# Keep CSS/JS/assets crawlable so Google can fully render pages.
+# Explicit so no future broad rule accidentally blocks rendering.
+Allow: /assets/
+
+# ── Tier 1: auth-gated pages with no publicly shareable URL ──
+# Nothing here to index, so block crawling outright.
+Disallow: /login.html
+Disallow: /signup.html
+Disallow: /dashboard.html
+Disallow: /offline.html
+
+# ── Tier 2: result.html, share.html, comparison.html ──
+# These carry personal health data behind shareable/guessable URLs.
+# They are deliberately NOT disallowed here — they must stay crawlable so
+# Google can SEE and honor their <meta name="robots" content="noindex">.
+# Blocking them would hide that tag, and a linked bare URL could still be
+# indexed. The noindex tag — not Disallow — is what keeps personal health
+# results out of the index.
+
+# No query-string blocking (e.g. Disallow: /*?*): the doctors flow and
+# language switching may use query params, which must remain crawlable.
+
+Sitemap: https://swasthsathi.app/sitemap.xml
