@@ -1,0 +1,88 @@
+# SwasthSathi — Full description
+
+> SwasthSathi is a free, offline-capable web app that screens for type 2 diabetes risk and hypertension risk. It is an educational screening tool — not a diagnosis and not a clinically validated medical device. It runs in four languages (English, Hindi, Gujarati, Marathi), works without an internet connection, and needs no account to produce a result.
+
+This is the extended description. A shorter version is at https://swasthsathi.app/llms.txt.
+
+## What SwasthSathi is and is not
+
+SwasthSathi is an educational risk-screening tool. It estimates a person's risk of type 2 diabetes and hypertension (high blood pressure) so they know whether it may be worth seeing a doctor.
+
+- It is NOT a diagnosis. Only a qualified doctor can diagnose a condition.
+- It is NOT clinically validated. The risk engine scores against published clinical thresholds, but that scoring has not been tested against patient outcomes. A result is a reason to see a doctor, not a medical finding.
+- It is NOT a substitute for professional medical care, examination, or treatment.
+
+## Key facts
+
+- Free to use, with no ads.
+- No account is needed to complete a screening and get a result. If you screen without an account, nothing is stored.
+- Works offline as an installable Progressive Web App (PWA); the screening runs on your device.
+- Available in four languages: English, Hindi, Gujarati, and Marathi.
+- Screens for two conditions: type 2 diabetes risk and hypertension (high blood pressure) risk.
+- Risk thresholds come from published sources: ADA glycaemic cut-offs, WHO and JNC-8 blood-pressure stages, and Asian-specific BMI and waist limits.
+- Built by Team COGNITEX — four Computer Engineering students at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat, India — as a non-commercial project under an ImpactThon 2025-26 student grant.
+
+## Key pages
+
+- [Home](https://swasthsathi.app/): Overview of the free, offline, multilingual screening tool and how it works.
+- [Screening](https://swasthsathi.app/screening.html): The screening form. It can read values from a photographed lab report (OCR) and computes a risk result on your device.
+- [About](https://swasthsathi.app/about.html): Why the tool was built for rural India, how the rule-based engine works, and who built it.
+- [Find a doctor](https://swasthsathi.app/doctors.html): Live search for diabetes and hypertension specialists near your location. SwasthSathi does not rank, recommend, or endorse any doctor.
+- [Contact](https://swasthsathi.app/contact.html): Contact the team. Messages go to the support inbox.
+- [Privacy](https://swasthsathi.app/privacy.html): How the tool collects, uses, and protects data, in line with India's DPDP Act 2023.
+
+## How it works
+
+- Risk scoring is rule-based and runs on your device. The same inputs always produce the same score. AI does not generate the risk score.
+- Scoring uses fixed published thresholds: ADA glycaemic cut-offs, WHO and JNC-8 blood-pressure stages, and Asian-specific BMI and waist limits.
+- AI is used only for two things: reading values from a photographed lab report (OCR), and a guideline-grounded assistant.
+- The guideline assistant answers only from a fixed set of guideline passages drawn from published WHO material. If nothing matches closely enough, it declines rather than improvising. It refuses all questions about medicines or doses, and it points the user to emergency care when a question needs it.
+
+## Features
+
+- Guideline-grounded assistant: A question-answering assistant that only answers from a fixed set of guideline passages. It declines when nothing matches closely enough, refuses questions about medicines or doses, and points the user to emergency care when a question needs it.
+- Offline screening: The screening completes on your device and works without a signal. Live features such as doctor search need an internet connection.
+- Multilingual: The interface and screening are available in English, Hindi, Gujarati, and Marathi.
+- OCR report reading: Point your camera at a printed lab report and the tool reads values out of it, such as HbA1c, blood sugar, and blood pressure.
+- Doctor discovery: A live search for diabetes and hypertension specialists near your current location. The tool does not rank, recommend, or endorse any doctor.
+- Printable result: A result summary you can print and hand to your doctor.
+
+## Frequently asked questions
+
+### Is SwasthSathi a diagnosis?
+
+No. SwasthSathi is an educational risk-screening tool, not a diagnosis. It estimates your risk of diabetes and high blood pressure so you know whether it may be worth seeing a doctor. Only a qualified doctor can diagnose a condition.
+
+### Has SwasthSathi been clinically validated?
+
+No. The risk engine has not been clinically validated. It scores risk against published clinical thresholds, but that scoring has not been tested against patient outcomes. Treat a result as a reason to see a doctor, not as a medical finding.
+
+### Does SwasthSathi work offline?
+
+Yes. The screening runs on your device and works without an internet connection. Live features such as doctor search need a connection.
+
+### What languages is SwasthSathi available in?
+
+SwasthSathi is available in four languages: English, Hindi, Gujarati and Marathi.
+
+### Is SwasthSathi free?
+
+Yes. SwasthSathi is completely free and shows no ads. It is a non-commercial public-health project.
+
+### Where do the risk thresholds come from?
+
+Risk is scored against fixed published thresholds: ADA glycaemic cut-offs, WHO and JNC-8 blood-pressure stages, and Asian-specific BMI and waist limits. The same inputs always produce the same score.
+
+### Is SwasthSathi AI-powered?
+
+The risk score is rule-based, not AI-generated, and comes from fixed published thresholds. AI is used only to read values from a photographed lab report (OCR) and for the guideline assistant, which answers from published WHO material.
+
+### Who built SwasthSathi?
+
+SwasthSathi was built by Team COGNITEX, four Computer Engineering students at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar. Shlok Thakkar was the tech lead for architecture and AI systems, responsible for the risk engine, the guideline assistant's retrieval pipeline, the database and backend, OCR and localisation. The team also includes Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani.
+
+## Intended use and limitations
+
+SwasthSathi is intended for personal health awareness and education. It helps a person understand whether their risk of type 2 diabetes or hypertension is high enough to warrant seeing a doctor.
+
+It must not be used as a diagnosis, as a clinically validated assessment, or as a substitute for professional medical advice, examination, or treatment. The risk engine has not been clinically validated. Any result — high or low — should be discussed with a qualified healthcare professional. For medical decisions, including medicines and treatment, consult a doctor.
