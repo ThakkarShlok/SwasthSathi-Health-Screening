@@ -14,8 +14,8 @@
 <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
     <div class="container">
         <a class="navbar-brand" href="index.html" aria-label="SwasthSathi">
-            <img src="assets/logo/swasthsathi-logo-horizontal.svg" alt="SwasthSathi" class="brand-logo-full">
-            <img src="assets/logo/swasthsathi-icon.svg" alt="SwasthSathi" class="brand-logo-icon">
+            <img src="assets/logo/swasthsathi-logo-horizontal.svg" alt="SwasthSathi" class="brand-logo-full" width="160" height="40">
+            <img src="assets/logo/swasthsathi-icon.svg" alt="SwasthSathi" class="brand-logo-icon" width="40" height="40">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>

@@ -218,7 +218,7 @@
     margin-bottom: 1.15rem;
 }
 
-.ss2-card h5 {
+.ss2-card h3 {
     font-size: 1.05rem;
     font-weight: 700;
     color: var(--ink);
@@ -251,7 +251,7 @@
     width: 28px;
 }
 
-.ss2-decision h5 {
+.ss2-decision h3 {
     font-size: 1.02rem;
     font-weight: 700;
     color: var(--ink);
@@ -358,7 +358,7 @@
 
 .ss2-person-body { padding: 2rem 1.9rem; }
 
-.ss2-person h4 {
+.ss2-person h3 {
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--ink);

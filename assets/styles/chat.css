@@ -195,7 +195,7 @@
 
 .gc-counter {
     font-size: 0.72rem;
-    color: var(--gray-light);
+    color: var(--gray);
     text-align: right;
     margin-top: 0.25rem;
     min-height: 1em;

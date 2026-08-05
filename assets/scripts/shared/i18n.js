@@ -60,6 +60,10 @@ class TranslationEngine {
         localStorage.setItem('selectedLanguage', langCode);
         this.currentLang = langCode;
 
+        // Keep <html lang> in sync so screen readers announce in the right
+        // language (a11y). Falls back to the code itself for hi/gu/mr.
+        document.documentElement.lang = langCode;
+
         if (langCode !== 'en') {
             await this.loadDictionary(langCode);
         }
@@ -160,6 +164,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // English pages resolve instantly from TRANSLATION_KEYS (no fetch needed).
     window.translator.translatePage();
     window.translator.updateLanguageDropdown();
+    // Sync <html lang> to the restored language for correct SR pronunciation.
+    document.documentElement.lang = window.translator.currentLang;
 });
 
 console.log('✅ i18n engine v2 ready (static JSON mode)');

@@ -2,8 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SwasthSathi | Health Screening</title>
+    <title>Diabetes &amp; Hypertension Screening | SwasthSathi</title>
+    <meta name="description" content="Check your risk of diabetes and high blood pressure with SwasthSathi free, guideline-based screening. An educational tool, not a diagnosis.">
+    <link rel="canonical" href="https://swasthsathi.app/screening.html">
+    <!-- Open Graph / social preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://swasthsathi.app/screening.html">
+    <meta property="og:title" content="Free Diabetes &amp; Hypertension Screening — SwasthSathi">
+    <meta property="og:description" content="Answer a few questions and check your risk of diabetes and high blood pressure — free, guideline-based, in 4 Indian languages. Educational awareness, not a diagnosis.">
+    <meta property="og:image" content="https://swasthsathi.app/assets/social/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="SwasthSathi — guideline-grounded diabetes and hypertension screening">
+    <meta property="og:site_name" content="SwasthSathi">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:locale:alternate" content="hi_IN">
+    <meta property="og:locale:alternate" content="gu_IN">
+    <meta property="og:locale:alternate" content="mr_IN">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Diabetes &amp; Hypertension Screening — SwasthSathi">
+    <meta name="twitter:description" content="Check your risk of diabetes and high blood pressure — free, guideline-based, in 4 Indian languages. Educational awareness, not a diagnosis.">
+    <meta name="twitter:image" content="https://swasthsathi.app/assets/social/og-image.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Warm up connections to CDN + backend for faster first paint -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://ersclejdrqnaxlhrfbhg.supabase.co" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
     <!-- Bootstrap 5 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -32,9 +58,9 @@
 <!-- Screening Card -->
 <div class="screening-card">
 
-<h2 class="section-title text-center mb-4">
+<h1 class="section-title text-center mb-4">
     <i class="bi bi-clipboard2-pulse"></i> <span data-i18n="screening_title">Patient Health Screening</span>
-</h2>
+</h1>
 
 <form id="screeningForm" novalidate>
 
@@ -72,7 +98,7 @@
 <div class="form-step active" id="formStep1">
 
     <!-- Basic Info -->
-    <h5 data-i18n="basic_info">Basic Information</h5>
+    <h2 class="h5" data-i18n="basic_info">Basic Information</h2>
     <div class="row g-3">
         <div class="col-md-6">
             <label class="form-label required" data-i18n="label_name">Full Name</label>
@@ -95,10 +121,10 @@
 
     <!-- OCR MEDICAL REPORT SCANNER -->
     <div class="ocr-section mt-5 mb-4">
-        <h5 class="d-flex align-items-center gap-2">
+        <h2 class="h5 d-flex align-items-center gap-2">
             <i class="bi bi-camera-fill text-primary"></i>
             <span data-i18n="ocr_title">Upload Medical Report (Optional)</span>
-        </h5>
+        </h2>
         <p class="text-muted small mb-3">
             <i class="bi bi-info-circle"></i>
             <span data-i18n="ocr_subtitle">Upload a photo of your medical report. Our system will automatically extract blood sugar and blood pressure values.</span>
@@ -170,9 +196,9 @@
         <div id="ocrResults" class="ocr-results mt-3" style="display: none;">
             <div class="card">
                 <div class="card-header bg-success-subtle">
-                    <h6 class="mb-0 text-success">
+                    <h3 class="h6 mb-0 text-success">
                         <i class="bi bi-check-circle-fill"></i> <span data-i18n="ocr_extracted_title">Extracted Text</span>
-                    </h6>
+                    </h3>
                 </div>
                 <div class="card-body">
                     <div class="extracted-text mb-3">
@@ -193,7 +219,7 @@
     <hr class="my-5">
 
     <!-- Body Measurements -->
-    <h5 data-i18n="body_measurements">Body Measurements</h5>
+    <h2 class="h5" data-i18n="body_measurements">Body Measurements</h2>
     <div class="row g-3">
         <div class="col-md-4">
             <label class="form-label required" data-i18n="label_height">Height (cm)</label>
@@ -227,7 +253,7 @@
 <div class="form-step" id="formStep2">
 
     <!-- Medical History -->
-    <h5 data-i18n="medical_conditions">Known Medical Conditions</h5>
+    <h2 class="h5" data-i18n="medical_conditions">Known Medical Conditions</h2>
     <div class="row g-3">
         <div class="col-md-6">
             <label class="form-label" data-i18n="diagnosed_diabetes">Diagnosed Diabetes?</label>
@@ -246,7 +272,7 @@
     </div>
 
     <!-- Symptoms -->
-    <h5 data-i18n="symptoms_title">Symptoms (Last 2-4 Weeks)</h5>
+    <h2 class="h5" data-i18n="symptoms_title">Symptoms (Last 2-4 Weeks)</h2>
     <div class="row">
         <div class="col-md-6">
             <strong data-i18n="diabetes_related">Diabetes Related</strong>
@@ -345,7 +371,7 @@
 <div class="form-step" id="formStep3">
 
     <!-- Lifestyle -->
-    <h5 data-i18n="lifestyle_title">Lifestyle & Family History</h5>
+    <h2 class="h5" data-i18n="lifestyle_title">Lifestyle & Family History</h2>
     <div class="row g-3">
         <div class="col-md-6">
             <label class="form-label" data-i18n="label_activity">Physical Activity Level</label>
@@ -412,7 +438,7 @@
 <div class="form-step" id="formStep4">
 
     <!-- Readings -->
-    <h5 data-i18n="readings_title">Recent Readings (Optional)</h5>
+    <h2 class="h5" data-i18n="readings_title">Recent Readings (Optional)</h2>
     <div class="row g-3">
         <div class="col-md-6">
             <label class="form-label" data-i18n="label_blood_sugar">Blood Sugar (mg/dL)</label>

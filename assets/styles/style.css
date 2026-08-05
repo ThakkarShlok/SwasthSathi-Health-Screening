@@ -191,7 +191,7 @@ html {
     color: #ef4444; 
 }
 
-.feature-card h4 {
+.feature-card h3 {
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -238,7 +238,7 @@ html {
     margin-bottom: 1rem;
 }
 
-.step-card h5 {
+.step-card h3 {
     font-weight: 700;
     margin-bottom: 1rem;
 }

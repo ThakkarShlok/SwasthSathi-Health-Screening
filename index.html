@@ -3,8 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Warm up connections to CDN + backend for faster first paint -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://ersclejdrqnaxlhrfbhg.supabase.co" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <meta name="description" content="SwasthSathi - free, offline-capable screening for diabetes and hypertension risk, grounded in ADA, WHO and JNC-8 guideline thresholds. Available in English, Hindi, Gujarati and Marathi.">
     <title>SwasthSathi - Guideline-Grounded Health Screening for India</title>
+    <link rel="canonical" href="https://swasthsathi.app/">
+    <!-- LLM-friendly plain-markdown description (llms.txt convention) -->
+    <link rel="alternate" type="text/markdown" href="https://swasthsathi.app/llms.txt">
+
+    <!-- Open Graph / social preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://swasthsathi.app/">
+    <meta property="og:title" content="SwasthSathi — Free Diabetes &amp; Hypertension Risk Screening">
+    <meta property="og:description" content="A free, guideline-grounded screening for diabetes and high blood pressure risk — in English, Hindi, Gujarati and Marathi. Educational awareness, not a diagnosis.">
+    <meta property="og:image" content="https://swasthsathi.app/assets/social/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="SwasthSathi — guideline-grounded diabetes and hypertension screening">
+    <meta property="og:site_name" content="SwasthSathi">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:locale:alternate" content="hi_IN">
+    <meta property="og:locale:alternate" content="gu_IN">
+    <meta property="og:locale:alternate" content="mr_IN">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SwasthSathi — Free Diabetes &amp; Hypertension Risk Screening">
+    <meta name="twitter:description" content="A free, guideline-grounded screening for diabetes and high blood pressure risk — in 4 Indian languages. Educational awareness, not a diagnosis.">
+    <meta name="twitter:image" content="https://swasthsathi.app/assets/social/og-image.png">
+
+    <!-- Structured data: Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://swasthsathi.app/#organization",
+      "name": "SwasthSathi",
+      "url": "https://swasthsathi.app/",
+      "logo": "https://swasthsathi.app/assets/icons/icon-512.png",
+      "description": "SwasthSathi is a free, multilingual, offline-capable health risk-screening tool for diabetes and hypertension, built as an educational student project by Team COGNITEX, Computer Engineering students at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat. It is a non-commercial public-health initiative and an educational screening aid — not a diagnostic or clinically validated tool.",
+      "foundingDate": "2025-12",
+      "founder": [
+        {
+          "@type": "Person",
+          "name": "Shlok Thakkar",
+          "jobTitle": "Tech Lead - Architecture & AI Systems",
+          "sameAs": [
+            "https://github.com/ThakkarShlok",
+            "https://www.linkedin.com/in/shlok-thakkar-58a033354"
+          ]
+        },
+        { "@type": "Person", "name": "Dhrupalsinh Solanki" },
+        { "@type": "Person", "name": "Aryan Thakkar" },
+        { "@type": "Person", "name": "Akshay Somani" }
+      ],
+      "foundingLocation": {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Gandhinagar",
+          "addressRegion": "Gujarat",
+          "addressCountry": "IN"
+        }
+      }
+    }
+    </script>
+
+    <!-- Structured data: WebApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "@id": "https://swasthsathi.app/#webapp",
+      "name": "SwasthSathi",
+      "url": "https://swasthsathi.app/",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Web (PWA)",
+      "isAccessibleForFree": true,
+      "inLanguage": ["en", "hi", "gu", "mr"],
+      "publisher": { "@id": "https://swasthsathi.app/#organization" },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      },
+      "description": "SwasthSathi is a free, offline-capable web app (PWA) that scores diabetes and hypertension risk against fixed published thresholds (ADA glycaemic cut-offs, WHO and JNC-8 blood-pressure stages, and Asian BMI/waist limits). It runs in four languages and includes a guideline-grounded assistant, OCR reading of printed lab reports, and live doctor discovery.",
+      "featureList": [
+        "Offline diabetes and hypertension risk screening that runs on your device",
+        "Available in four languages: English, Hindi, Gujarati and Marathi",
+        "Guideline-grounded assistant that answers from published WHO material",
+        "Reads values from a photographed printed lab report (OCR)",
+        "Live search for diabetes and hypertension specialists near you"
+      ],
+      "disambiguatingDescription": "SwasthSathi is an educational risk-screening tool, not a diagnosis and not a clinically validated medical device. A result only indicates whether it may be worth seeing a doctor; only a qualified clinician can diagnose."
+    }
+    </script>
+
+    <!-- Structured data: FAQPage -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": "https://swasthsathi.app/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is SwasthSathi a diagnosis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. SwasthSathi is an educational risk-screening tool, not a diagnosis. It estimates your risk of diabetes and high blood pressure so you know whether it may be worth seeing a doctor. Only a qualified doctor can diagnose a condition."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Has SwasthSathi been clinically validated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The risk engine has not been clinically validated. It scores risk against published clinical thresholds, but that scoring has not been tested against patient outcomes. Treat a result as a reason to see a doctor, not as a medical finding."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does SwasthSathi work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The screening runs on your device and works without an internet connection. Live features such as doctor search need a connection."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What languages is SwasthSathi available in?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SwasthSathi is available in four languages: English, Hindi, Gujarati and Marathi."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is SwasthSathi free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. SwasthSathi is completely free and shows no ads. It is a non-commercial public-health project."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do the risk thresholds come from?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Risk is scored against fixed published thresholds: ADA glycaemic cut-offs, WHO and JNC-8 blood-pressure stages, and Asian-specific BMI and waist limits. The same inputs always produce the same score."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is SwasthSathi AI-powered?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The risk score is rule-based, not AI-generated, and comes from fixed published thresholds. AI is used only to read values from a photographed lab report (OCR) and for the guideline assistant, which answers from published WHO material."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who built SwasthSathi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SwasthSathi was built by Team COGNITEX, four Computer Engineering students at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar. Shlok Thakkar was the tech lead for architecture and AI systems, responsible for the risk engine, the guideline assistant's retrieval pipeline, the database and backend, OCR and localisation. The team also includes Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani."
+          }
+        }
+      ]
+    }
+    </script>
 
     <!-- Bootstrap 5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -70,6 +239,7 @@
                 <div class="col-lg-6 text-center">
                     <div class="hero-illustration mx-auto">
                         <img src="assets/logo/swasthsathi-icon.svg" alt="SwasthSathi"
+                             width="220" height="220"
                              style="width: 220px; max-width: 60%; height: auto;">
                     </div>
                 </div>
@@ -150,7 +320,7 @@
                         <div class="feature-icon bg-success-subtle">
                             <i class="bi bi-chat-square-quote-fill"></i>
                         </div>
-                        <h4 data-i18n="feature_assistant_title">Ask about your result</h4>
+                        <h3 data-i18n="feature_assistant_title">Ask about your result</h3>
                         <p class="text-muted" data-i18n="feature_assistant_desc">
                             A question-answering assistant that only answers from a fixed set of guideline passages.
                             If your question isn't covered, it says so instead of guessing. It will not suggest
@@ -165,7 +335,7 @@
                         <div class="feature-icon bg-primary-subtle">
                             <i class="bi bi-clipboard-check-fill"></i>
                         </div>
-                        <h4 data-i18n="feature_evidence_title">A score you can check</h4>
+                        <h3 data-i18n="feature_evidence_title">A score you can check</h3>
                         <p class="text-muted" data-i18n="feature_evidence_desc">
                             Risk is scored by fixed published thresholds — ADA glycaemic cut-offs, WHO and JNC-8
                             blood pressure stages, Asian-specific BMI and waist limits. Your result breaks down
@@ -180,7 +350,7 @@
                         <div class="feature-icon bg-info-subtle">
                             <i class="bi bi-wifi-off"></i>
                         </div>
-                        <h4 data-i18n="feature_offline_title">Finishes without a signal</h4>
+                        <h3 data-i18n="feature_offline_title">Finishes without a signal</h3>
                         <p class="text-muted" data-i18n="feature_offline_desc">
                             The scoring runs on your phone, not on a server. Install SwasthSathi once and the
                             screening still completes when the network drops — which is exactly when a clinic
@@ -195,7 +365,7 @@
                         <div class="feature-icon bg-warning-subtle">
                             <i class="bi bi-camera-fill"></i>
                         </div>
-                        <h4 data-i18n="feature_ocr_title">Photograph your lab report</h4>
+                        <h3 data-i18n="feature_ocr_title">Photograph your lab report</h3>
                         <p class="text-muted" data-i18n="feature_ocr_desc">
                             Point your camera at a printed report and the values are read out of it — HbA1c,
                             fasting glucose, blood pressure. Every extracted value is shown to you as a
@@ -210,7 +380,7 @@
                         <div class="feature-icon bg-primary-subtle">
                             <i class="bi bi-translate"></i>
                         </div>
-                        <h4 data-i18n="feature_multilingual_title">In your language</h4>
+                        <h3 data-i18n="feature_multilingual_title">In your language</h3>
                         <p class="text-muted" data-i18n="feature_multilingual_desc">
                             The full screening, results and advice in English, Hindi, Gujarati and Marathi.
                             Questions are written in plain words, not clinical vocabulary.
@@ -224,7 +394,7 @@
                         <div class="feature-icon bg-danger-subtle">
                             <i class="bi bi-geo-alt-fill"></i>
                         </div>
-                        <h4 data-i18n="feature_doctors_title">Find doctors near you</h4>
+                        <h3 data-i18n="feature_doctors_title">Find doctors near you</h3>
                         <p class="text-muted" data-i18n="feature_doctors_desc">
                             Search live for diabetes and hypertension specialists around your current location,
                             with the listing and rating shown exactly as the public map data provides it.
@@ -239,7 +409,7 @@
                         <div class="feature-icon bg-info-subtle">
                             <i class="bi bi-shield-lock-fill"></i>
                         </div>
-                        <h4 data-i18n="feature_privacy_title">Only you can read your results</h4>
+                        <h3 data-i18n="feature_privacy_title">Only you can read your results</h3>
                         <p class="text-muted" data-i18n="feature_privacy_desc">
                             Saved screenings are locked to your account by the database itself, not just by the
                             app. You can screen without an account at all — in that case nothing is stored.
@@ -253,7 +423,7 @@
                         <div class="feature-icon bg-success-subtle">
                             <i class="bi bi-graph-up-arrow"></i>
                         </div>
-                        <h4 data-i18n="feature_compare_title">See whether it's moving</h4>
+                        <h3 data-i18n="feature_compare_title">See whether it's moving</h3>
                         <p class="text-muted" data-i18n="feature_compare_desc">
                             Screen again after a few months and compare side by side. Change over time tells you
                             more than any single score does.
@@ -267,7 +437,7 @@
                         <div class="feature-icon bg-warning-subtle">
                             <i class="bi bi-printer-fill"></i>
                         </div>
-                        <h4 data-i18n="feature_print_title">Something to hand your doctor</h4>
+                        <h3 data-i18n="feature_print_title">Something to hand your doctor</h3>
                         <p class="text-muted" data-i18n="feature_print_desc">
                             Print or share a clean summary with your scores, the factors behind them and the
                             thresholds used, so a consultation starts from evidence instead of memory.
@@ -294,7 +464,7 @@
                     <div class="step-card">
                         <div class="step-number">1</div>
                         <div class="step-icon"><i class="bi bi-translate"></i></div>
-                        <h5 data-i18n="step1_title">Pick your language</h5>
+                        <h3 data-i18n="step1_title">Pick your language</h3>
                         <p class="text-muted" data-i18n="step1_desc">English, Hindi, Gujarati or Marathi.</p>
                     </div>
                 </div>
@@ -302,7 +472,7 @@
                     <div class="step-card">
                         <div class="step-number">2</div>
                         <div class="step-icon"><i class="bi bi-person-fill"></i></div>
-                        <h5 data-i18n="step2_title">Answer basic questions</h5>
+                        <h3 data-i18n="step2_title">Answer basic questions</h3>
                         <p class="text-muted" data-i18n="step2_desc">Age, height, weight, waist, family history, habits.</p>
                     </div>
                 </div>
@@ -310,7 +480,7 @@
                     <div class="step-card">
                         <div class="step-number">3</div>
                         <div class="step-icon"><i class="bi bi-camera-fill"></i></div>
-                        <h5 data-i18n="step3_title">Add lab values if you have them</h5>
+                        <h3 data-i18n="step3_title">Add lab values if you have them</h3>
                         <p class="text-muted" data-i18n="step3_desc">Type them in, or photograph the report. Optional — the screening works without them.</p>
                     </div>
                 </div>
@@ -318,7 +488,7 @@
                     <div class="step-card">
                         <div class="step-number">4</div>
                         <div class="step-icon"><i class="bi bi-clipboard2-pulse"></i></div>
-                        <h5 data-i18n="step4_title">Read your result</h5>
+                        <h3 data-i18n="step4_title">Read your result</h3>
                         <p class="text-muted" data-i18n="step4_desc">Risk level, the factors behind it, what to do next — and you can ask follow-up questions.</p>
                     </div>
                 </div>
@@ -349,27 +519,27 @@
 
             <div class="ss-pipeline">
                 <div class="ss-stage">
-                    <h5 data-i18n="pipeline_1_title">Your answers</h5>
+                    <h3 data-i18n="pipeline_1_title">Your answers</h3>
                     <p data-i18n="pipeline_1_desc">Values are bounds-checked against what is physiologically possible before anything is scored.</p>
                     <span class="ss-tag ss-tag--rule" data-i18n="tag_deterministic">Deterministic</span>
                 </div>
                 <div class="ss-stage">
-                    <h5 data-i18n="pipeline_2_title">Reading a report</h5>
+                    <h3 data-i18n="pipeline_2_title">Reading a report</h3>
                     <p data-i18n="pipeline_2_desc">Optical character recognition pulls values off a photographed report. You confirm each one before it counts.</p>
                     <span class="ss-tag ss-tag--model" data-i18n="tag_model">Model-assisted</span>
                 </div>
                 <div class="ss-stage">
-                    <h5 data-i18n="pipeline_3_title">Risk scoring</h5>
+                    <h3 data-i18n="pipeline_3_title">Risk scoring</h3>
                     <p data-i18n="pipeline_3_desc">Fixed ADA, WHO, JNC-8 and Asian BMI thresholds, computed on your phone. Same input always gives the same score.</p>
                     <span class="ss-tag ss-tag--rule" data-i18n="tag_deterministic">Deterministic</span>
                 </div>
                 <div class="ss-stage">
-                    <h5 data-i18n="pipeline_4_title">Answering your questions</h5>
+                    <h3 data-i18n="pipeline_4_title">Answering your questions</h3>
                     <p data-i18n="pipeline_4_desc">Your question is matched against a fixed set of guideline passages. If nothing matches closely enough, the assistant declines rather than improvising.</p>
                     <span class="ss-tag ss-tag--model" data-i18n="tag_model">Model-assisted</span>
                 </div>
                 <div class="ss-stage">
-                    <h5 data-i18n="pipeline_5_title">Checking the answer</h5>
+                    <h3 data-i18n="pipeline_5_title">Checking the answer</h3>
                     <p data-i18n="pipeline_5_desc">Every citation is re-checked against the passages actually retrieved. Anything unverified is dropped before you see it.</p>
                     <span class="ss-tag ss-tag--guard" data-i18n="tag_verified">Verified server-side</span>
                 </div>
