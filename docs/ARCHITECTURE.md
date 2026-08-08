@@ -354,4 +354,4 @@ nav-auth.js               ← Populates #navAuthSection based on auth state
 
 ---
 
-*Architecture decisions owned by Team COGNITEX. Questions: thakkarshlok2007@gmail.com*
+*Architecture decisions owned by Team COGNITEX. Questions: support.swasthsathi@gmail.com*

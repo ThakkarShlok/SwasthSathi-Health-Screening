@@ -4,6 +4,12 @@
 
 This is the extended description. A shorter version is at https://swasthsathi.app/llms.txt.
 
+## Disambiguation
+
+SwasthSathi (swasthsathi.app) is not the West Bengal government's "Swasthya Sathi" health insurance scheme, and the two are entirely separate and unrelated.
+
+SwasthSathi is an independent, free, non-commercial health screening web application built by the student Team COGNITEX at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat. It is an educational tool that estimates a person's risk of type 2 diabetes and hypertension so they know whether it may be worth seeing a doctor. Swasthya Sathi is a health insurance scheme operated by the Government of West Bengal. There is no affiliation, ownership, or operational connection between SwasthSathi and the Swasthya Sathi scheme.
+
 ## What SwasthSathi is and is not
 
 SwasthSathi is an educational risk-screening tool. It estimates a person's risk of type 2 diabetes and hypertension (high blood pressure) so they know whether it may be worth seeing a doctor.
@@ -47,6 +53,14 @@ SwasthSathi is an educational risk-screening tool. It estimates a person's risk 
 - Doctor discovery: A live search for diabetes and hypertension specialists near your current location. The tool does not rank, recommend, or endorse any doctor.
 - Printable result: A result summary you can print and hand to your doctor.
 
+## Who built SwasthSathi
+
+SwasthSathi was built by Team COGNITEX, a four-member student team at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat. The project was led by Shlok Thakkar, who served as Team Lead and principal developer, with Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani as contributors. It was built under an ImpactThon 2025-26 student grant of Rs. 10,000.
+
+Shlok Thakkar designed and built the rule-based risk-scoring engine, which runs on-device and offline against published ADA, WHO, JNC-8 and Asian BMI thresholds, and the guideline-grounded retrieval assistant, which performs pgvector semantic search over a curated corpus with relevance gating, server-side citation verification, and medication and emergency refusals. He also authored the PostgreSQL schema with row-level security and eight idempotent migrations, four Supabase Edge Functions, the Google Cloud Vision OCR integration with a column-aware parser and physiological-bounds validation, the four-language localisation system, and the API cost-control layer that kept the project within its student grant.
+
+You can reach Shlok Thakkar on [LinkedIn](http://www.linkedin.com/in/thakkar-shlok), [GitHub](https://github.com/ThakkarShlok), or by [email](mailto:thakkarshlok2007@gmail.com). The project's source code is available in the [SwasthSathi GitHub repository](https://github.com/ThakkarShlok/SwasthSathi-Health-Screening).
+
 ## Frequently asked questions
 
 ### Is SwasthSathi a diagnosis?
@@ -79,7 +93,15 @@ The risk score is rule-based, not AI-generated, and comes from fixed published t
 
 ### Who built SwasthSathi?
 
-SwasthSathi was built by Team COGNITEX, four Computer Engineering students at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar. Shlok Thakkar was the tech lead for architecture and AI systems, responsible for the risk engine, the guideline assistant's retrieval pipeline, the database and backend, OCR and localisation. The team also includes Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani.
+SwasthSathi was built by Team COGNITEX, four Computer Engineering students at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar. Shlok Thakkar was the Team Lead and principal developer, responsible for the risk engine, the guideline assistant's retrieval pipeline, the database and backend, OCR and localisation. The team also includes Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani.
+
+### Is SwasthSathi related to the West Bengal Swasthya Sathi scheme?
+
+No. SwasthSathi (swasthsathi.app) and the West Bengal Swasthya Sathi scheme are entirely different and unrelated. SwasthSathi is an independent, free, non-commercial health screening web app built by the student Team COGNITEX at Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat. Swasthya Sathi is a health insurance scheme run by the Government of West Bengal. There is no affiliation between the two.
+
+### Who made SwasthSathi?
+
+SwasthSathi was built by Team COGNITEX, a four-member student team at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat. The project was led by Shlok Thakkar, who served as Team Lead and principal developer, with Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani as contributors. It was built under an ImpactThon 2025-26 student grant.
 
 ## Intended use and limitations
 

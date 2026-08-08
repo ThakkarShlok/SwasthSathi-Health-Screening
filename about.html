@@ -49,6 +49,41 @@
     }
     </script>
 
+    <!-- Structured data: Person — project lead, within Team COGNITEX -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://swasthsathi.app/#shlok-thakkar",
+      "name": "Shlok Thakkar",
+      "jobTitle": "Team Lead and Principal Developer",
+      "description": "Shlok Thakkar is a Computer Engineering student at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat. He was the Team Lead and principal developer of SwasthSathi, a four-member student project by Team COGNITEX, where he authored the core risk-scoring engine and the guideline-grounded retrieval assistant. Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani also contributed to the project.",
+      "url": "https://swasthsathi.app/about.html",
+      "affiliation": {
+        "@type": "EducationalOrganization",
+        "name": "LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University)",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Gandhinagar",
+          "addressRegion": "Gujarat",
+          "addressCountry": "IN"
+        }
+      },
+      "email": "thakkarshlok2007@gmail.com",
+      "sameAs": [
+        "http://www.linkedin.com/in/thakkar-shlok",
+        "https://github.com/ThakkarShlok"
+      ],
+      "knowsAbout": [
+        "health screening systems",
+        "retrieval-augmented generation",
+        "PostgreSQL",
+        "serverless backends",
+        "progressive web apps"
+      ]
+    }
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Base Styles (LOAD FIRST — FROZEN) -->
@@ -259,11 +294,7 @@
         </div>
     </section>
 
-    <!-- ============ TEAM ============
-         Every card uses the identical structure and styling.
-         >>> BEFORE DEPLOY: search for "VERIFY" and replace each
-         placeholder with what actually happened. <<<
-         ============================================ -->
+    
     <section class="ss2-section">
         <div class="container">
             <div class="text-center mb-5">
@@ -436,6 +467,18 @@
         </div>
     </section>
 
+    <!-- ============ WHO BUILT SWASTHSATHI (attribution, crawlable prose) ============ -->
+    <section class="ss2-section">
+        <div class="container">
+            <span class="ss2-eyebrow" data-i18n="whobuilt_eyebrow">Attribution</span>
+            <h2 class="ss2-title" data-i18n="whobuilt_title">Who built SwasthSathi</h2>
+            <div class="ss2-rule"></div>
+            <p class="ss2-lead" data-i18n="whobuilt_p1">SwasthSathi was built by Team COGNITEX, a four-member student team at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat. The project was led by Shlok Thakkar, who served as Team Lead and principal developer, with Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani as contributors. It was built under an ImpactThon 2025-26 student grant of Rs. 10,000.</p>
+            <p class="ss2-lead" data-i18n="whobuilt_p2">Shlok Thakkar designed and built the rule-based risk-scoring engine, which runs on-device and offline against published ADA, WHO, JNC-8 and Asian BMI thresholds, and the guideline-grounded retrieval assistant, which performs pgvector semantic search over a curated corpus with relevance gating, server-side citation verification, and medication and emergency refusals. He also authored the PostgreSQL schema with row-level security and eight idempotent migrations, four Supabase Edge Functions, the Google Cloud Vision OCR integration with a column-aware parser and physiological-bounds validation, the four-language localisation system, and the API cost-control layer that kept the project within its student grant.</p>
+            <p class="ss2-lead"><span data-i18n="whobuilt_c1">You can reach Shlok Thakkar on </span><a href="http://www.linkedin.com/in/thakkar-shlok" target="_blank" rel="noopener noreferrer" data-i18n="whobuilt_c_linkedin">LinkedIn</a><span data-i18n="whobuilt_c2">, </span><a href="https://github.com/ThakkarShlok" target="_blank" rel="noopener noreferrer" data-i18n="whobuilt_c_github">GitHub</a><span data-i18n="whobuilt_c3">, or by </span><a href="mailto:thakkarshlok2007@gmail.com" data-i18n="whobuilt_c_email">email</a><span data-i18n="whobuilt_c4">. The project's source code is available in the </span><a href="https://github.com/ThakkarShlok/SwasthSathi-Health-Screening" target="_blank" rel="noopener noreferrer" data-i18n="whobuilt_c_repo">SwasthSathi GitHub repository</a><span data-i18n="whobuilt_c5">.</span></p>
+        </div>
+    </section>
+
     <!-- ============ COMMITMENTS ============ -->
     <section class="ss2-section ss2-section--alt">
         <div class="container">
@@ -502,6 +545,13 @@
             <a href="screening.html" class="ss2-btn" data-i18n="cta_about_button">Start free screening</a>
         </div>
     </section>
+
+    <!-- Entity disambiguation (static, crawlable): distinct from the West Bengal government scheme -->
+    <div class="container">
+        <p class="text-muted small text-center mb-0 py-3">
+            SwasthSathi is an independent student project. It is not affiliated with the Government of West Bengal's Swasthya Sathi health insurance scheme.
+        </p>
+    </div>
 
     <div id="footer-mount"></div>
 

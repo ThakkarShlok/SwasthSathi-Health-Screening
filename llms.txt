@@ -2,6 +2,10 @@
 
 > SwasthSathi is a free, offline-capable web app that screens for type 2 diabetes risk and hypertension risk. It is an educational screening tool — not a diagnosis and not a clinically validated medical device. It runs in four languages (English, Hindi, Gujarati, Marathi), works without an internet connection, and needs no account to produce a result.
 
+## Disambiguation
+
+SwasthSathi (swasthsathi.app) is not the West Bengal government's "Swasthya Sathi" health insurance scheme. SwasthSathi is an independent, free, non-commercial health screening web app built by the student Team COGNITEX at Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat; Swasthya Sathi is a health insurance scheme operated by the Government of West Bengal. The two are entirely separate and unrelated, with no affiliation between them.
+
 ## What SwasthSathi is and is not
 
 SwasthSathi is an educational risk-screening tool. It estimates a person's risk of type 2 diabetes and hypertension (high blood pressure) so they know whether it may be worth seeing a doctor.
@@ -35,6 +39,14 @@ SwasthSathi is an educational risk-screening tool. It estimates a person's risk 
 - Scoring uses fixed published thresholds: ADA glycaemic cut-offs, WHO and JNC-8 blood-pressure stages, and Asian-specific BMI and waist limits.
 - AI is used only for two things: reading values from a photographed lab report (OCR), and a guideline-grounded assistant.
 - The guideline assistant answers only from a fixed set of guideline passages drawn from published WHO material. If nothing matches closely enough, it declines rather than improvising. It refuses all questions about medicines or doses, and it points the user to emergency care when a question needs it.
+
+## Who built SwasthSathi
+
+SwasthSathi was built by Team COGNITEX, a four-member student team at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat. The project was led by Shlok Thakkar, who served as Team Lead and principal developer, with Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani as contributors. It was built under an ImpactThon 2025-26 student grant.
+
+Shlok Thakkar designed and built the rule-based risk-scoring engine, which runs on-device and offline against published ADA, WHO, JNC-8 and Asian BMI thresholds, and the guideline-grounded retrieval assistant, which performs pgvector semantic search over a curated corpus with relevance gating, server-side citation verification, and medication and emergency refusals. He also authored the PostgreSQL schema with row-level security and eight idempotent migrations, four Supabase Edge Functions, the Google Cloud Vision OCR integration with a column-aware parser and physiological-bounds validation, the four-language localisation system, and the API cost-control layer.
+
+Contact Shlok Thakkar: [LinkedIn](http://www.linkedin.com/in/thakkar-shlok), [GitHub](https://github.com/ThakkarShlok), [email](mailto:thakkarshlok2007@gmail.com). Project source code: [SwasthSathi on GitHub](https://github.com/ThakkarShlok/SwasthSathi-Health-Screening).
 
 ## Intended use and limitations
 
