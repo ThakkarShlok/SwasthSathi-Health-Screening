@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://ersclejdrqnaxlhrfbhg.supabase.co" crossorigin>
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-    <meta name="description" content="SwasthSathi - free, offline-capable screening for diabetes and hypertension risk, grounded in ADA, WHO and JNC-8 guideline thresholds. Available in English, Hindi, Gujarati and Marathi.">
+    <meta name="description" content="Free, offline diabetes and hypertension risk screening app in 4 Indian languages. An independent, educational student project — not a government scheme.">
     <title>SwasthSathi - Guideline-Grounded Health Screening for India</title>
     <link rel="canonical" href="https://swasthsathi.app/">
     <!-- LLM-friendly plain-markdown description (llms.txt convention) -->
@@ -40,23 +40,35 @@
       "@type": "Organization",
       "@id": "https://swasthsathi.app/#organization",
       "name": "SwasthSathi",
+      "alternateName": ["SwasthSathi App", "SwasthSathi Health Screening"],
       "url": "https://swasthsathi.app/",
       "logo": "https://swasthsathi.app/assets/icons/icon-512.png",
       "description": "SwasthSathi is a free, multilingual, offline-capable health risk-screening tool for diabetes and hypertension, built as an educational student project by Team COGNITEX, Computer Engineering students at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat. It is a non-commercial public-health initiative and an educational screening aid — not a diagnostic or clinically validated tool.",
+      "disambiguatingDescription": "SwasthSathi is an independent, non-commercial health screening web application built by a student team, and is not affiliated with, operated by, or related to the West Bengal government's Swasthya Sathi health insurance scheme.",
       "foundingDate": "2025-12",
-      "founder": [
+      "founder": {
+        "@id": "https://swasthsathi.app/#shlok-thakkar",
+        "@type": "Person",
+        "name": "Shlok Thakkar",
+        "jobTitle": "Team Lead and Principal Developer",
+        "sameAs": [
+          "http://www.linkedin.com/in/thakkar-shlok",
+          "https://github.com/ThakkarShlok"
+        ]
+      },
+      "member": [
         {
+          "@id": "https://swasthsathi.app/#shlok-thakkar",
           "@type": "Person",
           "name": "Shlok Thakkar",
-          "jobTitle": "Tech Lead - Architecture & AI Systems",
-          "sameAs": [
-            "https://github.com/ThakkarShlok",
-            "http://www.linkedin.com/in/thakkar-shlok"
-          ]
+          "jobTitle": "Team Lead and Principal Developer"
         },
-        { "@type": "Person", "name": "Dhrupalsinh Solanki" },
-        { "@type": "Person", "name": "Aryan Thakkar" },
-        { "@type": "Person", "name": "Akshay Somani" }
+        { "@type": "Person", "name": "Dhrupalsinh Solanki", "jobTitle": "App Delivery & Offline Support" },
+        { "@type": "Person", "name": "Aryan Thakkar", "jobTitle": "Product & Requirements Lead" },
+        { "@type": "Person", "name": "Akshay Somani", "jobTitle": "Localisation & QA" }
+      ],
+      "sameAs": [
+        "https://github.com/ThakkarShlok/SwasthSathi-Health-Screening"
       ],
       "foundingLocation": {
         "@type": "Place",
@@ -83,6 +95,9 @@
       "isAccessibleForFree": true,
       "inLanguage": ["en", "hi", "gu", "mr"],
       "publisher": { "@id": "https://swasthsathi.app/#organization" },
+      "author": { "@id": "https://swasthsathi.app/#organization" },
+      "creator": { "@id": "https://swasthsathi.app/#organization" },
+      "contributor": { "@id": "https://swasthsathi.app/#shlok-thakkar" },
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -96,7 +111,10 @@
         "Reads values from a photographed printed lab report (OCR)",
         "Live search for diabetes and hypertension specialists near you"
       ],
-      "disambiguatingDescription": "SwasthSathi is an educational risk-screening tool, not a diagnosis and not a clinically validated medical device. A result only indicates whether it may be worth seeing a doctor; only a qualified clinician can diagnose."
+      "disambiguatingDescription": [
+        "SwasthSathi is an educational risk-screening tool, not a diagnosis and not a clinically validated medical device. A result only indicates whether it may be worth seeing a doctor; only a qualified clinician can diagnose.",
+        "SwasthSathi is an independent, non-commercial health screening web application built by a student team, and is not affiliated with, operated by, or related to the West Bengal government's Swasthya Sathi health insurance scheme."
+      ]
     }
     </script>
 
@@ -168,7 +186,23 @@
           "name": "Who built SwasthSathi?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "SwasthSathi was built by Team COGNITEX, four Computer Engineering students at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar. Shlok Thakkar was the tech lead for architecture and AI systems, responsible for the risk engine, the guideline assistant's retrieval pipeline, the database and backend, OCR and localisation. The team also includes Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani."
+            "text": "SwasthSathi was built by Team COGNITEX, four Computer Engineering students at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar. Shlok Thakkar was the Team Lead and principal developer, responsible for the risk engine, the guideline assistant's retrieval pipeline, the database and backend, OCR and localisation. The team also includes Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is SwasthSathi related to the West Bengal Swasthya Sathi scheme?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. SwasthSathi (swasthsathi.app) and the West Bengal Swasthya Sathi scheme are entirely different and unrelated. SwasthSathi is an independent, free, non-commercial health screening web app built by the student Team COGNITEX at Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat. Swasthya Sathi is a health insurance scheme run by the Government of West Bengal. There is no affiliation between the two."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who made SwasthSathi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SwasthSathi was built by Team COGNITEX, a four-member student team at LDRP-ITR, Kadi Sarva Vishwavidyalaya (KSV University), Gandhinagar, Gujarat. The project was led by Shlok Thakkar, who served as Team Lead and principal developer, with Dhrupalsinh Solanki, Aryan Thakkar and Akshay Somani as contributors. It was built under an ImpactThon 2025-26 student grant."
           }
         }
       ]
@@ -201,12 +235,7 @@
 <body>
     <div id="navbar-mount"></div>
 
-    <!-- ============================================
-         HERO
-         Claim changed: the risk engine is deterministic and
-         rule-based, not "AI-powered". AI is used for OCR and for
-         the guideline assistant only. Say what is true.
-         ============================================ -->
+    
     <section class="hero-section" id="home">
         <div class="container">
             <div class="row align-items-center">
@@ -606,6 +635,13 @@
             </div>
         </div>
     </section>
+
+    <!-- Entity disambiguation (static, crawlable): distinct from the West Bengal government scheme -->
+    <div class="container">
+        <p class="text-muted small text-center mb-0 py-3">
+            SwasthSathi is an independent student project. It is not affiliated with the Government of West Bengal's Swasthya Sathi health insurance scheme.
+        </p>
+    </div>
 
     <div id="footer-mount"></div>
 
